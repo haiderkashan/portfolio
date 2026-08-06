@@ -1,6 +1,6 @@
 "use client";
 
-import * as TablerIcons from "@tabler/icons-react";
+import dynamic from "next/dynamic";
 import { IconQuestionMark } from "@tabler/icons-react";
 
 interface DynamicIconProps {
@@ -12,20 +12,19 @@ export function DynamicIcon({
   iconName,
   className = "h-full w-full text-neutral-500 dark:text-neutral-300",
 }: DynamicIconProps) {
-  // Dynamically look up the icon component by name from the Tabler Icons library
-  // This allows us to load any icon based on CMS data without importing each one individually
-  // The type cast is necessary because TypeScript can't infer the dynamic lookup at compile time
-  const Icon = (
-    TablerIcons as unknown as Record<
-      string,
-      React.ComponentType<{ className?: string }>
-    >
-  )[iconName];
-
-  // If the icon exists, render it; otherwise show a fallback question mark icon
-  return Icon ? (
-    <Icon className={className} />
-  ) : (
-    <IconQuestionMark className={className} />
+  // Lazily load the icon module to prevent shipping all ~4700 icons in the initial bundle
+  const Icon = dynamic(
+    () =>
+      import("@tabler/icons-react").then((mod) => {
+        const Comp = mod[iconName as keyof typeof mod];
+        return {
+          default: (Comp as React.ComponentType<{ className?: string }>) || IconQuestionMark,
+        };
+      }),
+    {
+      ssr: false, // Prevents SSR hydration mismatch and huge server bundle parsing
+    }
   );
+
+  return <Icon className={className} />;
 }

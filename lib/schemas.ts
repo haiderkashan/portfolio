@@ -5,7 +5,5 @@ export const contactFormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
   subject: z.string().min(5, { message: "Subject must be at least 5 characters." }),
   message: z.string().min(10, { message: "Message must be at least 10 characters." }),
-  // Honeypot field (should be empty)
-  // Bots often fill every field they find. If this has a value, it's a bot.
-  address: z.string().optional().or(z.literal("")),
+  address: z.string().nullable().optional(), 
 });

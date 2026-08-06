@@ -8,7 +8,7 @@ const SITEMAP_DATA_QUERY = `
     "slug": slug.current,
     "updatedAt": _updatedAt
   },
-  "posts": *[_type == "post" && defined(slug.current)]{
+  "posts": *[_type == "blog" && defined(slug.current)]{
     "slug": slug.current,
     "updatedAt": _updatedAt
   }

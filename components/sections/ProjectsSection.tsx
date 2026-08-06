@@ -69,7 +69,7 @@ export async function ProjectsSection() {
       {/* SEO: Inject JSON-LD Script */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
 
       <div className="container mx-auto">

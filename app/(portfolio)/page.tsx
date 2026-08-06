@@ -153,7 +153,7 @@ export default async function Home() {
       {/* SEO: Inject Structured Data */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA_MARKUP) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA_MARKUP).replace(/</g, '\\u003c') }}
       />
       
       <PortfolioContent

@@ -64,7 +64,7 @@ export default async function PrivacyPolicyPage() {
     <main className="min-h-screen bg-background pt-28 pb-20 px-6">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
 
       <div className="container mx-auto max-w-4xl">

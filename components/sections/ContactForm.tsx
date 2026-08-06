@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { submitContactForm } from "@/app/actions/submit-contact-form";
 import {
   IconUser,
@@ -17,6 +17,13 @@ export function ContactForm() {
   const [isPending, startTransition] = useTransition();
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,7 +35,7 @@ export function ContactForm() {
       if (result.success) {
         setStatus("success");
         e.currentTarget.reset();
-        setTimeout(() => setStatus("idle"), 4000);
+        timerRef.current = setTimeout(() => setStatus("idle"), 4000);
       } else {
         setStatus("error");
         setErrorMsg(result.error || "Something went wrong");

@@ -2,17 +2,7 @@
 
 import { z } from "zod";
 import { serverClient } from "@/sanity/lib/serverClient";
-
-// 1. Define the Validation Schema directly here
-const contactFormSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  subject: z.string().min(5, { message: "Subject must be at least 5 characters." }),
-  message: z.string().min(10, { message: "Message must be at least 10 characters." }),
-  
-  // 💡 THE FIX: Allow string, null, or undefined for the honeypot
-  address: z.string().nullable().optional(), 
-});
+import { contactFormSchema } from "@/lib/schemas";
 
 export async function submitContactForm(formData: FormData) {
   // 2. Extract raw data
