@@ -1,14 +1,21 @@
 "use client";
 
-import { useState, useEffect, Suspense, lazy } from "react";
+import { useState, useEffect, Suspense } from "react";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// ✅ FIXED: Using React.lazy instead of next/dynamic
-// This moves the loading 100% to the browser, bypassing the server crash.
-const SkillsChart = lazy(() =>
+interface Skill {
+  name: string;
+  category: string;
+  proficiency: number;
+  iconName?: string;
+}
+
+const SkillsChart = dynamic(() =>
   import("./SkillsChart").then((module) => ({ default: module.SkillsChart }))
 );
 
-export function SkillsChartLoader({ skills }: { skills: any }) {
+export function SkillsChartLoader({ skills }: { skills: Skill[] }) {
   const [isMounted, setIsMounted] = useState(false);
 
   // 1. Wait until the browser is ready

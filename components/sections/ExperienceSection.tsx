@@ -1,6 +1,8 @@
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "@/sanity/lib/live";
 import { ExperienceCarousel } from "@/components/ExperienceCarousel";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { PortableTextBlock } from "next-sanity";
 // 1. Import the animation component
 import { ScrollAnimation } from "@/components/ScrollAnimation";
 
@@ -18,11 +20,11 @@ interface Experience {
   startDate: string;
   endDate?: string | null;
   current: boolean;
-  description?: any; 
+  description?: PortableTextBlock[]; 
   responsibilities?: string[];
   achievements?: string[];
   technologies?: Technology[];
-  companyLogo?: any;
+  companyLogo?: SanityImageSource;
   companyWebsite?: string;
 }
 

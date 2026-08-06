@@ -5,6 +5,7 @@ import { defineQuery } from "next-sanity";
 import { CometCard } from "@/components/ui/comet-card";
 import { urlFor } from "@/sanity/lib/image";
 import { sanityFetch } from "@/sanity/lib/live";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 // 1. Import Animation
 import { ScrollAnimation } from "@/components/ScrollAnimation";
 
@@ -21,7 +22,7 @@ interface Certification {
   expiryDate?: string | null;
   credentialId?: string;
   credentialUrl?: string;
-  logo?: any;
+  logo?: SanityImageSource;
   description?: string;
   skills?: Skill[];
   order?: number;

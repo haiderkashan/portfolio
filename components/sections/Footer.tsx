@@ -10,7 +10,10 @@ import {
   IconBrandMedium,
   IconCode,
   IconWorld,
+  IconArrowUp,
+  IconArrowUpRight
 } from "@tabler/icons-react";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { urlFor } from "@/sanity/lib/image";
 
 interface FooterLink {
@@ -38,7 +41,7 @@ interface FooterProps {
     links?: FooterLink[];
   };
   socialLinks?: SocialLinks;
-  logo?: any;
+  logo?: SanityImageSource;
 }
 
 export function Footer({ footerData, socialLinks, logo }: FooterProps) {

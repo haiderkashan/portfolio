@@ -1,6 +1,7 @@
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "@/sanity/lib/live";
 import { EducationCarousel } from "@/components/EducationCarousel";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 // 1. Import the animation component
 import { ScrollAnimation } from "@/components/ScrollAnimation"; 
 
@@ -15,7 +16,7 @@ interface Education {
   gpa?: string;
   description?: string;
   achievements?: string[];
-  logo?: any;
+  logo?: SanityImageSource;
   website?: string;
   order?: number;
 }

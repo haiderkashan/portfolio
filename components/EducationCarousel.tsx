@@ -11,6 +11,7 @@ import {
   IconSchool
 } from "@tabler/icons-react";
 import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 interface Education {
   institution: string;
@@ -22,7 +23,7 @@ interface Education {
   gpa?: string;
   description?: string;
   achievements?: string[];
-  logo?: any;
+  logo?: SanityImageSource;
   website?: string;
   order?: number;
 }

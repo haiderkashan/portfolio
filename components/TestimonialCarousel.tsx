@@ -11,6 +11,7 @@ import {
   IconBuildingSkyscraper
 } from "@tabler/icons-react";
 import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Testimonial {
@@ -20,8 +21,8 @@ interface Testimonial {
   testimonial: string;
   rating?: number;
   date?: string;
-  avatar?: any;
-  companyLogo?: any;
+  avatar?: SanityImageSource;
+  companyLogo?: SanityImageSource;
   linkedinUrl?: string;
 }
 

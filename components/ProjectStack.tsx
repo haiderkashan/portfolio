@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IconBrandGithub, IconCode, IconArrowUpRight } from "@tabler/icons-react";
 import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { ZoomToFullscreen } from "@/components/animations/ZoomToFullscreen";
 
 interface Technology {
@@ -20,7 +21,7 @@ interface Project {
   category?: string;
   liveUrl?: string;
   githubUrl?: string;
-  coverImage?: any;
+  coverImage?: SanityImageSource;
   technologies?: Technology[];
 }
 

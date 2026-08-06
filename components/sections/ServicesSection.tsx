@@ -6,6 +6,8 @@ import { urlFor } from "@/sanity/lib/image";
 import { sanityFetch } from "@/sanity/lib/live";
 import { ScrollAnimation } from "@/components/ScrollAnimation";
 import { HorizontalSlide } from "@/components/animations/HorizontalSlide";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { PortableTextBlock } from "next-sanity";
 
 // --- INTERFACES ---
 interface Technology {
@@ -22,9 +24,9 @@ interface Pricing {
 interface Service {
   title: string;
   slug: { current: string };
-  icon?: any;
+  icon?: SanityImageSource;
   shortDescription?: string;
-  fullDescription?: any;
+  fullDescription?: PortableTextBlock[];
   features?: string[];
   technologies?: Technology[];
   deliverables?: string;

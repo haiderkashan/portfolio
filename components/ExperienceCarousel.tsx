@@ -12,6 +12,8 @@ import {
   IconCode
 } from "@tabler/icons-react";
 import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+import type { PortableTextBlock } from "next-sanity";
 
 interface Technology {
   name: string;
@@ -26,11 +28,11 @@ interface Experience {
   startDate: string;
   endDate?: string | null;
   current: boolean;
-  description?: any;
+  description?: PortableTextBlock[];
   responsibilities?: string[];
   achievements?: string[];
   technologies?: Technology[];
-  companyLogo?: any;
+  companyLogo?: SanityImageSource;
   companyWebsite?: string;
 }
 

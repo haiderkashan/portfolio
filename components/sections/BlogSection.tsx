@@ -1,6 +1,7 @@
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "@/sanity/lib/live";
 import { BlogCarousel } from "@/components/BlogCarousel"; 
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 // 1. Import Animation
 import { ScrollAnimation } from "@/components/ScrollAnimation";
 
@@ -13,7 +14,7 @@ interface BlogPost {
   tags?: string[];
   publishedAt: string;
   readTime?: number;
-  featuredImage?: any;
+  featuredImage?: SanityImageSource;
 }
 
 const BLOG_QUERY = defineQuery(`

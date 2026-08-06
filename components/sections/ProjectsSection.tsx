@@ -2,6 +2,8 @@ import { defineQuery } from "next-sanity";
 import { sanityFetch } from "@/sanity/lib/live";
 import { ProjectStack } from "@/components/ProjectStack";
 import { ScrollAnimation } from "@/components/ScrollAnimation";
+import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 interface Technology {
   name: string;
@@ -16,7 +18,7 @@ interface Project {
   category?: string;
   liveUrl?: string;
   githubUrl?: string;
-  coverImage?: any;
+  coverImage?: SanityImageSource;
   technologies?: Technology[];
 }
 

@@ -4,10 +4,11 @@ import { IconArrowLeft, IconMail } from "@tabler/icons-react";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { Metadata } from "next";
+import { SITE_SETTINGS_PROJECTION } from "@/sanity/lib/queries";
 
 const PRIVACY_DATA_QUERY = `{
   "profile": *[_id == "singleton-profile"][0]{ email, firstName, lastName },
-  "settings": *[_type == "siteSettings"][0]{ favicon, siteName }
+  "settings": *[_type == "siteSettings"][0]${SITE_SETTINGS_PROJECTION}
 }`;
 
 export async function generateMetadata(): Promise<Metadata> {

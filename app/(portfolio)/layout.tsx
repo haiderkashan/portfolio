@@ -14,24 +14,13 @@ import { ModeToggle } from "@/components/DarkModeToggle";
 import { DisableDraftMode } from "@/components/DisableDraftMode";
 
 import { VisualEditing } from "next-sanity/visual-editing";
+import { SITE_SETTINGS_PROJECTION } from "@/sanity/lib/queries";
 
 /* -------------------------------------------------------------------------- */
 /* QUERIES                                                                    */
 /* -------------------------------------------------------------------------- */
 
-const SETTINGS_QUERY = `*[_type == "siteSettings"][0]{
-  primaryColor,
-  secondaryColor,
-  accentColor,
-  googleAnalyticsId,
-  facebookPixelId,
-  maintenanceMode,
-  siteTitle,        
-  siteDescription,  
-  siteKeywords,     
-  favicon,
-  ogImage    
-}`;
+const SETTINGS_QUERY = `*[_type == "siteSettings"][0]${SITE_SETTINGS_PROJECTION}`;
 
 const PROFILE_QUERY = `*[_id == "singleton-profile"][0]{
   firstName,

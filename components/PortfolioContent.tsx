@@ -43,13 +43,13 @@ interface SettingsProps {
   footer?: {
     text?: string;
     copyrightText?: string;
-    links?: any[];
+    links?: { url: string; title: string; type: string }[];
   };
 }
 
 interface PortfolioContentProps {
   settings: SettingsProps;
-  socialLinks?: any;
+  socialLinks?: Record<string, string>;
 }
 
 export function PortfolioContent({ settings, socialLinks }: PortfolioContentProps) {

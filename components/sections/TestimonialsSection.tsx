@@ -1,6 +1,7 @@
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "@/sanity/lib/live";
 import { TestimonialCarousel } from "@/components/TestimonialCarousel";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 // 1. Import the animation component
 import { ScrollAnimation } from "@/components/ScrollAnimation";
 
@@ -12,8 +13,8 @@ interface Testimonial {
   testimonial: string;
   rating?: number;
   date?: string;
-  avatar?: any;
-  companyLogo?: any;
+  avatar?: SanityImageSource;
+  companyLogo?: SanityImageSource;
   linkedinUrl?: string;
 }
 

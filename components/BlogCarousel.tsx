@@ -7,6 +7,7 @@ import {
   IconChevronLeft, IconChevronRight, IconCalendar, IconClock, IconTag, IconArrowRight, IconArticle
 } from "@tabler/icons-react";
 import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 // ... Interface (Keep existing) ...
 interface BlogPost {
@@ -17,7 +18,7 @@ interface BlogPost {
   tags?: string[];
   publishedAt: string;
   readTime?: number;
-  featuredImage?: any;
+  featuredImage?: SanityImageSource;
 }
 
 export function BlogCarousel({ data }: { data: BlogPost[] }) {

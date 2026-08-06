@@ -12,6 +12,7 @@ import Link from "next/link";
 import { defineQuery } from "next-sanity";
 import { urlFor } from "@/sanity/lib/image";
 import { sanityFetch } from "@/sanity/lib/live";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 // 1. Import Animation
 import { ScrollAnimation } from "@/components/ScrollAnimation";
 
@@ -21,7 +22,7 @@ interface Achievement {
   issuer?: string;
   date: string;
   description?: string;
-  image?: any;
+  image?: SanityImageSource;
   url?: string;
   featured: boolean;
   order?: number;

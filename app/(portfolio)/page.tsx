@@ -1,4 +1,5 @@
 import { client } from "@/sanity/lib/client"; 
+import { SITE_SETTINGS_PROJECTION } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image"; 
 import PortfolioContent from "@/components/PortfolioContent";
 import { MaintenancePage } from "@/components/MaintenancePage";
@@ -20,24 +21,7 @@ interface SocialLinks {
 // --- OPTIMIZED QUERY (COMBINED) ---
 // Fetching everything in one go reduces network latency
 const HOME_DATA_QUERY = `{
-  "settings": *[_type == "siteSettings"][0]{
-    siteTitle,
-    siteDescription,
-    siteKeywords,
-    favicon,
-    
-    ogImage, 
-
-    twitterHandle,
-    maintenanceMode,
-    maintenanceMessage,
-
-    siteLogo,
-    // Toggles & Footer are passed to PortfolioContent
-    showBlog, showServices, showTestimonials, showAchievements,
-    showExperience, showEducation, showSkills, showCertifications, showProjects,
-    footer
-  },
+  "settings": *[_type == "siteSettings"][0]${SITE_SETTINGS_PROJECTION},
   "profile": *[_id == "singleton-profile"][0]{
     socialLinks
   }
