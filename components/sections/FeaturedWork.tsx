@@ -16,10 +16,9 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
     <section id="work" className="theme-light bg-paper py-24 sm:py-32">
       <div className="container-page">
         <SplitHeading
-          text="Featured Work"
+          text="Projects"
           as="h2"
-          className="font-display text-5xl font-bold uppercase leading-[0.95] tracking-tight sm:text-6xl md:text-7xl"
-          wordClassName="[&:last-child]:text-accent"
+          className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent sm:text-7xl md:text-8xl"
         />
 
         <div className="mt-16 sm:mt-20">

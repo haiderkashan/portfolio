@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal'
 import { Marquee } from '@/components/ui/Marquee'
-import { SectionLabel } from '@/components/ui/SectionLabel'
+import { SplitHeading } from '@/components/ui/SplitHeading'
 import type { ProcessStep } from '@/sanity/lib/queries'
 
 export function Process({
@@ -19,7 +19,11 @@ export function Process({
   return (
     <section className="theme-dark bg-ink pb-24 sm:pb-32">
       <div className="container-page pb-10 pt-4 sm:pt-8">
-        <SectionLabel>Process</SectionLabel>
+        <SplitHeading
+          text="Process"
+          as="h2"
+          className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent sm:text-7xl md:text-8xl"
+        />
       </div>
 
       <Marquee

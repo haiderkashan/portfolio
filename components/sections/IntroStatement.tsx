@@ -61,11 +61,11 @@ export function IntroStatement({
   // grows and settles down into its resting spot in the column below.
   const imageScale = useTransform(scrollYProgress, [0.05, 0.6], prefersReducedMotion ? [1, 1] : [0.4, 1])
   const imageY = useTransform(scrollYProgress, [0.05, 0.65], prefersReducedMotion ? ['0%', '0%'] : ['-130%', '0%'])
-  const imageOpacity = useTransform(scrollYProgress, [0, 0.25], prefersReducedMotion ? [1, 1] : [0, 1])
+  const imageOpacity = useTransform(scrollYProgress, [0, 0.25], [0, 1])
 
   // Body copy + button: slide up and fade in after the image and heading
   // are mostly settled.
-  const bodyOpacity = useTransform(scrollYProgress, [0.5, 0.85], prefersReducedMotion ? [1, 1] : [0, 1])
+  const bodyOpacity = useTransform(scrollYProgress, [0.5, 0.85], [0, 1])
   const bodyY = useTransform(scrollYProgress, [0.5, 0.9], prefersReducedMotion ? [0, 0] : [50, 0])
 
   return (

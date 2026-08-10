@@ -80,7 +80,7 @@ export function SiteNav({
             transition={{ duration: 0.55, ease: EASE_SWIFT }}
           >
             <motion.nav
-              className="flex flex-col gap-1"
+              className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-4"
               initial="hidden"
               animate="show"
               variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } } }}
@@ -96,7 +96,7 @@ export function SiteNav({
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="group flex items-center gap-4 py-2 font-display text-[13vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-6xl"
+                    className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl"
                   >
                     {link.label}
                     <ArrowUpRight

@@ -17,7 +17,7 @@ export function Writing({ posts }: { posts: PostCard[] }) {
           <SplitHeading
             text="Writing"
             as="h2"
-            className="font-display text-5xl font-bold uppercase leading-[0.95] tracking-tight sm:text-6xl"
+            className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent sm:text-7xl md:text-8xl"
           />
           <Reveal delay={0.1}>
             <Link

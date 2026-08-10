@@ -15,9 +15,9 @@ export function Education({ education }: { education: EducationEntry[] }) {
     <section id="education" className="theme-light bg-paper py-24 sm:py-32">
       <div className="container-page">
         <SplitHeading
-          text="Education/"
+          text="Education"
           as="h2"
-          className="font-display text-5xl font-bold uppercase leading-[0.95] tracking-tight sm:text-6xl md:text-7xl"
+          className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent sm:text-7xl md:text-8xl"
         />
 
         <Stagger className="mt-14 flex flex-col sm:mt-16">

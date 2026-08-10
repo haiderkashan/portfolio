@@ -55,16 +55,33 @@ export function SplitHeading({
             ) : (
               <span
                 key={`w-${i}`}
-                className={`inline-block overflow-hidden pb-[0.12em] align-top ${wordClassName ?? ''}`}
+                className={`relative inline-block overflow-hidden pb-[0.12em] align-top ${wordClassName ?? ''}`}
               >
+                {/* Ghost Outline Layer */}
                 <motion.span
-                  className="inline-block"
-                  initial={{ y: '105%' }}
-                  whileInView={{ y: '0%' }}
-                  viewport={{ once, amount: 0.7 }}
+                  className="absolute inset-0 block text-transparent"
+                  style={{ WebkitTextStroke: 'max(1px, 0.03em) currentColor', opacity: 0.25 }}
+                  initial={{ opacity: 0, y: '10%' }}
+                  whileInView={{ opacity: 0.25, y: '0%' }}
+                  viewport={{ once }}
                   transition={{
-                    duration: 0.85,
+                    duration: 0.7,
                     delay: delay + i * stagger,
+                    ease: 'easeOut',
+                  }}
+                >
+                  {word}
+                </motion.span>
+
+                {/* Solid Fill Layer */}
+                <motion.span
+                  className="relative z-10 inline-block origin-bottom-left"
+                  initial={{ y: '105%', rotate: 6 }}
+                  whileInView={{ y: '0%', rotate: 0 }}
+                  viewport={{ once }}
+                  transition={{
+                    duration: 0.9,
+                    delay: delay + i * stagger + 0.12,
                     ease: EASE_SWIFT,
                   }}
                 >

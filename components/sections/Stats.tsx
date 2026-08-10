@@ -1,5 +1,5 @@
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal'
-import { SectionLabel } from '@/components/ui/SectionLabel'
+import { SplitHeading } from '@/components/ui/SplitHeading'
 import { Collage } from './Collage'
 import type { Stat } from '@/sanity/lib/queries'
 
@@ -15,7 +15,11 @@ export function Stats({
   return (
     <section id="about" className="theme-light bg-paper py-24 sm:py-32">
       <div className="container-page">
-        <SectionLabel className="mb-10 sm:mb-14">About</SectionLabel>
+        <SplitHeading
+          text="About"
+          as="h2"
+          className="mb-10 font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent sm:mb-14 sm:text-7xl md:text-8xl"
+        />
 
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-12">
           <div>
