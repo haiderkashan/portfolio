@@ -106,6 +106,19 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
             )
           })}
         </div>
+
+        <Reveal className="mt-12 flex justify-center sm:mt-16">
+          <Link
+            href="/work"
+            className="group inline-flex items-center gap-2 rounded-full border border-[var(--line)] px-6 py-3 font-display text-xs font-semibold uppercase tracking-[0.08em] transition-colors hover:border-accent hover:text-accent"
+          >
+            View all work
+            <ArrowUpRight
+              size={14}
+              className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
+        </Reveal>
       </div>
     </section>
   )

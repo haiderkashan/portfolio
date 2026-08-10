@@ -61,6 +61,9 @@ export const HOME_QUERY = defineQuery(`
     "education": *[_type == "education"] | order(orderRank asc){
       _id, institution, degree, startYear, endYear, current, description, image
     },
+    "experience": *[_type == "experience"] | order(orderRank asc){
+      _id, company, role, location, startYear, endYear, current, description, image
+    },
     "services": *[_type == "service"] | order(orderRank asc){
       _id, title, items, previewImage
     },
@@ -180,6 +183,18 @@ export interface EducationEntry {
   image?: Image
 }
 
+export interface ExperienceEntry {
+  _id: string
+  company: string
+  role: string
+  location?: string
+  startYear?: string
+  endYear?: string
+  current?: boolean
+  description?: string
+  image?: Image
+}
+
 export interface ServiceEntry {
   _id: string
   title: string
@@ -216,6 +231,7 @@ export interface PostFull extends PostCard {
 export interface HomeData {
   settings: SiteSettings | null
   projects: ProjectCard[]
+  experience: ExperienceEntry[]
   education: EducationEntry[]
   services: ServiceEntry[]
   awards: AwardEntry[]

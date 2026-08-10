@@ -11,6 +11,7 @@ const LINKS = [
   { label: 'Home', href: '/' },
   { label: 'Work', href: '/#work' },
   { label: 'Services', href: '/#services' },
+  { label: 'Experience', href: '/#experience' },
   { label: 'Education', href: '/#education' },
   { label: 'Writing', href: '/blog' },
   { label: 'Contact', href: '/contact' },

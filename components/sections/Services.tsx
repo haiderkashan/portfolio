@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { Reveal } from '@/components/ui/Reveal'
+import { SectionLabel } from '@/components/ui/SectionLabel'
 import { urlForImage } from '@/sanity/lib/image'
 import type { ServiceEntry } from '@/sanity/lib/queries'
 
@@ -9,11 +10,7 @@ export function Services({ services }: { services: ServiceEntry[] }) {
   return (
     <section id="services" className="theme-dark bg-ink py-24 sm:py-32">
       <div className="container-page">
-        <Reveal>
-          <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-            Services
-          </p>
-        </Reveal>
+        <SectionLabel>Services</SectionLabel>
 
         <div className="mt-10 sm:mt-14">
           {services.map((service, i) => {

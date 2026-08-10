@@ -3,13 +3,11 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'motion/react'
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { EASE_SWIFT } from '@/components/ui/Reveal'
 import { Magnetic } from '@/components/ui/Magnetic'
 import { cn, splitBrandName } from '@/lib/utils'
-
-const BOX_TRANSITION = { duration: 1.3, ease: EASE_SWIFT }
 
 export function Hero({
   name,
@@ -22,16 +20,22 @@ export function Hero({
   ctaLabel?: string
   heroImageUrl?: string
 }) {
+  const prefersReducedMotion = useReducedMotion()
   const [started, setStarted] = useState(false)
   const [first, last] = splitBrandName(name.toUpperCase())
   const sectionRef = useRef<HTMLElement>(null)
 
+  const boxTransition = prefersReducedMotion
+    ? { duration: 0.2 }
+    : { duration: 1.3, ease: EASE_SWIFT }
+
   useEffect(() => {
     // A short beat on the collapsed card before it expands, matching the
-    // "load, pause, grow" rhythm of the reference.
-    const t = setTimeout(() => setStarted(true), 450)
+    // "load, pause, grow" rhythm of the reference. Skipped (0ms) if the
+    // visitor prefers reduced motion — the hero just appears settled.
+    const t = setTimeout(() => setStarted(true), prefersReducedMotion ? 0 : 450)
     return () => clearTimeout(t)
-  }, [])
+  }, [prefersReducedMotion])
 
   // Tracks how far the hero has scrolled out of view (0 = fully on screen,
   // 1 = fully scrolled past). Drives the shrink-and-tilt-away exit as you
@@ -42,11 +46,19 @@ export function Hero({
     offset: ['end end', 'end start'],
   })
 
-  const exitScale = useTransform(exitProgress, [0, 1], [1, 0.5])
-  const exitRotateX = useTransform(exitProgress, [0, 1], [0, 55])
-  const exitY = useTransform(exitProgress, [0, 1], [0, -70])
-  const exitImageOpacity = useTransform(exitProgress, [0, 0.55, 1], [1, 1, 0])
-  const exitChromeOpacity = useTransform(exitProgress, [0, 0.22], [1, 0])
+  const exitScale = useTransform(exitProgress, [0, 1], prefersReducedMotion ? [1, 1] : [1, 0.5])
+  const exitRotateX = useTransform(exitProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, 55])
+  const exitY = useTransform(exitProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, -70])
+  const exitImageOpacity = useTransform(
+    exitProgress,
+    [0, 0.55, 1],
+    prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]
+  )
+  const exitChromeOpacity = useTransform(
+    exitProgress,
+    [0, 0.22],
+    prefersReducedMotion ? [1, 1] : [1, 0]
+  )
 
   return (
     <section
@@ -60,7 +72,7 @@ export function Hero({
       >
         <motion.div
           layout
-          transition={BOX_TRANSITION}
+          transition={boxTransition}
           style={{
             scale: exitScale,
             rotateX: exitRotateX,
@@ -99,7 +111,7 @@ export function Hero({
           >
             <motion.span
               layout="position"
-              transition={BOX_TRANSITION}
+              transition={boxTransition}
               className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent"
               style={{ fontSize: started ? 'clamp(2.75rem,9.5vw,7.25rem)' : 'clamp(1.4rem,5.2vw,2.4rem)' }}
             >
@@ -108,7 +120,7 @@ export function Hero({
             {first && (
               <motion.span
                 layout="position"
-                transition={BOX_TRANSITION}
+                transition={boxTransition}
                 className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent"
                 style={{ fontSize: started ? 'clamp(2.75rem,9.5vw,7.25rem)' : 'clamp(1.4rem,5.2vw,2.4rem)' }}
               >

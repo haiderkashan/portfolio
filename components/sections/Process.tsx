@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal'
 import { Marquee } from '@/components/ui/Marquee'
+import { SectionLabel } from '@/components/ui/SectionLabel'
 import type { ProcessStep } from '@/sanity/lib/queries'
 
 export function Process({
@@ -17,6 +18,10 @@ export function Process({
 
   return (
     <section className="theme-dark bg-ink pb-24 sm:pb-32">
+      <div className="container-page pb-10 pt-4 sm:pt-8">
+        <SectionLabel>Process</SectionLabel>
+      </div>
+
       <Marquee
         items={titles}
         duration={Math.max(16, titles.join(' ').length / 2.2)}

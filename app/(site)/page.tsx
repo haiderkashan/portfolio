@@ -11,6 +11,7 @@ import { Services } from '@/components/sections/Services'
 import { Process } from '@/components/sections/Process'
 import { Quote } from '@/components/sections/Quote'
 import { Writing } from '@/components/sections/Writing'
+import { Experience } from '@/components/sections/Experience'
 import { Education } from '@/components/sections/Education'
 import { Awards } from '@/components/sections/Awards'
 import { Footer } from '@/components/sections/Footer'
@@ -18,6 +19,7 @@ import { Footer } from '@/components/sections/Footer'
 const FALLBACK: HomeData = {
   settings: null,
   projects: [],
+  experience: [],
   education: [],
   services: [],
   awards: [],
@@ -31,14 +33,29 @@ async function getHomeData() {
 export async function generateMetadata(): Promise<Metadata> {
   const { settings } = await getHomeData()
   const title = settings?.name ? `${settings.name} — ${settings.role || 'Portfolio'}` : 'Portfolio'
+  const description = settings?.seoDescription || settings?.bio
+  const ogImageUrl = urlForImage(settings?.ogImage)?.width(1200).height(630).url()
+
   return {
     title: { absolute: title },
-    description: settings?.seoDescription || settings?.bio,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ogImageUrl ? [ogImageUrl] : undefined,
+    },
   }
 }
 
 export default async function HomePage() {
-  const { settings, projects, education, services, awards, posts } = await getHomeData()
+  const { settings, projects, experience, education, services, awards, posts } = await getHomeData()
 
   const name = settings?.name || 'Your Name'
   const handle = settings?.handle || 'yourname'
@@ -63,7 +80,7 @@ export default async function HomePage() {
         introImageUrl={introImageUrl}
       />
 
-      <Stats bio={settings?.aboutBio || settings?.bio} stats={settings?.stats || []} collageImages={projectImageUrls} />
+      <Stats bio={settings?.bio} stats={settings?.stats || []} collageImages={projectImageUrls} />
 
       <FeaturedWork projects={projects} />
 
@@ -82,6 +99,8 @@ export default async function HomePage() {
       />
 
       <Writing posts={posts} />
+
+      <Experience experience={experience} />
 
       <Education education={education} />
 

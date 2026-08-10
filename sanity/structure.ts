@@ -7,6 +7,7 @@ import { EnvelopeIcon } from '@sanity/icons/Envelope'
 const HIDDEN_TYPES = new Set([
   'siteSettings',
   'project',
+  'experience',
   'education',
   'service',
   'award',
@@ -29,6 +30,12 @@ export const structure: StructureResolver = (S, context) =>
       orderableDocumentListDeskItem({
         type: 'project',
         title: 'Projects',
+        S,
+        context,
+      }),
+      orderableDocumentListDeskItem({
+        type: 'experience',
+        title: 'Experience',
         S,
         context,
       }),
