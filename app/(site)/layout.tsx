@@ -1,6 +1,7 @@
 import { SmoothScroll } from '@/components/ui/SmoothScroll'
 import { SiteNav } from '@/components/ui/SiteNav'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { PageTransition } from '@/components/ui/PageTransition'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
 
@@ -25,7 +26,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         socialLinks={settings?.socialLinks}
       />
       <main id="main-content" className="font-body">
-        {children}
+        <PageTransition>{children}</PageTransition>
       </main>
       <ScrollToTop />
     </SmoothScroll>

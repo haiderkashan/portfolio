@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { HOME_QUERY, type HomeData } from '@/sanity/lib/queries'
 import { urlForImage } from '@/sanity/lib/image'
+import { siteUrl } from '@/lib/utils'
+import { JsonLd } from '@/components/JsonLd'
 
 import { Hero } from '@/components/sections/Hero'
 import { IntroStatement } from '@/components/sections/IntroStatement'
@@ -70,8 +72,22 @@ export default async function HomePage() {
     .map((p) => urlForImage(p.coverImage)?.width(500).height(500).url())
     .filter((url): url is string => Boolean(url))
 
+  const personJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name,
+    jobTitle: settings?.role,
+    url: siteUrl,
+    ...(heroImageUrl ? { image: heroImageUrl } : {}),
+    email: settings?.email,
+    description: settings?.seoDescription || settings?.bio,
+    sameAs: (settings?.socialLinks ?? []).map((s) => s.url),
+  }
+
   return (
     <>
+      <JsonLd data={personJsonLd} />
+
       <Hero name={name} role={settings?.role} ctaLabel={settings?.ctaLabel} heroImageUrl={heroImageUrl} />
 
       <IntroStatement
@@ -80,7 +96,7 @@ export default async function HomePage() {
         introImageUrl={introImageUrl}
       />
 
-      <Stats bio={settings?.bio} stats={settings?.stats || []} collageImages={projectImageUrls} />
+      <Stats bio={settings?.aboutBio || settings?.bio} stats={settings?.stats || []} collageImages={projectImageUrls} />
 
       <FeaturedWork projects={projects} />
 

@@ -83,6 +83,15 @@ export const ALL_PROJECTS_QUERY = defineQuery(`
   }
 `)
 
+export const PROJECTS_PAGE_QUERY = defineQuery(`
+  {
+    "items": *[_type == "project"] | order(orderRank asc) [$start...$end]{
+      ${projectCardFields}
+    },
+    "total": count(*[_type == "project"])
+  }
+`)
+
 export const PROJECT_SLUGS_QUERY = defineQuery(`
   *[_type == "project" && defined(slug.current)]{ "slug": slug.current }
 `)
@@ -98,6 +107,15 @@ export const PROJECT_QUERY = defineQuery(`
 export const POSTS_QUERY = defineQuery(`
   *[_type == "post" && defined(publishedAt)] | order(publishedAt desc){
     _id, title, "slug": slug.current, excerpt, coverImage, publishedAt, tags
+  }
+`)
+
+export const POSTS_PAGE_QUERY = defineQuery(`
+  {
+    "items": *[_type == "post" && defined(publishedAt)] | order(publishedAt desc) [$start...$end]{
+      _id, title, "slug": slug.current, excerpt, coverImage, publishedAt, tags
+    },
+    "total": count(*[_type == "post" && defined(publishedAt)])
   }
 `)
 
@@ -226,6 +244,11 @@ export interface PostCard {
 
 export interface PostFull extends PostCard {
   body?: PortableTextBlock[]
+}
+
+export interface Paginated<T> {
+  items: T[]
+  total: number
 }
 
 export interface HomeData {

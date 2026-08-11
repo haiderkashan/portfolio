@@ -2,17 +2,33 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { sanityFetch } from '@/sanity/lib/fetch'
-import { ALL_PROJECTS_QUERY, type ProjectCard } from '@/sanity/lib/queries'
+import { PROJECTS_PAGE_QUERY, type Paginated, type ProjectCard } from '@/sanity/lib/queries'
 import { urlForImage } from '@/sanity/lib/image'
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal'
 import { SplitHeading } from '@/components/ui/SplitHeading'
+import { Pagination } from '@/components/ui/Pagination'
+
+const PAGE_SIZE = 9
 
 export const metadata: Metadata = {
   title: 'Work',
 }
 
-export default async function WorkPage() {
-  const projects = await sanityFetch<ProjectCard[]>(ALL_PROJECTS_QUERY, {}, [])
+export default async function WorkPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>
+}) {
+  const { page: pageParam } = await searchParams
+  const page = Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
+  const start = (page - 1) * PAGE_SIZE
+
+  const { items: projects, total } = await sanityFetch<Paginated<ProjectCard>>(
+    PROJECTS_PAGE_QUERY,
+    { start, end: start + PAGE_SIZE },
+    { items: [], total: 0 }
+  )
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
   return (
     <div className="theme-light min-h-screen bg-paper pb-28 pt-32 sm:pb-36 sm:pt-40">
@@ -27,7 +43,9 @@ export default async function WorkPage() {
         {projects.length === 0 ? (
           <Reveal className="mt-16">
             <p className="max-w-md font-body text-lg text-[var(--on-surface-soft)]">
-              No projects yet — add your first one in the Studio and it&rsquo;ll show up here.
+              {page > 1
+                ? "That page doesn't exist."
+                : 'No projects yet — add your first one in the Studio and it\u2019ll show up here.'}
             </p>
           </Reveal>
         ) : (
@@ -41,7 +59,7 @@ export default async function WorkPage() {
                       {coverUrl && (
                         <Image
                           src={coverUrl}
-                          alt={project.tagline}
+                          alt={project.tagline || project.title}
                           fill
                           sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 92vw"
                           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -67,6 +85,8 @@ export default async function WorkPage() {
             })}
           </Stagger>
         )}
+
+        <Pagination currentPage={page} totalPages={totalPages} basePath="/work" />
       </div>
     </div>
   )

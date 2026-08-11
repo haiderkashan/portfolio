@@ -1,20 +1,14 @@
 @import "tailwindcss";
 
-/* ── Self-hosted type (no external font CDN calls) ───────────── */
-@import "@fontsource-variable/archivo";
-@import "@fontsource-variable/inter-tight";
-@import "@fontsource/caveat/500.css";
-@import "@fontsource/caveat/600.css";
-
 /* ── Design tokens (Tailwind v4 CSS-first config) ─────────────
    Every value here is also generated as a Tailwind utility, e.g.
    --color-accent -> bg-accent / text-accent / border-accent
    --font-display  -> font-display
 */
 @theme {
-  --font-display: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-body: 'Inter Tight Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-script: 'Caveat', cursive;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-caveat), cursive;
 
   --color-ink: #0a0a08;
   --color-paper: #faf8f2;

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import { EASE_SWIFT } from '@/components/ui/Reveal'
 import { Magnetic } from '@/components/ui/Magnetic'
 import { cn, splitBrandName } from '@/lib/utils'
@@ -165,6 +165,23 @@ export function Hero({
               </Magnetic>
             </div>
           </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: started ? 1 : 0 }}
+          transition={{ duration: 0.7, delay: 1.3 }}
+          className="absolute inset-x-0 bottom-5 flex flex-col items-center gap-1.5 sm:bottom-7"
+        >
+          <span className="font-display text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">
+            Scroll
+          </span>
+          <motion.div
+            animate={prefersReducedMotion ? undefined : { y: [0, 5, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <ChevronDown size={16} className="text-accent" />
+          </motion.div>
         </motion.div>
       </motion.div>
     </section>
