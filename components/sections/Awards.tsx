@@ -40,6 +40,8 @@ export function Awards({ awards }: { awards: AwardEntry[] }) {
                   href={award.project?.slug ? `/work/${award.project.slug}` : '#work'}
                   onMouseEnter={() => setHovered(i)}
                   onMouseLeave={() => setHovered(null)}
+                  onFocus={() => setHovered(i)}
+                  onBlur={() => setHovered(null)}
                   className="grid grid-cols-1 gap-1.5 px-1 py-6 sm:grid-cols-[1.4fr_1fr_auto] sm:items-center sm:gap-6 sm:px-2 sm:py-7"
                 >
                   <h3 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">

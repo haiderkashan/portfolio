@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'motion/react'
 import { useLenis } from 'lenis/react'
@@ -17,6 +17,9 @@ const LINKS = [
   { label: 'Contact', href: '/contact' },
 ]
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
 export function SiteNav({
   locationTag,
   email,
@@ -28,6 +31,8 @@ export function SiteNav({
 }) {
   const [open, setOpen] = useState(false)
   const lenis = useLenis()
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     document.documentElement.style.overflow = open ? 'hidden' : ''
@@ -44,23 +49,64 @@ export function SiteNav({
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Focus management: move focus into the overlay when it opens, trap Tab
+  // inside it while open, restore focus to the toggle button on close, and
+  // let Escape close it — standard expectations for a full-screen dialog.
+  useEffect(() => {
+    if (!open) return
+
+    const overlay = overlayRef.current
+    const toggleButton = toggleRef.current
+    const focusables = overlay
+      ? Array.from(overlay.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
+      : []
+    focusables[0]?.focus()
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setOpen(false)
+        return
+      }
+      if (e.key !== 'Tab' || focusables.length === 0) return
+
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      toggleButton?.focus()
+    }
+  }, [open])
+
   return (
     <>
       <div className="pointer-events-none fixed inset-x-0 top-0 z-50">
         <div className="container-page flex items-center justify-between py-6 sm:py-8">
           <button
+            ref={toggleRef}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
+            aria-haspopup="dialog"
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="pointer-events-auto flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-[0.14em] text-accent transition-opacity hover:opacity-70"
+            className="pointer-events-auto flex items-center gap-2 rounded-full bg-ink/90 px-4 py-2 font-display text-sm font-semibold uppercase tracking-[0.14em] text-accent backdrop-blur-sm transition-opacity hover:opacity-80"
           >
             {open ? 'Close' : 'Menu'}
             {open ? <X size={16} strokeWidth={2.5} /> : <Menu size={16} strokeWidth={2.5} />}
           </button>
 
           {locationTag ? (
-            <span className="pointer-events-auto font-display text-sm font-semibold uppercase tracking-[0.14em] text-accent">
+            <span className="pointer-events-auto rounded-full bg-ink/90 px-4 py-2 font-display text-sm font-semibold uppercase tracking-[0.14em] text-accent backdrop-blur-sm">
               /{locationTag}
             </span>
           ) : (
@@ -72,6 +118,10 @@ export function SiteNav({
       <AnimatePresence>
         {open && (
           <motion.div
+            ref={overlayRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
             className="theme-dark fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-ink px-6 pb-10 pt-28 sm:px-12"
             style={{ transformOrigin: 'top' }}
             initial={{ scaleY: 0, opacity: 0.4 }}

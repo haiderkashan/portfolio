@@ -40,7 +40,7 @@ export function Writing({ posts }: { posts: PostCard[] }) {
                     {coverUrl && (
                       <Image
                         src={coverUrl}
-                        alt=""
+                        alt={post.title}
                         fill
                         sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 92vw"
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"

@@ -39,7 +39,7 @@
   --surface: var(--color-paper);
   --on-surface: var(--color-ink);
   --on-surface-soft: color-mix(in srgb, var(--color-ink) 62%, transparent);
-  --on-surface-faint: color-mix(in srgb, var(--color-ink) 38%, transparent);
+  --on-surface-faint: color-mix(in srgb, var(--color-ink) 58%, transparent);
   --line: color-mix(in srgb, var(--color-ink) 14%, transparent);
   --surface-raised: color-mix(in srgb, var(--color-ink) 4%, var(--color-paper));
 }
@@ -48,7 +48,7 @@
   --surface: var(--color-ink);
   --on-surface: var(--color-paper);
   --on-surface-soft: color-mix(in srgb, var(--color-paper) 64%, transparent);
-  --on-surface-faint: color-mix(in srgb, var(--color-paper) 40%, transparent);
+  --on-surface-faint: color-mix(in srgb, var(--color-paper) 48%, transparent);
   --line: color-mix(in srgb, var(--color-paper) 16%, transparent);
   --surface-raised: color-mix(in srgb, var(--color-paper) 6%, var(--color-ink));
 }

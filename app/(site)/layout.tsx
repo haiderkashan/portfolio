@@ -13,12 +13,20 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <SmoothScroll>
+      <a
+        href="#main-content"
+        className="fixed left-4 top-4 z-[60] -translate-y-24 rounded-full bg-accent px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-transform focus:translate-y-0"
+      >
+        Skip to content
+      </a>
       <SiteNav
         locationTag={settings?.locationTag}
         email={settings?.email}
         socialLinks={settings?.socialLinks}
       />
-      <main className="font-body">{children}</main>
+      <main id="main-content" className="font-body">
+        {children}
+      </main>
       <ScrollToTop />
     </SmoothScroll>
   )
