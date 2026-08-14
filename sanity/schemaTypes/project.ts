@@ -97,9 +97,10 @@ export default defineType({
       name: 'secondaryLinkLabel',
       title: 'Secondary link label',
       type: 'string',
-      description: 'e.g. "Case study", "Framer", "GitHub".',
+      description:
+        'e.g. "Framer", "GitHub", "Behance". Don\'t use "Case study" here — that button is already shown automatically and links to this project\'s page on your site, so using the same label twice will look like a duplicate.',
       group: 'links',
-      initialValue: 'Case study',
+      initialValue: 'Live demo',
     }),
     defineField({
       name: 'secondaryLinkUrl',
@@ -114,7 +115,20 @@ export default defineType({
       title: 'Gallery',
       type: 'array',
       group: 'caseStudy',
-      of: [{ type: 'image', options: { hotspot: true } }],
+      of: [
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              title: 'Alt text',
+              type: 'string',
+              description: 'Describe the image for screen readers and SEO. Falls back to the project tagline if left blank.',
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'body',

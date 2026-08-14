@@ -58,7 +58,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                           Website <ArrowUpRight size={13} />
                         </a>
                       )}
-                      {project.secondaryLinkUrl && (
+                      {project.secondaryLinkUrl && project.secondaryLinkLabel?.toLowerCase().trim() !== 'case study' && (
                         <a
                           href={project.secondaryLinkUrl}
                           target="_blank"
@@ -83,7 +83,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                     {coverUrl && (
                       <Image
                         src={coverUrl}
-                        alt={project.tagline}
+                        alt=""
                         fill
                         sizes="(min-width: 768px) 46vw, 92vw"
                         className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
@@ -122,3 +122,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
     </section>
   )
 }
+
+
+
+

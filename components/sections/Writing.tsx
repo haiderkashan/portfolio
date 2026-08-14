@@ -67,3 +67,7 @@ export function Writing({ posts }: { posts: PostCard[] }) {
     </section>
   )
 }
+
+
+
+

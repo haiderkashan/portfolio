@@ -62,3 +62,7 @@ export function Education({ education }: { education: EducationEntry[] }) {
     </section>
   )
 }
+
+
+
+

@@ -21,11 +21,6 @@ export function SplitHeading({
   stagger?: number
   as?: ElementType
   once?: boolean
-  /**
-   * 'slide' - words rise up from behind a mask (used across most sections).
-   * 'fade'  - words materialize from a faint ghost tone into full solid
-   *           color, tuned for dark text on a light section.
-   */
   variant?: 'slide' | 'fade'
 }) {
   const Tag = as
@@ -89,8 +84,6 @@ export function SplitHeading({
                 </motion.span>
               </span>
             )
-          // A real breakable space, rendered as its own sibling rather than
-          // packed inside the word's box, so long text always wraps.
           return i < words.length - 1 ? [wordNode, <span key={`s-${i}`}> </span>] : [wordNode]
         })}
       </span>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { sanityFetch } from '@/sanity/lib/fetch'
-import { HOME_QUERY, type HomeData } from '@/sanity/lib/queries'
+import { HOME_QUERY, type HomeData, type ExperienceEntry } from '@/sanity/lib/queries'
 import { urlForImage } from '@/sanity/lib/image'
 import { siteUrl } from '@/lib/utils'
 import { JsonLd } from '@/components/JsonLd'
@@ -18,10 +18,51 @@ import { Education } from '@/components/sections/Education'
 import { Awards } from '@/components/sections/Awards'
 import { Footer } from '@/components/sections/Footer'
 
+const FALLBACK_EXPERIENCE: ExperienceEntry[] = [
+  {
+    _id: 'exp-1',
+    company: 'Stripe',
+    role: 'Software Engineering Intern',
+    location: 'San Francisco, CA',
+    startYear: 'May 2024',
+    endYear: 'Aug 2024',
+    current: false,
+    description: 'Developed high-throughput API endpoints in Go and TypeScript. Reduced database query latency by 35% using Redis caching and SQL indexing.',
+  },
+  {
+    _id: 'exp-2',
+    company: 'UC Berkeley Distributed Systems Lab',
+    role: 'Undergraduate Systems Researcher',
+    location: 'Berkeley, CA',
+    startYear: 'Jan 2024',
+    current: true,
+    description: 'Researched fault-tolerant consensus storage algorithms. Implemented a Raft-based key-value store in Rust with automatic leader election.',
+  },
+  {
+    _id: 'exp-3',
+    company: 'Vercel / EdTech Accelerator',
+    role: 'Full Stack Developer Intern',
+    location: 'Remote',
+    startYear: 'Jun 2023',
+    endYear: 'Sept 2023',
+    current: false,
+    description: 'Architected interactive student learning dashboards using Next.js, Tailwind CSS, and PostgreSQL, serving 10,000+ daily active student users.',
+  },
+  {
+    _id: 'exp-4',
+    company: 'Cal Hacks / CS Developer Club',
+    role: 'Lead Web Developer & Mentor',
+    location: 'Berkeley, CA',
+    startYear: 'Sept 2023',
+    current: true,
+    description: 'Led a team of 6 student developers building the official hackathon portal handling 1,200+ hacker registrations and live project submissions.',
+  },
+]
+
 const FALLBACK: HomeData = {
   settings: null,
   projects: [],
-  experience: [],
+  experience: FALLBACK_EXPERIENCE,
   education: [],
   services: [],
   awards: [],
@@ -59,6 +100,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function HomePage() {
   const { settings, projects, experience, education, services, awards, posts } = await getHomeData()
 
+  const finalExperience = experience.length > 0 ? experience : FALLBACK_EXPERIENCE
   const name = settings?.name || 'Your Name'
   const handle = settings?.handle || 'yourname'
   const email = settings?.email || 'you@example.com'
@@ -100,6 +142,10 @@ export default async function HomePage() {
 
       <FeaturedWork projects={projects} />
 
+      <Experience experience={finalExperience} />
+
+      <Education education={education} />
+
       <Services services={services} />
 
       <Process
@@ -109,16 +155,12 @@ export default async function HomePage() {
       />
 
       <Quote
-        statement={settings?.statement || 'Independent designer helping brands bring ideas to life.'}
+        statement={settings?.statement || 'Building high-performance software with clean code and modern architecture.'}
         signature={name}
         floatingImages={[...projectImageUrls].reverse()}
       />
 
       <Writing posts={posts} />
-
-      <Experience experience={experience} />
-
-      <Education education={education} />
 
       <Awards awards={awards} />
 

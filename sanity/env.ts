@@ -25,6 +25,24 @@ export const studioUrl = process.env.NEXT_PUBLIC_SANITY_STUDIO_URL || '/studio'
 // form API route to save submissions. Never exposed to the browser.
 export const writeToken = process.env.SANITY_API_WRITE_TOKEN
 
+// Server-only token with "Viewer" rights, used only when Draft Mode is on
+// so editors can preview unpublished content. Deliberately separate from
+// writeToken above - preview only ever needs to *read* drafts, never write.
+export const readToken = process.env.SANITY_API_READ_TOKEN
+
+// Arbitrary shared string you generate yourself, used only to authorize
+// requests to /api/draft. Not a Sanity credential - just a password so
+// random visitors can't flip your site into draft mode.
+//
+// This one is intentionally NEXT_PUBLIC_ (unlike the tokens above) so the
+// Studio - which runs client-side in the browser - can build the "Preview"
+// button's URL. That's fine: anyone who can already see the Studio's bundle
+// is someone who logged into Sanity and has full read/write access to your
+// content anyway, so this secret is only ever gatekeeping random public
+// visitors from toggling draft mode on the live site, not gatekeeping your
+// own editors.
+export const previewSecret = process.env.NEXT_PUBLIC_SANITY_PREVIEW_SECRET
+
 function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
     // We throw lazily (at call time, not import time) almost everywhere this

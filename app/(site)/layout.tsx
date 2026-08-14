@@ -2,6 +2,7 @@ import { SmoothScroll } from '@/components/ui/SmoothScroll'
 import { SiteNav } from '@/components/ui/SiteNav'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { PageTransition } from '@/components/ui/PageTransition'
+import { PreviewBanner } from '@/components/PreviewBanner'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
 
@@ -14,6 +15,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
 
   return (
     <SmoothScroll>
+      <PreviewBanner />
       <a
         href="#main-content"
         className="fixed left-4 top-4 z-[60] -translate-y-24 rounded-full bg-accent px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-transform focus:translate-y-0"

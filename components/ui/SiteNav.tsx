@@ -10,9 +10,9 @@ import { EASE_SWIFT } from './Reveal'
 const LINKS = [
   { label: 'Home', href: '/' },
   { label: 'Work', href: '/#work' },
-  { label: 'Services', href: '/#services' },
   { label: 'Experience', href: '/#experience' },
   { label: 'Education', href: '/#education' },
+  { label: 'Services', href: '/#services' },
   { label: 'Writing', href: '/blog' },
   { label: 'Contact', href: '/contact' },
 ]
@@ -99,14 +99,14 @@ export function SiteNav({
             aria-expanded={open}
             aria-haspopup="dialog"
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="pointer-events-auto flex items-center gap-2 rounded-full bg-ink/90 px-4 py-2 font-display text-sm font-semibold uppercase tracking-[0.14em] text-accent backdrop-blur-sm transition-opacity hover:opacity-80"
+            className="pointer-events-auto flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-ink/90 px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-accent backdrop-blur-sm transition-opacity hover:opacity-80 sm:px-4 sm:text-sm sm:tracking-[0.14em]"
           >
             {open ? 'Close' : 'Menu'}
             {open ? <X size={16} strokeWidth={2.5} /> : <Menu size={16} strokeWidth={2.5} />}
           </button>
 
           {locationTag ? (
-            <span className="pointer-events-auto rounded-full bg-ink/90 px-4 py-2 font-display text-sm font-semibold uppercase tracking-[0.14em] text-accent backdrop-blur-sm">
+            <span className="pointer-events-auto ml-3 max-w-[55vw] shrink truncate whitespace-nowrap rounded-full bg-ink/90 px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-accent backdrop-blur-sm sm:ml-0 sm:max-w-none sm:px-4 sm:text-sm sm:tracking-[0.14em]">
               /{locationTag}
             </span>
           ) : (
@@ -122,7 +122,7 @@ export function SiteNav({
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
-            className="theme-dark fixed inset-0 z-40 flex flex-col justify-between overflow-hidden bg-ink px-6 pb-10 pt-28 sm:px-12"
+            className="theme-dark fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-ink px-6 pb-10 pt-28 sm:px-12"
             style={{ transformOrigin: 'top' }}
             initial={{ scaleY: 0, opacity: 0.4 }}
             animate={{ scaleY: 1, opacity: 1 }}

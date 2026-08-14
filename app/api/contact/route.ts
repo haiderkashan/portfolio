@@ -1,7 +1,16 @@
 import { NextResponse } from 'next/server'
 import { getWriteClient } from '@/sanity/lib/client'
+import { isRateLimited } from '@/lib/rate-limit'
 
 export async function POST(request: Request) {
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
+  if (isRateLimited(ip)) {
+    return NextResponse.json(
+      { error: 'Too many messages sent recently. Please try again later.' },
+      { status: 429 }
+    )
+  }
+
   let body: unknown
   try {
     body = await request.json()

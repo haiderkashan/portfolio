@@ -1,5 +1,5 @@
 import { createClient } from 'next-sanity'
-import { apiVersion, dataset, projectId } from '../env'
+import { apiVersion, dataset, projectId, readToken } from '../env'
 
 export const client = createClient({
   projectId,
@@ -25,5 +25,21 @@ export function getWriteClient() {
     apiVersion,
     useCdn: false,
     token,
+  })
+}
+
+// A third client, used only when Next.js Draft Mode is active (see
+// sanity/lib/fetch.ts). Bypasses the CDN and reads the "drafts" perspective
+// so an editor sees their unpublished edits. Requires SANITY_API_READ_TOKEN
+// - if that's not set, preview mode simply won't return draft content
+// (falls back to published-only), it won't error for regular visitors.
+export function getPreviewClient() {
+  return createClient({
+    projectId,
+    dataset,
+    apiVersion,
+    useCdn: false,
+    token: readToken,
+    perspective: 'drafts',
   })
 }

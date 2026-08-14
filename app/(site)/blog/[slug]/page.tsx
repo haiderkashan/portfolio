@@ -75,7 +75,7 @@ export default async function PostPage({ params }: PageProps<'/blog/[slug]'>) {
       {coverUrl && (
         <Reveal delay={0.1} className="container-page mt-12 max-w-4xl">
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl">
-            <Image src={coverUrl} alt="" fill sizes="90vw" priority className="object-cover" />
+            <Image src={coverUrl} alt={post.title} fill sizes="90vw" priority className="object-cover" />
           </div>
         </Reveal>
       )}

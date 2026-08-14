@@ -125,7 +125,7 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
                   <Reveal key={i} className="overflow-hidden rounded-2xl">
                     <Image
                       src={url}
-                      alt=""
+                      alt={image.alt || project.tagline}
                       width={1400}
                       height={1000}
                       className="h-auto w-full object-cover"

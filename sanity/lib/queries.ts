@@ -185,8 +185,12 @@ export interface ProjectCard {
   secondaryLinkUrl?: string
 }
 
+export interface GalleryImage extends Image {
+  alt?: string
+}
+
 export interface ProjectFull extends ProjectCard {
-  gallery?: Image[]
+  gallery?: GalleryImage[]
   body?: PortableTextBlock[]
 }
 

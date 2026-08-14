@@ -51,12 +51,29 @@ html {
   scroll-behavior: auto; /* Lenis drives smooth scroll in JS */
 }
 
+/* Offset standard anchor jumps so elements don't get stuck under the sticky header */
+section[id] {
+  scroll-margin-top: 7rem;
+}
+
 body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+p {
+  text-align: justify;
+}
+
+p.text-center, .text-center p {
+  text-align: center;
+}
+
+p.text-left {
+  text-align: left;
 }
 
 ::selection {

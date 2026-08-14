@@ -13,145 +13,247 @@ async function uploadImage(url: string) {
     asset: {
       _type: 'reference',
       _ref: asset._id,
-    }
+    },
   }
 }
 
 async function run() {
-  console.log("Uploading dummy images...")
-  const img1 = await uploadImage('https://picsum.photos/seed/p1/800/600')
-  const img2 = await uploadImage('https://picsum.photos/seed/p2/800/600')
-  const imgHero = await uploadImage('https://picsum.photos/seed/hero/1200/800')
-  const imgAvatar = await uploadImage('https://picsum.photos/seed/avatar/400/400')
+  console.log("Cleaning up old documents...")
+  const oldDocs = await client.fetch<Array<{ _id: string }>>('*[_type in ["siteSettings", "project", "experience", "education", "service", "post", "award"]]')
+  for (const doc of oldDocs) {
+    if (doc._id) {
+      await client.delete(doc._id).catch(() => {})
+    }
+  }
 
-  console.log("Creating Site Settings...")
+  console.log("Uploading fresh mock images...")
+  const imgCode = await uploadImage('https://picsum.photos/seed/code/800/600')
+  const imgDash = await uploadImage('https://picsum.photos/seed/dash/800/600')
+  const imgAlgo = await uploadImage('https://picsum.photos/seed/algo/800/600')
+  const imgHero = await uploadImage('https://picsum.photos/seed/student-hero/1200/800')
+  const imgAvatar = await uploadImage('https://picsum.photos/seed/student-avatar/400/400')
+  const imgStripe = await uploadImage('https://picsum.photos/seed/stripe-logo/400/400')
+  const imgCal = await uploadImage('https://picsum.photos/seed/cal-logo/400/400')
+
+  console.log("Creating Site Settings for Software Engineering Student...")
   await client.createOrReplace({
     _id: 'siteSettings',
     _type: 'siteSettings',
-    name: 'Alex Coder',
-    handle: 'alexcoder',
-    role: 'Senior Full Stack Software Engineer',
-    locationTag: 'Based in San Francisco',
-    email: 'alex@example.com',
+    name: 'Alex Chen',
+    handle: 'alexchen',
+    role: 'Software Engineering Student & Full-Stack Developer',
+    locationTag: 'Based in San Francisco, CA',
+    email: 'alex.chen@berkeley.edu',
     socialLinks: [
       { _key: 'github', platform: 'GitHub', url: 'https://github.com' },
-      { _key: 'linkedin', platform: 'LinkedIn', url: 'https://linkedin.com' }
+      { _key: 'linkedin', platform: 'LinkedIn', url: 'https://linkedin.com' },
+      { _key: 'twitter', platform: 'X / Twitter', url: 'https://x.com' },
     ],
     heroImage: imgHero,
-    ctaLabel: 'Let\'s build something',
-    introHeadline: 'A software engineer who loves clean code, system architecture & solving complex problems.',
+    ctaLabel: 'Talk with me',
+    introHeadline: 'A Computer Science student who loves distributed systems, clean code & building web applications.',
     introImage: imgAvatar,
-    bio: 'Passionate about distributed systems, React, and building scalable web applications. I strive to create software that is robust, maintainable, and user-centered.',
+    bio: 'Software Engineering senior at UC Berkeley graduating 2025. Focused on full-stack web engineering, high-throughput APIs, and distributed systems.',
+    aboutBio: 'Senior Software Engineering student with hands-on experience building web platforms, high-performance microservices, and interactive tools. Passionate about distributed systems, modern React ecosystem, clean code, and developer experience.',
     stats: [
-      { _key: 's1', value: '10+', label: 'Years of Experience' },
-      { _key: 's2', value: '50+', label: 'Projects Shipped' },
-      { _key: 's3', value: '5', label: 'Open Source Contributions' }
+      { _key: 's1', value: '3.9/4.0', label: 'Cumulative GPA' },
+      { _key: 's2', value: '3', label: 'Software Internships' },
+      { _key: 's3', value: '15+', label: 'Projects Shipped' },
+      { _key: 's4', value: '1.2k+', label: 'GitHub Contributions' },
     ],
     processImage: imgAvatar,
-    processIntro: 'I focus on building scalable systems and writing maintainable code. From idea to deployment, I ensure the software meets business needs while being technically sound.',
+    processIntro: 'I focus on writing clean, tested, and maintainable software. From system architecture to deployment, I ensure applications are scalable and user-centered.',
     processSteps: [
-      { _key: 'ps1', title: 'Architecture Design' },
-      { _key: 'ps2', title: 'Implementation' },
-      { _key: 'ps3', title: 'Testing & QA' },
-      { _key: 'ps4', title: 'Deployment' }
+      { _key: 'ps1', title: 'Problem Specs & Requirements' },
+      { _key: 'ps2', title: 'System & DB Architecture' },
+      { _key: 'ps3', title: 'Implementation & Unit Testing' },
+      { _key: 'ps4', title: 'CI/CD & Cloud Deployment' },
     ],
-    statement: 'Building the future of the web, one component at a time.',
+    statement: 'Building high-performance software with clean code and modern architecture.',
     footerImage: imgAvatar,
-    footerHeadline: 'Let\'s build something great!',
-    seoDescription: 'Alex Coder - Software Engineer Portfolio'
+    footerHeadline: "Let's build something great!",
+    seoDescription: 'Alex Chen - Software Engineering Student & Full Stack Developer Portfolio',
+  })
+
+  console.log("Creating Experience documents...")
+  await client.create({
+    _type: 'experience',
+    company: 'Stripe',
+    role: 'Software Engineering Intern',
+    location: 'San Francisco, CA',
+    startYear: 'May 2024',
+    endYear: 'Aug 2024',
+    current: false,
+    description: 'Developed high-throughput API endpoints in Go and TypeScript. Reduced database query latency by 35% through Redis caching and SQL indexing.',
+    image: imgStripe,
+  })
+
+  await client.create({
+    _type: 'experience',
+    company: 'UC Berkeley Distributed Systems Lab',
+    role: 'Undergraduate Systems Researcher',
+    location: 'Berkeley, CA',
+    startYear: 'Jan 2024',
+    current: true,
+    description: 'Researched fault-tolerant consensus storage algorithms under lab faculty. Implemented a Raft-based key-value store in Rust with automatic leader election.',
+    image: imgCal,
+  })
+
+  await client.create({
+    _type: 'experience',
+    company: 'Vercel / EdTech Accelerator',
+    role: 'Full Stack Developer Intern',
+    location: 'Remote',
+    startYear: 'Jun 2023',
+    endYear: 'Sept 2023',
+    current: false,
+    description: 'Architected interactive student learning dashboards using Next.js, Tailwind CSS, and PostgreSQL, serving 10,000+ daily active student users.',
+    image: imgCode,
+  })
+
+  await client.create({
+    _type: 'experience',
+    company: 'Cal Hacks / CS Developer Club',
+    role: 'Lead Web Developer & Mentor',
+    location: 'Berkeley, CA',
+    startYear: 'Sept 2023',
+    current: true,
+    description: 'Led a team of 6 student developers building the official hackathon portal handling 1,200+ hacker registrations and live project submissions.',
+    image: imgCal,
+  })
+
+  console.log("Creating Education documents...")
+  await client.create({
+    _type: 'education',
+    institution: 'University of California, Berkeley',
+    degree: 'B.S. in Computer Science & Software Engineering',
+    startYear: '2022',
+    endYear: '2026',
+    current: true,
+    description: 'GPA: 3.9/4.0. Relevant Coursework: Data Structures & Algorithms, Operating Systems, Distributed Systems, Computer Networks, Database Systems.',
+    image: imgCal,
+  })
+
+  await client.create({
+    _type: 'education',
+    institution: 'San Francisco Tech Academy',
+    degree: 'Full Stack & Cloud Engineering Certificate',
+    startYear: '2022',
+    endYear: '2022',
+    current: false,
+    description: 'Intensive program focusing on React, Node.js, Docker, Kubernetes, and modern cloud deployment pipelines.',
+    image: imgCode,
   })
 
   console.log("Creating Projects...")
   const p1 = await client.create({
     _type: 'project',
-    title: 'E-Commerce Microservices Platform',
-    slug: { _type: 'slug', current: 'ecommerce-microservices' },
-    period: '2023 — 2024',
-    category: 'Backend Architecture',
-    tagline: 'Scalable backend for a high-traffic e-commerce store.',
-    excerpt: 'Designed and implemented a microservices architecture using Node.js, Docker, and Kubernetes.',
-    thumbnail: img1,
-    coverImage: img1,
+    title: 'PulseCode — Real-Time Collaborative Code Editor',
+    slug: { _type: 'slug', current: 'pulse-code-editor' },
+    period: '2024',
+    category: 'Web & Systems',
+    tagline: 'Google Docs for code built with WebSockets & CRDTs.',
+    excerpt: 'An ultra-fast collaborative code editor enabling multi-user real-time editing with syntax highlighting and instant compilation.',
+    thumbnail: imgCode,
+    coverImage: imgCode,
     featured: true,
-    liveUrl: 'https://example.com',
+    liveUrl: 'https://github.com',
     secondaryLinkLabel: 'GitHub Repo',
     secondaryLinkUrl: 'https://github.com',
-    gallery: [
-      { ...img1, _key: 'g1' },
-      { ...img2, _key: 'g2' }
-    ],
+    gallery: [{ ...imgCode, _key: 'g1' }, { ...imgDash, _key: 'g2' }],
     body: [
       {
         _type: 'block',
         _key: 'b1',
         style: 'normal',
         markDefs: [],
-        children: [{ _type: 'span', _key: 'c1', text: 'Built the entire backend infrastructure...', marks: [] }]
-      }
-    ]
+        children: [{ _type: 'span', _key: 'c1', text: 'Built using Next.js 14, WebSockets, Redis pub/sub, and Yjs CRDTs for conflict-free document synchronization.', marks: [] }],
+      },
+    ],
   })
 
   const p2 = await client.create({
     _type: 'project',
-    title: 'Real-time Analytics Dashboard',
-    slug: { _type: 'slug', current: 'analytics-dashboard' },
-    period: '2022',
-    category: 'Full Stack Development',
-    tagline: 'Visualizing millions of data points in real-time.',
-    excerpt: 'Built a real-time dashboard using React, WebSockets, and Redis to process and display high-volume data.',
-    thumbnail: img2,
-    coverImage: img2,
+    title: 'DevPulse — Developer Velocity Analytics',
+    slug: { _type: 'slug', current: 'dev-pulse-analytics' },
+    period: '2024',
+    category: 'Full Stack Web',
+    tagline: 'Visualizing developer workflow metrics and GitHub velocity.',
+    excerpt: 'Built a full-stack dashboard tracking commit frequency, PR review times, and deployment metrics using Next.js, GraphQL, and PostgreSQL.',
+    thumbnail: imgDash,
+    coverImage: imgDash,
     featured: true,
     liveUrl: 'https://example.com',
-    gallery: [
-      { ...img2, _key: 'g3' }
-    ],
+    secondaryLinkLabel: 'Live Demo',
+    secondaryLinkUrl: 'https://example.com',
+    gallery: [{ ...imgDash, _key: 'g3' }],
     body: [
       {
         _type: 'block',
         _key: 'b2',
         style: 'normal',
         markDefs: [],
-        children: [{ _type: 'span', _key: 'c2', text: 'Handled the frontend and real-time streaming pipeline.', marks: [] }]
-      }
-    ]
+        children: [{ _type: 'span', _key: 'c2', text: 'Integrated GitHub REST & GraphQL APIs to calculate team engineering metrics.', marks: [] }],
+      },
+    ],
   })
 
-  console.log("Creating Education...")
-  await client.create({
-    _type: 'education',
-    institution: 'University of California, Berkeley',
-    degree: 'B.S. in Computer Science',
-    startYear: '2014',
-    endYear: '2018',
-    current: false,
-    description: 'Focused on algorithms, distributed systems, and artificial intelligence.',
-    image: imgAvatar
+  const p3 = await client.create({
+    _type: 'project',
+    title: 'AlgoViz — Interactive Algorithm Visualizer',
+    slug: { _type: 'slug', current: 'algoviz-visualizer' },
+    period: '2023',
+    category: 'CS Tooling',
+    tagline: 'Visualizing graph traversal and sorting algorithms in 60fps.',
+    excerpt: 'An interactive educational web app helping CS students visualize complex algorithms with step-by-step memory inspection.',
+    thumbnail: imgAlgo,
+    coverImage: imgAlgo,
+    featured: true,
+    liveUrl: 'https://example.com',
+    secondaryLinkLabel: 'GitHub',
+    secondaryLinkUrl: 'https://github.com',
+    gallery: [{ ...imgAlgo, _key: 'g4' }],
+    body: [
+      {
+        _type: 'block',
+        _key: 'b3',
+        style: 'normal',
+        markDefs: [],
+        children: [{ _type: 'span', _key: 'c3', text: 'Built with React, Canvas API, and Web Workers for smooth 60fps animations.', marks: [] }],
+      },
+    ],
   })
 
   console.log("Creating Services...")
   await client.create({
     _type: 'service',
-    title: 'Full Stack Development',
-    items: ['React / Next.js', 'Node.js / Express', 'TypeScript', 'PostgreSQL / MongoDB'],
-    previewImage: img1
+    title: 'Full Stack Web Engineering',
+    items: ['React / Next.js 15', 'TypeScript', 'Node.js / Express', 'PostgreSQL / MongoDB', 'Tailwind CSS v4'],
+    previewImage: imgCode,
   })
-  
+
   await client.create({
     _type: 'service',
-    title: 'Cloud Architecture & DevOps',
-    items: ['AWS / GCP', 'Docker / Kubernetes', 'CI/CD Pipelines', 'Infrastructure as Code'],
-    previewImage: img2
+    title: 'Backend & Cloud Architecture',
+    items: ['Node.js / Go / Rust', 'REST & GraphQL APIs', 'Docker / Containerization', 'Redis Caching', 'CI/CD Pipelines'],
+    previewImage: imgDash,
+  })
+
+  await client.create({
+    _type: 'service',
+    title: 'Code Audits & Performance',
+    items: ['Site Speed Optimization', 'Accessibility (WCAG)', 'Clean Architecture Refactoring', 'Unit & Integration Testing'],
+    previewImage: imgAlgo,
   })
 
   console.log("Creating Blog Posts...")
   await client.create({
     _type: 'post',
-    title: 'Why TypeScript is Essential for Large Scale Apps',
-    slug: { _type: 'slug', current: 'why-typescript' },
-    excerpt: 'A deep dive into how static typing prevents bugs and improves developer experience in complex codebases.',
-    coverImage: img1,
-    tags: ['TypeScript', 'Architecture'],
+    title: 'Building a Raft Consensus Key-Value Store in Rust',
+    slug: { _type: 'slug', current: 'raft-consensus-rust' },
+    excerpt: 'Lessons learned implementing distributed consensus algorithms, leader election, and log replication from scratch.',
+    coverImage: imgCode,
+    tags: ['Rust', 'Distributed Systems'],
     publishedAt: new Date().toISOString(),
     body: [
       {
@@ -159,23 +261,50 @@ async function run() {
         _key: 'bp1',
         style: 'normal',
         markDefs: [],
-        children: [{ _type: 'span', _key: 'c3', text: 'TypeScript has become the industry standard for web development...', marks: [] }]
-      }
-    ]
+        children: [{ _type: 'span', _key: 'c3', text: 'Distributed consensus is fundamental to modern cloud systems...', marks: [] }],
+      },
+    ],
+  })
+
+  await client.create({
+    _type: 'post',
+    title: 'Mastering Data Structures for Technical Coding Interviews',
+    slug: { _type: 'slug', current: 'data-structures-interviews' },
+    excerpt: 'A practical guide to patterns, space-time complexities, and top problem-solving strategies for CS students.',
+    coverImage: imgAlgo,
+    tags: ['Computer Science', 'Career'],
+    publishedAt: new Date().toISOString(),
+    body: [
+      {
+        _type: 'block',
+        _key: 'bp2',
+        style: 'normal',
+        markDefs: [],
+        children: [{ _type: 'span', _key: 'c4', text: 'Understanding foundational data structures is key to writing efficient code...', marks: [] }],
+      },
+    ],
   })
 
   console.log("Creating Awards...")
   await client.create({
     _type: 'award',
     project: { _type: 'reference', _ref: p1._id },
-    awardType: 'Best Cloud Architecture 2023',
-    date: '2023-11-01'
+    awardType: '1st Place Overall Winner — CalHacks 2024',
+    date: '2024-10-20',
   })
 
-  console.log("Done adding mock data!")
+  await client.create({
+    _type: 'award',
+    project: { _type: 'reference', _ref: p2._id },
+    awardType: "Dean's Honor List (6 Consecutive Semesters)",
+    date: '2024-05-15',
+  })
+
+  console.log("Successfully seeded fresh Software Engineering Student mock data!")
 }
 
 run().catch((err) => {
-  console.error("Error:", err)
+  console.error("Error seeding mock data:", err)
   process.exit(1)
 })
+
