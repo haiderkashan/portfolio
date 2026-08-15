@@ -30,29 +30,38 @@ export function Hero({
     : { duration: 1.3, ease: EASE_SWIFT }
 
   useEffect(() => {
-    // A short beat on the collapsed card before it expands, matching the
-    // "load, pause, grow" rhythm of the reference. Skipped (0ms) if the
-    // visitor prefers reduced motion — the hero just appears settled.
+    // Original entrance transition timing:
+    // Short beat on the collapsed rounded card before expanding into full-screen hero.
     const t = setTimeout(() => setStarted(true), prefersReducedMotion ? 0 : 450)
     return () => clearTimeout(t)
   }, [prefersReducedMotion])
 
-  // Tracks how far the hero has scrolled out of view (0 = fully on screen,
-  // 1 = fully scrolled past). Drives the shrink-and-tilt-away exit as you
-  // scroll into the next section, instead of the hero just scrolling off
-  // like a plain block.
+  // Tracks scroll progress as the hero section exits the viewport.
+  // Drives the 7-column slice split, angled skew, and alternating vertical shift.
   const { scrollYProgress: exitProgress } = useScroll({
     target: sectionRef,
     offset: ['end end', 'end start'],
   })
 
-  const exitScale = useTransform(exitProgress, [0, 1], prefersReducedMotion ? [1, 1] : [1, 0.5])
-  const exitRotateX = useTransform(exitProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, 55])
-  const exitY = useTransform(exitProgress, [0, 1], prefersReducedMotion ? [0, 0] : [0, -70])
-  const exitImageOpacity = useTransform(
+  const exitSkewY = useTransform(
     exitProgress,
-    [0, 0.55, 1],
-    prefersReducedMotion ? [1, 1, 1] : [1, 1, 0]
+    [0, 1],
+    prefersReducedMotion ? [0, 0] : [0, -10]
+  )
+  const exitYOdd = useTransform(
+    exitProgress,
+    [0, 1],
+    prefersReducedMotion ? [0, 0] : [0, -260]
+  )
+  const exitYEven = useTransform(
+    exitProgress,
+    [0, 1],
+    prefersReducedMotion ? [0, 0] : [0, 260]
+  )
+  const exitOpacity = useTransform(
+    exitProgress,
+    [0, 0.65, 1],
+    prefersReducedMotion ? [1, 1, 1] : [1, 0.8, 0]
   )
   const exitChromeOpacity = useTransform(
     exitProgress,
@@ -60,12 +69,16 @@ export function Hero({
     prefersReducedMotion ? [1, 1] : [1, 0]
   )
 
+  const NUM_SLICES = 7
+  const slices = Array.from({ length: NUM_SLICES })
+
   return (
     <section
       ref={sectionRef}
       id="top"
       className="theme-light relative h-[100svh] min-h-[36rem] w-full overflow-hidden bg-paper"
     >
+      {/* Centered container driving initial card expansion + 3D scroll exit */}
       <div
         className="absolute inset-0 flex items-center justify-center"
         style={{ perspective: 1400 }}
@@ -73,61 +86,91 @@ export function Hero({
         <motion.div
           layout
           transition={boxTransition}
-          style={{
-            scale: exitScale,
-            rotateX: exitRotateX,
-            y: exitY,
-            opacity: exitImageOpacity,
-            transformOrigin: 'top center',
-          }}
           className={cn(
-            'relative overflow-hidden bg-moss',
+            'relative overflow-hidden bg-paper transition-all',
             started
               ? 'h-full w-full rounded-none'
               : 'aspect-[16/10] w-[min(88vw,720px)] rounded-[28px]'
           )}
         >
-          {heroImageUrl ? (
-            <Image
-              src={heroImageUrl}
-              alt={name}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-          ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
-
-          <div
-            className={cn(
-              'absolute px-5 sm:px-8 md:px-12',
-              started
-                ? 'inset-x-0 bottom-6 flex items-end justify-between gap-4 sm:bottom-10'
-                : 'inset-0 flex flex-col items-center justify-center gap-0.5'
-            )}
+          {/* Sliced container for 7 vertical columns during scroll exit */}
+          <motion.div
+            style={{
+              skewY: exitSkewY,
+              opacity: exitOpacity,
+              transformOrigin: 'center center',
+            }}
+            className="flex h-full w-full overflow-hidden"
           >
-            <motion.span
-              layout="position"
-              transition={boxTransition}
-              className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent"
-              style={{ fontSize: started ? 'clamp(2.75rem,9.5vw,7.25rem)' : 'clamp(1.4rem,5.2vw,2.4rem)' }}
-            >
-              /{first || last}
-            </motion.span>
-            {first && (
-              <motion.span
-                layout="position"
-                transition={boxTransition}
-                className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent"
-                style={{ fontSize: started ? 'clamp(2.75rem,9.5vw,7.25rem)' : 'clamp(1.4rem,5.2vw,2.4rem)' }}
-              >
-                {last}/
-              </motion.span>
-            )}
-          </div>
+            {slices.map((_, i) => {
+              const isOdd = i % 2 === 0
+              const sliceY = isOdd ? exitYOdd : exitYEven
+
+              return (
+                <motion.div
+                  key={i}
+                  style={{
+                    y: sliceY,
+                    width: `${100 / NUM_SLICES}%`,
+                    willChange: 'transform',
+                  }}
+                  className="relative h-full overflow-hidden"
+                >
+                  {/* Inner container shifted left to reconstruct 100% of the unified hero image at rest */}
+                  <div
+                    style={{
+                      width: `${NUM_SLICES * 100}%`,
+                      left: `-${i * 100}%`,
+                    }}
+                    className="absolute inset-y-0"
+                  >
+                    {heroImageUrl ? (
+                      <Image
+                        src={heroImageUrl}
+                        alt={name}
+                        fill
+                        priority
+                        sizes="100vw"
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
+
+                    {/* Wordmark overlay */}
+                    <div
+                      className={cn(
+                        'absolute px-5 sm:px-8 md:px-12',
+                        started
+                          ? 'inset-x-0 bottom-6 flex items-end justify-between gap-4 sm:bottom-10'
+                          : 'inset-0 flex flex-col items-center justify-center gap-0.5'
+                      )}
+                    >
+                      <motion.span
+                        layout="position"
+                        transition={boxTransition}
+                        className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent"
+                        style={{ fontSize: started ? 'clamp(2.75rem,9.5vw,7.25rem)' : 'clamp(1.4rem,5.2vw,2.4rem)' }}
+                      >
+                        /{first || last}
+                      </motion.span>
+                      {first && (
+                        <motion.span
+                          layout="position"
+                          transition={boxTransition}
+                          className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent"
+                          style={{ fontSize: started ? 'clamp(2.75rem,9.5vw,7.25rem)' : 'clamp(1.4rem,5.2vw,2.4rem)' }}
+                        >
+                          {last}/
+                        </motion.span>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </motion.div>
         </motion.div>
       </div>
 
@@ -144,7 +187,7 @@ export function Hero({
         >
           <div className="flex items-end justify-between gap-4">
             {role ? (
-              <p className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-ink sm:text-sm">
+              <p className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-accent sm:text-sm">
                 {role}
               </p>
             ) : (
@@ -187,6 +230,7 @@ export function Hero({
     </section>
   )
 }
+
 
 
 
