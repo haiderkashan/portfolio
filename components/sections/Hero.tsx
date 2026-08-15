@@ -64,7 +64,7 @@ export function Hero({
     <section
       ref={sectionRef}
       id="top"
-      className="theme-dark relative h-[100svh] min-h-[36rem] w-full overflow-hidden bg-ink"
+      className="theme-light relative h-[100svh] min-h-[36rem] w-full overflow-hidden bg-paper"
     >
       <div
         className="absolute inset-0 flex items-center justify-center"
@@ -144,7 +144,7 @@ export function Hero({
         >
           <div className="flex items-end justify-between gap-4">
             {role ? (
-              <p className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-accent sm:text-sm">
+              <p className="font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-ink sm:text-sm">
                 {role}
               </p>
             ) : (
@@ -173,14 +173,14 @@ export function Hero({
           transition={{ duration: 0.7, delay: 1.3 }}
           className="absolute inset-x-0 bottom-5 flex flex-col items-center gap-1.5 sm:bottom-7"
         >
-          <span className="font-display text-[10px] font-semibold uppercase tracking-[0.2em] text-accent">
+          <span className="font-display text-[10px] font-semibold uppercase tracking-[0.2em] text-ink">
             Scroll
           </span>
           <motion.div
             animate={prefersReducedMotion ? undefined : { y: [0, 5, 0] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <ChevronDown size={16} className="text-accent" />
+            <ChevronDown size={16} className="text-ink" />
           </motion.div>
         </motion.div>
       </motion.div>
