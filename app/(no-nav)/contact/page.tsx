@@ -17,7 +17,7 @@ export default async function ContactPage() {
   const resumeUrl = settings?.resume?.asset?.url
 
   return (
-    <div className="theme-light min-h-screen bg-paper md:h-screen md:overflow-hidden flex flex-col justify-between">
+    <div className="theme-light min-h-screen bg-paper flex flex-col justify-between">
       {/* Top Header Bar / Back Navigation */}
       <header className="container-page pt-6 sm:pt-8 pb-3 shrink-0">
         <Reveal>
@@ -31,7 +31,7 @@ export default async function ContactPage() {
       </header>
 
       {/* Main Content Grid */}
-      <div className="container-page flex-1 grid gap-8 pb-10 md:pb-4 md:grid-cols-12 md:items-center md:gap-12 md:overflow-visible">
+      <div className="container-page flex-1 grid gap-8 py-6 md:grid-cols-12 md:items-center md:gap-12">
         {/* Left Column: Heading & Contact Info */}
         <div className="md:col-span-5 flex flex-col justify-center">
           <SplitHeading
@@ -67,15 +67,15 @@ export default async function ContactPage() {
         </div>
 
         {/* Right Column: Form Container */}
-        <div className="md:col-span-7 overflow-visible py-1">
+        <div className="md:col-span-7 py-1">
           <Reveal delay={0.1}>
             <ContactForm />
           </Reveal>
         </div>
       </div>
 
-      {/* Desktop subtle footer note for viewport framing */}
-      <footer className="container-page py-3 shrink-0 hidden md:flex items-center justify-between text-xs text-[var(--on-surface-faint)] border-t border-[var(--line)]/50">
+      {/* Desktop subtle footer note */}
+      <footer className="container-page py-4 shrink-0 flex items-center justify-between text-xs text-[var(--on-surface-faint)] border-t border-[var(--line)]/50">
         <span>Available for full-time & freelance roles</span>
         <span>Replies typically within 24 hours</span>
       </footer>
