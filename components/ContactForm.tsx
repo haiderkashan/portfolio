@@ -333,12 +333,12 @@ export function ContactForm() {
       </AnimatePresence>
 
       {/* Submit Button */}
-      <div className="pt-2 pl-2 overflow-visible">
-        <Magnetic className="self-start overflow-visible">
+      <div className="pt-2">
+        <Magnetic className="inline-block">
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-all duration-200 disabled:opacity-60 hover:brightness-105 shadow-sm"
+            className="group inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink disabled:opacity-60"
           >
             {status === 'loading' ? (
               <>
@@ -347,7 +347,10 @@ export function ContactForm() {
             ) : (
               <>
                 Send message
-                <ArrowUpRight size={15} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight
+                  size={15}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
               </>
             )}
           </button>
