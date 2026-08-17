@@ -76,23 +76,23 @@ export function Footer({
               ))}
             </ul>
 
-            {/* Right-aligned Placeholder Links: TERMS & CONDITIONS and PRIVACY POLICY */}
+            {/* Right-aligned Links: TERMS & CONDITIONS and PRIVACY POLICY */}
             <ul className="flex flex-wrap items-center justify-start gap-x-8 gap-y-3 sm:justify-end">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/terms-and-conditions"
                   className="font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent"
                 >
                   TERMS &amp; CONDITIONS
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/privacy-policy"
                   className="font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent"
                 >
                   PRIVACY POLICY
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
