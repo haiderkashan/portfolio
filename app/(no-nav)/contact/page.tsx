@@ -73,12 +73,6 @@ export default async function ContactPage() {
           </Reveal>
         </div>
       </div>
-
-      {/* Desktop subtle footer note */}
-      <footer className="container-page py-4 shrink-0 flex items-center justify-between text-xs text-[var(--on-surface-faint)] border-t border-[var(--line)]/50">
-        <span>Available for full-time & freelance roles</span>
-        <span>Replies typically within 24 hours</span>
-      </footer>
     </div>
   )
 }
