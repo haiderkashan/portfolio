@@ -27,9 +27,10 @@ export default function PrivacyPolicyPage() {
 
         {/* Title */}
         <Reveal delay={0.05}>
-          <h1 className="font-display text-4xl font-bold uppercase tracking-tight text-ink sm:text-5xl mb-2">
+          <h1 className="font-display text-4xl font-bold uppercase tracking-tight text-ink sm:text-5xl mb-3">
             Privacy Policy
           </h1>
+          <div className="h-[3px] w-16 bg-accent mb-6" />
           <p className="font-body text-xs font-semibold uppercase tracking-wider text-[var(--on-surface-faint)]/80 mb-12">
             Last Updated: August 2026
           </p>
@@ -40,7 +41,7 @@ export default function PrivacyPolicyPage() {
           <div className="space-y-12">
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                1. Introduction
+                <span className="text-accent mr-1.5">1.</span> Introduction
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 Welcome to the portfolio website of Kashan Haider. I respect your privacy and am committed to protecting your personal data. This Privacy Policy explains how I collect, use, and safeguard your information when you visit my website and use my contact form.
@@ -49,7 +50,7 @@ export default function PrivacyPolicyPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                2. Information I Collect
+                <span className="text-accent mr-1.5">2.</span> Information I Collect
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)] mb-4">
                 When you reach out via the Contact Form, I may collect the following personal information:
@@ -72,7 +73,7 @@ export default function PrivacyPolicyPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                3. How I Use Your Information
+                <span className="text-accent mr-1.5">3.</span> How I Use Your Information
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)] mb-4">
                 The information collected is strictly used for professional purposes:
@@ -86,7 +87,7 @@ export default function PrivacyPolicyPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                4. Data Storage and Security
+                <span className="text-accent mr-1.5">4.</span> Data Storage and Security
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 Your data is processed securely. Form submissions are stored securely in a managed database (Sanity CMS) and transmitted via encrypted email routing to my personal inbox. I implement strict technical measures (such as server-side validation and in-memory rate limiting) to prevent unauthorized access or data breaches.
@@ -95,7 +96,7 @@ export default function PrivacyPolicyPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                5. Third-Party Services
+                <span className="text-accent mr-1.5">5.</span> Third-Party Services
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 I do not sell, trade, or rent your personal information to others. However, to operate this website, I utilize trusted third-party infrastructure providers (such as Vercel for hosting and Sanity for database management). These providers are bound by strict data processing agreements and only handle your data to the extent necessary to keep the website functional.
@@ -104,7 +105,7 @@ export default function PrivacyPolicyPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                6. Your Rights
+                <span className="text-accent mr-1.5">6.</span> Your Rights
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 You have the right to request access to the personal data I hold about you, or to request that I delete your information from my database. To exercise these rights, please contact me directly via the contact page.

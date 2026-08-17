@@ -27,9 +27,10 @@ export default function TermsAndConditionsPage() {
 
         {/* Title */}
         <Reveal delay={0.05}>
-          <h1 className="font-display text-4xl font-bold uppercase tracking-tight text-ink sm:text-5xl mb-2">
+          <h1 className="font-display text-4xl font-bold uppercase tracking-tight text-ink sm:text-5xl mb-3">
             Terms &amp; Conditions
           </h1>
+          <div className="h-[3px] w-16 bg-accent mb-6" />
           <p className="font-body text-xs font-semibold uppercase tracking-wider text-[var(--on-surface-faint)]/80 mb-12">
             Last Updated: August 2026
           </p>
@@ -40,7 +41,7 @@ export default function TermsAndConditionsPage() {
           <div className="space-y-12">
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                1. Acceptance of Terms
+                <span className="text-accent mr-1.5">1.</span> Acceptance of Terms
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 By accessing and using this portfolio website, you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by these terms, please do not use this website.
@@ -49,7 +50,7 @@ export default function TermsAndConditionsPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                2. Intellectual Property
+                <span className="text-accent mr-1.5">2.</span> Intellectual Property
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 All content, designs, code, graphics, and text on this website are the intellectual property of Kashan Haider, unless otherwise stated or attributed to specific clients/projects. You may not reproduce, distribute, or create derivative works from this website's content without explicit, written permission.
@@ -58,7 +59,7 @@ export default function TermsAndConditionsPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                3. Use of the Contact Form &amp; File Uploads
+                <span className="text-accent mr-1.5">3.</span> Use of the Contact Form &amp; File Uploads
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)] mb-4">
                 The contact form is provided to facilitate professional communication, freelance inquiries, and recruitment. By using the contact form, you agree:
@@ -75,7 +76,7 @@ export default function TermsAndConditionsPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                4. No Binding Contract
+                <span className="text-accent mr-1.5">4.</span> No Binding Contract
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 The information provided on this website is for general informational purposes. Submitting a project inquiry or communicating via the contact form does not constitute a legally binding agreement or a commitment to provide services. Formal freelance or employment engagements will be subject to a separate, signed contract.
@@ -84,7 +85,7 @@ export default function TermsAndConditionsPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                5. Limitation of Liability
+                <span className="text-accent mr-1.5">5.</span> Limitation of Liability
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 This website and its content are provided on an "as-is" basis. While I strive to keep the portfolio accurate and up-to-date, I make no warranties regarding the completeness or reliability of the information. I shall not be held liable for any direct or indirect damages arising out of your use of this website.
@@ -93,7 +94,7 @@ export default function TermsAndConditionsPage() {
 
             <section>
               <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                6. Governing Law
+                <span className="text-accent mr-1.5">6.</span> Governing Law
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 These terms and conditions are governed by and construed in accordance with the laws of Pakistan. Any disputes relating to these terms and conditions will be subject to the exclusive jurisdiction of the local courts.
