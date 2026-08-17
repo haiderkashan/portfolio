@@ -11,7 +11,19 @@ export default defineType({
   fields: [
     defineField({ name: 'name', title: 'Name', type: 'string', readOnly: true }),
     defineField({ name: 'email', title: 'Email', type: 'string', readOnly: true }),
+    defineField({ name: 'topic', title: 'Topic / Inquiry Type', type: 'string', readOnly: true }),
+    defineField({ name: 'company', title: 'Company / Organization', type: 'string', readOnly: true }),
+    defineField({ name: 'phone', title: 'Phone Number', type: 'string', readOnly: true }),
     defineField({ name: 'message', title: 'Message', type: 'text', rows: 5, readOnly: true }),
+    defineField({
+      name: 'attachment',
+      title: 'Attachment',
+      type: 'file',
+      readOnly: true,
+      options: {
+        storeOriginalFilename: true,
+      },
+    }),
     defineField({
       name: 'submittedAt',
       title: 'Submitted at',
