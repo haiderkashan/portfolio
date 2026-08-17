@@ -99,15 +99,19 @@ export function SiteNav({
             aria-expanded={open}
             aria-haspopup="dialog"
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="pointer-events-auto flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-ink/90 px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-accent backdrop-blur-sm transition-opacity hover:opacity-80 sm:px-4 sm:text-sm sm:tracking-[0.14em]"
+            className="pointer-events-auto flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-accent px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-ink transition-opacity hover:opacity-90 sm:px-4 sm:text-sm sm:tracking-[0.14em]"
           >
             {open ? 'Close' : 'Menu'}
             {open ? <X size={16} strokeWidth={2.5} /> : <Menu size={16} strokeWidth={2.5} />}
           </button>
 
-          <span className="pointer-events-auto ml-3 max-w-[55vw] shrink truncate whitespace-nowrap rounded-full bg-ink/90 px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-accent backdrop-blur-sm sm:ml-0 sm:max-w-none sm:px-4 sm:text-sm sm:tracking-[0.14em]">
-            /{locationTag ? locationTag.replace(/San Francisco, CA/i, 'Pakistan') : 'Based in Pakistan'}
-          </span>
+          {locationTag ? (
+            <span className="pointer-events-auto ml-3 max-w-[55vw] shrink truncate whitespace-nowrap rounded-full bg-accent px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-ink sm:ml-0 sm:max-w-none sm:px-4 sm:text-sm sm:tracking-[0.14em]">
+              /{locationTag}
+            </span>
+          ) : (
+            <span />
+          )}
         </div>
       </div>
 
