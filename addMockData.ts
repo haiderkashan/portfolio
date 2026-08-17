@@ -42,7 +42,7 @@ async function run() {
     name: 'Alex Chen',
     handle: 'alexchen',
     role: 'Software Engineering Student & Full-Stack Developer',
-    locationTag: 'Based in San Francisco, CA',
+    locationTag: 'Based in Pakistan',
     email: 'alex.chen@berkeley.edu',
     socialLinks: [
       { _key: 'github', platform: 'GitHub', url: 'https://github.com' },

@@ -7,8 +7,8 @@ export function Footer({
   headline,
   email,
   ctaLabel,
-  footerImageUrl,
   handle,
+  name,
   socialLinks,
 }: {
   headline?: string
@@ -16,12 +16,15 @@ export function Footer({
   ctaLabel?: string
   footerImageUrl?: string
   handle: string
+  name?: string
   socialLinks?: { platform: string; url: string }[]
 }) {
   const currentYear = new Date().getFullYear()
+  const displayName = name || 'Kashan Haider'
+  const displayHandle = handle ? handle.toUpperCase() : 'KASHAN HAIDER'
 
   return (
-    <footer id="contact" className="theme-dark relative overflow-hidden bg-ink pb-0 pt-24 sm:pt-32">
+    <footer id="contact" className="theme-dark bg-ink pb-8 pt-24 sm:pt-32">
       <div className="container-page">
         {/* 1. Top Section: Centered Heading & Centered CTA Button */}
         <Reveal className="flex flex-col items-center justify-center text-center">
@@ -44,7 +47,7 @@ export function Footer({
           </div>
         </Reveal>
 
-        {/* 2. Middle Section: Social + Email Links Bar (Left) & Copyright (Right) */}
+        {/* 2. Middle Section: Social + Email Links (Left) & Legal Placeholder Links (Right) */}
         <Reveal delay={0.15} className="mt-16 border-t border-[var(--line)] pt-8 sm:mt-24">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             {/* Left-aligned Links: EMAIL + Social Links */}
@@ -73,22 +76,42 @@ export function Footer({
               ))}
             </ul>
 
-            {/* 3. Copyright Text: Aligned to the right, sitting directly above giant typography */}
-            <p className="font-body text-xs text-[var(--on-surface-faint)] sm:text-right">
-              &copy; {currentYear} {handle}. All rights reserved.
-            </p>
+            {/* Right-aligned Placeholder Links: TERMS & CONDITIONS and PRIVACY POLICY */}
+            <ul className="flex flex-wrap items-center justify-start gap-x-8 gap-y-3 sm:justify-end">
+              <li>
+                <a
+                  href="#"
+                  className="font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent"
+                >
+                  TERMS &amp; CONDITIONS
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent"
+                >
+                  PRIVACY POLICY
+                </a>
+              </li>
+            </ul>
           </div>
         </Reveal>
 
-        {/* 4. Bottom Section: Giant Typography with Clipped/Half Effect */}
-        <div className="mt-8 overflow-hidden pt-4 sm:mt-12">
+        {/* 3. Giant Typography (100% visible, fully centered, no overflow clipping) */}
+        <div className="mt-12 sm:mt-16">
           <Link
             href="/#top"
-            className="block translate-y-1/3 whitespace-nowrap text-center font-display text-[15vw] font-bold uppercase leading-none tracking-tight text-paper transition-colors hover:text-accent sm:text-[13vw]"
+            className="block text-center font-display text-[12vw] font-bold uppercase leading-none tracking-tight text-paper transition-colors hover:text-accent sm:text-[10vw]"
           >
-            /{handle}/
+            /{displayHandle}/
           </Link>
         </div>
+
+        {/* 4. Copyright (Subtle, centered text block at absolute bottom under giant name) */}
+        <p className="mt-8 text-center font-body text-[11px] font-medium tracking-wide text-[var(--on-surface-faint)]/60 sm:mt-12">
+          &copy; {currentYear} {displayName}. All rights reserved.
+        </p>
       </div>
     </footer>
   )

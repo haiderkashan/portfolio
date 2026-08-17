@@ -105,13 +105,9 @@ export function SiteNav({
             {open ? <X size={16} strokeWidth={2.5} /> : <Menu size={16} strokeWidth={2.5} />}
           </button>
 
-          {locationTag ? (
-            <span className="pointer-events-auto ml-3 max-w-[55vw] shrink truncate whitespace-nowrap rounded-full bg-ink/90 px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-accent backdrop-blur-sm sm:ml-0 sm:max-w-none sm:px-4 sm:text-sm sm:tracking-[0.14em]">
-              /{locationTag}
-            </span>
-          ) : (
-            <span />
-          )}
+          <span className="pointer-events-auto ml-3 max-w-[55vw] shrink truncate whitespace-nowrap rounded-full bg-ink/90 px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-accent backdrop-blur-sm sm:ml-0 sm:max-w-none sm:px-4 sm:text-sm sm:tracking-[0.14em]">
+            /{locationTag ? locationTag.replace(/San Francisco, CA/i, 'Pakistan') : 'Based in Pakistan'}
+          </span>
         </div>
       </div>
 
