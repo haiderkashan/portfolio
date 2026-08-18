@@ -100,6 +100,33 @@ export default function TermsAndConditionsPage() {
                 These terms and conditions are governed by and construed in accordance with the laws of Pakistan. Any disputes relating to these terms and conditions will be subject to the exclusive jurisdiction of the local courts.
               </p>
             </section>
+
+            <section>
+              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="text-accent mr-1.5">7.</span> Third-Party IP &amp; Demonstrative Work
+              </h2>
+              <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
+                The portfolio projects displayed on this website may include corporate logos, trademarks, open-source components, or references to third-party intellectual property. These are displayed strictly for educational, demonstrative, and portfolio purposes to accurately represent my professional and academic experience. All third-party trademarks and copyrights remain the exclusive property of their respective owners.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="text-accent mr-1.5">8.</span> External Links Disclaimer
+              </h2>
+              <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
+                This website contains links to external platforms (such as GitHub, LinkedIn, and X). I am not responsible for the content, privacy practices, or security of these third-party websites. Accessing external links is at your own risk.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="text-accent mr-1.5">9.</span> Modifications to Terms
+              </h2>
+              <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
+                I reserve the right to update, modify, or replace these Terms &amp; Conditions and the Privacy Policy at any time without prior notice. Continued use of the website following any changes constitutes acceptance of the new terms.
+              </p>
+            </section>
           </div>
         </Reveal>
 

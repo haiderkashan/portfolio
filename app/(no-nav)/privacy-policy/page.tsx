@@ -111,6 +111,33 @@ export default function PrivacyPolicyPage() {
                 You have the right to request access to the personal data I hold about you, or to request that I delete your information from my database. To exercise these rights, please contact me directly via the contact page.
               </p>
             </section>
+
+            <section>
+              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="text-accent mr-1.5">7.</span> Data Retention
+              </h2>
+              <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
+                I retain personal information and uploaded files only for as long as reasonably necessary to fulfill the purposes outlined in this policy—typically no longer than 12 months for general inquiries—unless an ongoing professional or contractual relationship is established, or as required by law.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="text-accent mr-1.5">8.</span> Cookies &amp; Analytics
+              </h2>
+              <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
+                This website may utilize essential cookies and basic, anonymized edge analytics (provided by hosting infrastructure like Vercel) strictly to monitor site performance, security, and uptime. I do not use intrusive third-party marketing or tracking cookies.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="text-accent mr-1.5">9.</span> Cross-Border Data Transfer
+              </h2>
+              <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
+                Because this website utilizes global cloud infrastructure (such as Vercel and Sanity), data submitted through the contact form may be transferred to, and processed on, servers located outside of your home jurisdiction, including in the United States and European Union. By submitting your information, you consent to this transfer.
+              </p>
+            </section>
           </div>
         </Reveal>
 
