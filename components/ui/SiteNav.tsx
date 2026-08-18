@@ -38,6 +38,8 @@ export function SiteNav({
     document.documentElement.style.overflow = open ? 'hidden' : ''
     if (open) lenis?.stop()
     else lenis?.start()
+
+    window.dispatchEvent(new CustomEvent('menuToggle', { detail: { open } }))
   }, [open, lenis])
 
   // Close automatically if the viewport grows back to desktop while open.

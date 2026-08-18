@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence, useMotionValueEvent, useScroll } from 'motion/react'
 import { useLenis } from 'lenis/react'
 import { ArrowUp } from 'lucide-react'
 
 export function ScrollToTop() {
   const [visible, setVisible] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const { scrollY } = useScroll()
   const lenis = useLenis()
 
@@ -14,9 +15,18 @@ export function ScrollToTop() {
     setVisible(latest > (typeof window !== 'undefined' ? window.innerHeight * 0.8 : 600))
   })
 
+  useEffect(() => {
+    function handleMenuToggle(e: Event) {
+      const customEvent = e as CustomEvent<{ open: boolean }>
+      setMenuOpen(customEvent.detail.open)
+    }
+    window.addEventListener('menuToggle', handleMenuToggle)
+    return () => window.removeEventListener('menuToggle', handleMenuToggle)
+  }, [])
+
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && !menuOpen && (
         <motion.button
           type="button"
           onClick={() => lenis?.scrollTo(0, { duration: 1.4 })}
