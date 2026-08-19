@@ -71,8 +71,8 @@ export const HOME_QUERY = defineQuery(`
       _id, awardType, date,
       "project": project->{title, "slug": slug.current, coverImage, thumbnail}
     },
-    "posts": *[_type == "post" && defined(publishedAt)] | order(publishedAt desc)[0...3]{
-      _id, title, "slug": slug.current, excerpt, coverImage, publishedAt
+    "posts": *[_type == "curatedPost" && isHidden != true] | order(displayOrder asc, publishedDate desc)[0...3]{
+      _id, title, mediumUrl, excerpt, coverImage, publishedDate
     }
   }
 `)
@@ -105,27 +105,17 @@ export const PROJECT_QUERY = defineQuery(`
 `)
 
 export const POSTS_QUERY = defineQuery(`
-  *[_type == "post" && defined(publishedAt)] | order(publishedAt desc){
-    _id, title, "slug": slug.current, excerpt, coverImage, publishedAt, tags
+  *[_type == "curatedPost" && isHidden != true] | order(displayOrder asc, publishedDate desc){
+    _id, title, mediumUrl, excerpt, coverImage, publishedDate
   }
 `)
 
 export const POSTS_PAGE_QUERY = defineQuery(`
   {
-    "items": *[_type == "post" && defined(publishedAt)] | order(publishedAt desc) [$start...$end]{
-      _id, title, "slug": slug.current, excerpt, coverImage, publishedAt, tags
+    "items": *[_type == "curatedPost" && isHidden != true] | order(displayOrder asc, publishedDate desc) [$start...$end]{
+      _id, title, mediumUrl, excerpt, coverImage, publishedDate
     },
-    "total": count(*[_type == "post" && defined(publishedAt)])
-  }
-`)
-
-export const POST_SLUGS_QUERY = defineQuery(`
-  *[_type == "post" && defined(slug.current)]{ "slug": slug.current }
-`)
-
-export const POST_QUERY = defineQuery(`
-  *[_type == "post" && slug.current == $slug][0]{
-    _id, title, "slug": slug.current, excerpt, coverImage, publishedAt, tags, body
+    "total": count(*[_type == "curatedPost" && isHidden != true])
   }
 `)
 
@@ -239,15 +229,10 @@ export interface AwardEntry {
 export interface PostCard {
   _id: string
   title: string
-  slug: string
+  mediumUrl: string
   excerpt?: string
   coverImage?: Image
-  publishedAt: string
-  tags?: string[]
-}
-
-export interface PostFull extends PostCard {
-  body?: PortableTextBlock[]
+  publishedDate: string
 }
 
 export interface Paginated<T> {

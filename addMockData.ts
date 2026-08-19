@@ -1,6 +1,7 @@
-import { getCliClient } from 'sanity/cli'
+import { loadEnvConfig } from '@next/env'
+loadEnvConfig(process.cwd())
 
-const client = getCliClient()
+let client: any
 
 async function uploadImage(url: string) {
   const res = await fetch(url)
@@ -18,8 +19,11 @@ async function uploadImage(url: string) {
 }
 
 async function run() {
+  const { getWriteClient } = await import('./sanity/lib/client')
+  client = getWriteClient()
+
   console.log("Cleaning up old documents...")
-  const oldDocs = await client.fetch<Array<{ _id: string }>>('*[_type in ["siteSettings", "project", "experience", "education", "service", "post", "award"]]')
+  const oldDocs = (await client.fetch('*[_type in ["siteSettings", "project", "experience", "education", "service", "post", "curatedPost", "award"]]')) as Array<{ _id: string }>
   for (const doc of oldDocs) {
     if (doc._id) {
       await client.delete(doc._id).catch(() => {})
@@ -246,43 +250,27 @@ async function run() {
     previewImage: imgAlgo,
   })
 
-  console.log("Creating Blog Posts...")
+  console.log("Creating Curated Blog Posts...")
   await client.create({
-    _type: 'post',
+    _type: 'curatedPost',
     title: 'Building a Raft Consensus Key-Value Store in Rust',
-    slug: { _type: 'slug', current: 'raft-consensus-rust' },
+    mediumUrl: 'https://medium.com/@username/building-a-raft-consensus-key-value-store-in-rust-12345',
     excerpt: 'Lessons learned implementing distributed consensus algorithms, leader election, and log replication from scratch.',
     coverImage: imgCode,
-    tags: ['Rust', 'Distributed Systems'],
-    publishedAt: new Date().toISOString(),
-    body: [
-      {
-        _type: 'block',
-        _key: 'bp1',
-        style: 'normal',
-        markDefs: [],
-        children: [{ _type: 'span', _key: 'c3', text: 'Distributed consensus is fundamental to modern cloud systems...', marks: [] }],
-      },
-    ],
+    publishedDate: new Date().toISOString(),
+    displayOrder: 1,
+    isHidden: false,
   })
 
   await client.create({
-    _type: 'post',
+    _type: 'curatedPost',
     title: 'Mastering Data Structures for Technical Coding Interviews',
-    slug: { _type: 'slug', current: 'data-structures-interviews' },
+    mediumUrl: 'https://medium.com/@username/mastering-data-structures-for-technical-coding-interviews-67890',
     excerpt: 'A practical guide to patterns, space-time complexities, and top problem-solving strategies for CS students.',
     coverImage: imgAlgo,
-    tags: ['Computer Science', 'Career'],
-    publishedAt: new Date().toISOString(),
-    body: [
-      {
-        _type: 'block',
-        _key: 'bp2',
-        style: 'normal',
-        markDefs: [],
-        children: [{ _type: 'span', _key: 'c4', text: 'Understanding foundational data structures is key to writing efficient code...', marks: [] }],
-      },
-    ],
+    publishedDate: new Date().toISOString(),
+    displayOrder: 2,
+    isHidden: false,
   })
 
   console.log("Creating Awards...")
