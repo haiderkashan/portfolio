@@ -5,7 +5,6 @@ import { PageTransition } from '@/components/ui/PageTransition'
 import { PreviewBanner } from '@/components/PreviewBanner'
 import { Footer } from '@/components/sections/Footer'
 import { sanityFetch } from '@/sanity/lib/fetch'
-import { urlForImage } from '@/sanity/lib/image'
 import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
 
 async function getSettings() {
@@ -17,7 +16,6 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   const name = settings?.name || 'Your Name'
   const handle = settings?.handle || 'yourname'
   const email = settings?.email || 'you@example.com'
-  const footerImageUrl = urlForImage(settings?.footerImage)?.width(320).height(240).url()
 
   return (
     <SmoothScroll>
@@ -40,7 +38,6 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         headline={settings?.footerHeadline}
         email={email}
         ctaLabel={settings?.ctaLabel}
-        footerImageUrl={footerImageUrl}
         handle={handle}
         name={name}
         socialLinks={settings?.socialLinks}

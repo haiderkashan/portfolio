@@ -13,9 +13,8 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         smoothWheel: true,
         wheelMultiplier: 1,
         touchMultiplier: 1,
-        smoothTouch: false,
-        anchors: true,
-      } as any}
+        syncTouch: false,
+      }}
     >
       {children}
     </ReactLenis>

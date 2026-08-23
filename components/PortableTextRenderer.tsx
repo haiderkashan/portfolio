@@ -3,13 +3,21 @@ import type { PortableTextBlock } from '@portabletext/react'
 import Image from 'next/image'
 import { urlForImage } from '@/sanity/lib/image'
 
-function getImageDimensions(value: any): { width: number; height: number } {
+interface SanityImageBlock {
+  asset?: {
+    _ref?: string
+    _id?: string
+  }
+  alt?: string
+}
+
+function getImageDimensions(value?: SanityImageBlock): { width: number; height: number } {
   const ref = value?.asset?._ref || value?.asset?._id || ''
   const match = /-(\d+)x(\d+)-/.exec(ref)
   if (match) {
     const width = parseInt(match[1], 10)
     const height = parseInt(match[2], 10)
-    if (!isNaN(width) && !isNaN(height) && width > 0 && height > 0) {
+    if (!Number.isNaN(width) && !Number.isNaN(height) && width > 0 && height > 0) {
       return { width, height }
     }
   }

@@ -14,7 +14,6 @@ export function Footer({
   headline?: string
   email: string
   ctaLabel?: string
-  footerImageUrl?: string
   handle: string
   name?: string
   socialLinks?: { platform: string; url: string }[]

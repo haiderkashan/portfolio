@@ -38,11 +38,18 @@ export function SiteNav({
   const shouldRestoreFocusRef = useRef(true)
 
   useEffect(() => {
-    document.documentElement.style.overflow = open ? 'hidden' : ''
-    if (open) lenis?.stop()
-    else lenis?.start()
+    if (open) {
+      document.documentElement.style.overflow = 'hidden'
+      lenis?.stop()
+    } else {
+      document.documentElement.style.overflow = ''
+      lenis?.start()
+    }
 
-    window.dispatchEvent(new CustomEvent('menuToggle', { detail: { open } }))
+    return () => {
+      document.documentElement.style.overflow = ''
+      lenis?.start()
+    }
   }, [open, lenis])
 
   function handleLinkClick(href: string) {

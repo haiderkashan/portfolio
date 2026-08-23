@@ -13,7 +13,7 @@ function pathForType(type: string, slug?: string): string | null {
     case 'project':
       return slug ? `/work/${slug}` : null
     case 'post':
-      return slug ? `/blog/${slug}` : null
+      return '/blog'
     case 'home':
     case 'siteSettings':
       return '/'
