@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { POSTS_PAGE_QUERY, type Paginated, type PostCard } from '@/sanity/lib/queries'
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal'
@@ -6,10 +8,27 @@ import { SplitHeading } from '@/components/ui/SplitHeading'
 import { Pagination } from '@/components/ui/Pagination'
 import { ArticleCard } from '@/components/ui/ArticleCard'
 
+import { siteUrl } from '@/lib/utils'
+
 const PAGE_SIZE = 9
 
 export const metadata: Metadata = {
   title: 'Writing',
+  description: 'Articles, architectural breakdowns, and engineering notes.',
+  alternates: {
+    canonical: '/blog',
+  },
+  openGraph: {
+    title: 'Writing · Portfolio',
+    description: 'Articles, architectural breakdowns, and engineering notes.',
+    type: 'website',
+    url: `${siteUrl}/blog`,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Writing · Portfolio',
+    description: 'Articles, architectural breakdowns, and engineering notes.',
+  },
 }
 
 export default async function BlogPage({
@@ -29,8 +48,19 @@ export default async function BlogPage({
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
   return (
-    <div className="theme-light min-h-screen bg-paper pb-28 pt-32 sm:pb-36 sm:pt-40">
+    <div className="theme-light min-h-screen bg-paper pb-28 pt-16 sm:pb-36 sm:pt-20">
       <div className="container-page">
+        <header className="mb-10 sm:mb-12">
+          <Reveal>
+            <Link
+              href="/"
+              className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline"
+            >
+              <ArrowLeft size={15} /> Back to main
+            </Link>
+          </Reveal>
+        </header>
+
         <SplitHeading
           text="Writing"
           as="h1"

@@ -34,7 +34,7 @@ export function Pagination({
 
   const pageList = getPageList(currentPage, totalPages)
   const pillClass =
-    'inline-flex h-10 min-w-10 items-center justify-center rounded-full border border-[var(--line)] px-3 font-display text-sm font-medium transition-colors hover:border-accent hover:text-accent'
+    'inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-[var(--line)] px-3.5 font-display text-sm font-medium transition-all hover:bg-accent hover:border-accent hover:text-ink focus-visible:bg-accent focus-visible:text-ink'
 
   return (
     <nav aria-label="Pagination" className="mt-16 flex items-center justify-center gap-2 sm:mt-20">

@@ -82,11 +82,16 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { absolute: title },
     description,
+    alternates: {
+      canonical: '/',
+    },
     openGraph: {
       title,
       description,
       type: 'website',
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630 }] : undefined,
+      url: siteUrl,
+      siteName: settings?.name || 'Portfolio',
+      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: title }] : undefined,
     },
     twitter: {
       card: 'summary_large_image',
@@ -163,15 +168,6 @@ export default async function HomePage() {
       <Writing posts={posts} />
 
       <Awards awards={awards} />
-
-      <Footer
-        headline={settings?.footerHeadline}
-        email={email}
-        ctaLabel={settings?.ctaLabel}
-        footerImageUrl={footerImageUrl}
-        handle={handle}
-        socialLinks={settings?.socialLinks}
-      />
     </>
   )
 }

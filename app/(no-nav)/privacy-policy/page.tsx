@@ -2,9 +2,25 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { Reveal } from '@/components/ui/Reveal'
+import { siteUrl } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
+  description: 'Privacy Policy and data protection details.',
+  alternates: {
+    canonical: '/privacy-policy',
+  },
+  openGraph: {
+    title: 'Privacy Policy · Portfolio',
+    description: 'Privacy Policy and data protection details.',
+    type: 'website',
+    url: `${siteUrl}/privacy-policy`,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Policy · Portfolio',
+    description: 'Privacy Policy and data protection details.',
+  },
 }
 
 export default function PrivacyPolicyPage() {
@@ -18,7 +34,7 @@ export default function PrivacyPolicyPage() {
           <Reveal>
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-accent"
+              className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline"
             >
               <ArrowLeft size={15} /> Back to main
             </Link>
@@ -40,8 +56,8 @@ export default function PrivacyPolicyPage() {
         <Reveal delay={0.1}>
           <div className="space-y-12">
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">1.</span> Introduction
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">1</span> Introduction
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 Welcome to the portfolio website of Kashan Haider. I respect your privacy and am committed to protecting your personal data. This Privacy Policy explains how I collect, use, and safeguard your information when you visit my website and use my contact form.
@@ -49,8 +65,8 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">2.</span> Information I Collect
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">2</span> Information I Collect
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)] mb-4">
                 When you reach out via the Contact Form, I may collect the following personal information:
@@ -72,8 +88,8 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">3.</span> How I Use Your Information
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">3</span> How I Use Your Information
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)] mb-4">
                 The information collected is strictly used for professional purposes:
@@ -86,8 +102,8 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">4.</span> Data Storage and Security
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">4</span> Data Storage and Security
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 Your data is processed securely. Form submissions are stored securely in a managed database (Sanity CMS) and transmitted via encrypted email routing to my personal inbox. I implement strict technical measures (such as server-side validation and in-memory rate limiting) to prevent unauthorized access or data breaches.
@@ -95,8 +111,8 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">5.</span> Third-Party Services
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">5</span> Third-Party Services
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 I do not sell, trade, or rent your personal information to others. However, to operate this website, I utilize trusted third-party infrastructure providers (such as Vercel for hosting and Sanity for database management). These providers are bound by strict data processing agreements and only handle your data to the extent necessary to keep the website functional.
@@ -104,8 +120,8 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">6.</span> Your Rights
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">6</span> Your Rights
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 You have the right to request access to the personal data I hold about you, or to request that I delete your information from my database. To exercise these rights, please contact me directly via the contact page.
@@ -113,8 +129,8 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">7.</span> Data Retention
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">7</span> Data Retention
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 I retain personal information and uploaded files only for as long as reasonably necessary to fulfill the purposes outlined in this policy—typically no longer than 12 months for general inquiries—unless an ongoing professional or contractual relationship is established, or as required by law.
@@ -122,8 +138,8 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">8.</span> Cookies &amp; Analytics
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">8</span> Cookies &amp; Analytics
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 This website may utilize essential cookies and basic, anonymized edge analytics (provided by hosting infrastructure like Vercel) strictly to monitor site performance, security, and uptime. I do not use intrusive third-party marketing or tracking cookies.
@@ -131,8 +147,8 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">9.</span> Cross-Border Data Transfer
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">9</span> Cross-Border Data Transfer
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 Because this website utilizes global cloud infrastructure (such as Vercel and Sanity), data submitted through the contact form may be transferred to, and processed on, servers located outside of your home jurisdiction, including in the United States and European Union. By submitting your information, you consent to this transfer.

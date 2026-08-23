@@ -2,9 +2,25 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { Reveal } from '@/components/ui/Reveal'
+import { siteUrl } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions',
+  description: 'Terms and Conditions for website usage and intellectual property.',
+  alternates: {
+    canonical: '/terms-and-conditions',
+  },
+  openGraph: {
+    title: 'Terms & Conditions · Portfolio',
+    description: 'Terms and Conditions for website usage and intellectual property.',
+    type: 'website',
+    url: `${siteUrl}/terms-and-conditions`,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Terms & Conditions · Portfolio',
+    description: 'Terms and Conditions for website usage and intellectual property.',
+  },
 }
 
 export default function TermsAndConditionsPage() {
@@ -18,7 +34,7 @@ export default function TermsAndConditionsPage() {
           <Reveal>
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-accent"
+              className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline"
             >
               <ArrowLeft size={15} /> Back to main
             </Link>
@@ -40,8 +56,8 @@ export default function TermsAndConditionsPage() {
         <Reveal delay={0.1}>
           <div className="space-y-12">
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">1.</span> Acceptance of Terms
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">1</span> Acceptance of Terms
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 By accessing and using this portfolio website, you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by these terms, please do not use this website.
@@ -49,8 +65,8 @@ export default function TermsAndConditionsPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">2.</span> Intellectual Property
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">2</span> Intellectual Property
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 All content, designs, code, graphics, and text on this website are the intellectual property of Kashan Haider, unless otherwise stated or attributed to specific clients/projects. You may not reproduce, distribute, or create derivative works from this website's content without explicit, written permission.
@@ -58,8 +74,8 @@ export default function TermsAndConditionsPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">3.</span> Use of the Contact Form &amp; File Uploads
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">3</span> Use of the Contact Form &amp; File Uploads
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)] mb-4">
                 The contact form is provided to facilitate professional communication, freelance inquiries, and recruitment. By using the contact form, you agree:
@@ -75,8 +91,8 @@ export default function TermsAndConditionsPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">4.</span> No Binding Contract
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">4</span> No Binding Contract
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 The information provided on this website is for general informational purposes. Submitting a project inquiry or communicating via the contact form does not constitute a legally binding agreement or a commitment to provide services. Formal freelance or employment engagements will be subject to a separate, signed contract.
@@ -84,8 +100,8 @@ export default function TermsAndConditionsPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">5.</span> Limitation of Liability
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">5</span> Limitation of Liability
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 This website and its content are provided on an "as-is" basis. While I strive to keep the portfolio accurate and up-to-date, I make no warranties regarding the completeness or reliability of the information. I shall not be held liable for any direct or indirect damages arising out of your use of this website.
@@ -93,8 +109,8 @@ export default function TermsAndConditionsPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">6.</span> Governing Law
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">6</span> Governing Law
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 These terms and conditions are governed by and construed in accordance with the laws of Pakistan. Any disputes relating to these terms and conditions will be subject to the exclusive jurisdiction of the local courts.
@@ -102,8 +118,8 @@ export default function TermsAndConditionsPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">7.</span> Third-Party IP &amp; Demonstrative Work
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">7</span> Third-Party IP &amp; Demonstrative Work
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 The portfolio projects displayed on this website may include corporate logos, trademarks, open-source components, or references to third-party intellectual property. These are displayed strictly for educational, demonstrative, and portfolio purposes to accurately represent my professional and academic experience. All third-party trademarks and copyrights remain the exclusive property of their respective owners.
@@ -111,8 +127,8 @@ export default function TermsAndConditionsPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">8.</span> External Links Disclaimer
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">8</span> External Links Disclaimer
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 This website contains links to external platforms (such as GitHub, LinkedIn, and X). I am not responsible for the content, privacy practices, or security of these third-party websites. Accessing external links is at your own risk.
@@ -120,8 +136,8 @@ export default function TermsAndConditionsPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
-                <span className="text-accent mr-1.5">9.</span> Modifications to Terms
+              <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">9</span> Modifications to Terms
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
                 I reserve the right to update, modify, or replace these Terms &amp; Conditions and the Privacy Policy at any time without prior notice. Continued use of the website following any changes constitutes acceptance of the new terms.

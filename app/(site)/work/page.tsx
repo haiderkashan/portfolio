@@ -1,17 +1,34 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { PROJECTS_PAGE_QUERY, type Paginated, type ProjectCard } from '@/sanity/lib/queries'
 import { urlForImage } from '@/sanity/lib/image'
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal'
 import { SplitHeading } from '@/components/ui/SplitHeading'
 import { Pagination } from '@/components/ui/Pagination'
+import { siteUrl } from '@/lib/utils'
 
 const PAGE_SIZE = 9
 
 export const metadata: Metadata = {
   title: 'Work',
+  description: 'Featured case studies, engineering projects, and design systems.',
+  alternates: {
+    canonical: '/work',
+  },
+  openGraph: {
+    title: 'Work · Portfolio',
+    description: 'Featured case studies, engineering projects, and design systems.',
+    type: 'website',
+    url: `${siteUrl}/work`,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Work · Portfolio',
+    description: 'Featured case studies, engineering projects, and design systems.',
+  },
 }
 
 export default async function WorkPage({
@@ -31,13 +48,24 @@ export default async function WorkPage({
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
   return (
-    <div className="theme-light min-h-screen bg-paper pb-28 pt-32 sm:pb-36 sm:pt-40">
+    <div className="theme-light min-h-screen bg-paper pb-28 pt-16 sm:pb-36 sm:pt-20">
       <div className="container-page">
+        <header className="mb-10 sm:mb-12">
+          <Reveal>
+            <Link
+              href="/"
+              className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline"
+            >
+              <ArrowLeft size={15} /> Back to main
+            </Link>
+          </Reveal>
+        </header>
+
         <SplitHeading
           text="All Work"
           as="h1"
           className="font-display text-6xl font-bold uppercase leading-[0.92] tracking-tight sm:text-8xl"
-          wordClassName="[&:last-child]:text-accent"
+          wordClassName="[&:last-child]:text-accent-stroke"
         />
 
         {projects.length === 0 ? (

@@ -15,12 +15,12 @@ export function Writing({ posts }: { posts: PostCard[] }) {
           <SplitHeading
             text="Writing"
             as="h2"
-            className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent sm:text-7xl md:text-8xl"
+            className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent-stroke sm:text-7xl md:text-8xl"
           />
           <Reveal delay={0.1}>
             <Link
               href="/blog"
-              className="group inline-flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:text-accent"
+              className="group inline-flex min-h-[44px] items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-[0.1em] text-ink transition-colors hover:text-moss hover:underline decoration-2 underline-offset-4 focus-visible:underline"
             >
               All posts
               <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

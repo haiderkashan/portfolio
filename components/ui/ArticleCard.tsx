@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { ArrowUpRight } from 'lucide-react'
 import { urlForImage } from '@/sanity/lib/image'
 import { formatDate } from '@/lib/utils'
 import type { PostCard } from '@/sanity/lib/queries'
@@ -23,11 +24,17 @@ export function ArticleCard({ post }: { post: PostCard }) {
           />
         )}
       </div>
-      <p className="mt-5 font-body text-xs font-medium uppercase tracking-[0.12em] text-[var(--on-surface-faint)]">
-        {formatDate(post.publishedDate)}
-      </p>
-      <h3 className="mt-2 font-display text-xl font-semibold tracking-tight sm:text-2xl text-ink">
-        {post.title}
+      <div className="mt-5 flex items-center justify-between gap-2">
+        <p className="font-body text-xs font-medium uppercase tracking-[0.12em] text-[var(--on-surface-faint)]">
+          {formatDate(post.publishedDate)}
+        </p>
+        <span className="inline-flex items-center gap-1 rounded-full border border-[var(--line)] px-2.5 py-0.5 font-body text-[11px] font-medium text-[var(--on-surface-soft)] transition-colors group-hover:border-ink group-hover:text-ink">
+          Medium <ArrowUpRight size={12} />
+        </span>
+      </div>
+      <h3 className="mt-2 font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl transition-colors group-hover:text-moss">
+        <span>{post.title}</span>
+        <span className="sr-only"> (opens in a new tab on Medium)</span>
       </h3>
       {post.excerpt && (
         <p className="mt-2 line-clamp-2 font-body text-sm text-[var(--on-surface-soft)]">

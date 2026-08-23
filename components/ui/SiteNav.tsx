@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'motion/react'
 import { useLenis } from 'lenis/react'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
@@ -30,9 +31,11 @@ export function SiteNav({
   socialLinks?: { platform: string; url: string }[]
 }) {
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
   const lenis = useLenis()
   const toggleRef = useRef<HTMLButtonElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
+  const shouldRestoreFocusRef = useRef(true)
 
   useEffect(() => {
     document.documentElement.style.overflow = open ? 'hidden' : ''
@@ -42,27 +45,41 @@ export function SiteNav({
     window.dispatchEvent(new CustomEvent('menuToggle', { detail: { open } }))
   }, [open, lenis])
 
-  // Close automatically if the viewport grows back to desktop while open.
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth >= 1024) setOpen(false)
+  function handleLinkClick(href: string) {
+    if (href.startsWith('/#') || href.startsWith('#')) {
+      shouldRestoreFocusRef.current = false
+      const selector = href.replace(/^\//, '')
+      setTimeout(() => {
+        const target = document.querySelector<HTMLElement>(selector)
+        if (target) {
+          if (!target.hasAttribute('tabindex')) {
+            target.setAttribute('tabindex', '-1')
+          }
+          target.focus()
+        }
+      }, 350)
     }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+    setOpen(false)
+  }
 
   // Focus management: move focus into the overlay when it opens, trap Tab
-  // inside it while open, restore focus to the toggle button on close, and
-  // let Escape close it — standard expectations for a full-screen dialog.
+  // inside it (including the Close toggle button), restore focus on close,
+  // and let Escape close it.
   useEffect(() => {
     if (!open) return
 
     const overlay = overlayRef.current
     const toggleButton = toggleRef.current
-    const focusables = overlay
+    const internalFocusables = overlay
       ? Array.from(overlay.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
       : []
-    focusables[0]?.focus()
+    const focusables = toggleButton
+      ? [toggleButton, ...internalFocusables]
+      : internalFocusables
+
+    if (focusables.length > 0) {
+      focusables[0].focus()
+    }
 
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
@@ -86,9 +103,16 @@ export function SiteNav({
     document.addEventListener('keydown', handleKeyDown)
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
-      toggleButton?.focus()
+      if (shouldRestoreFocusRef.current) {
+        toggleButton?.focus()
+      }
+      shouldRestoreFocusRef.current = true
     }
   }, [open])
+
+  if (pathname !== '/') {
+    return null
+  }
 
   return (
     <>
@@ -100,15 +124,16 @@ export function SiteNav({
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-haspopup="dialog"
+            aria-controls="site-menu-dialog"
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="pointer-events-auto flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-accent px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-ink transition-opacity hover:opacity-90 sm:px-4 sm:text-sm sm:tracking-[0.14em]"
+            className="pointer-events-auto flex min-h-[44px] shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-accent px-4 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.1em] text-ink shadow-md transition-transform hover:scale-[1.03] active:scale-[0.98] sm:text-sm sm:tracking-[0.14em]"
           >
             {open ? 'Close' : 'Menu'}
             {open ? <X size={16} strokeWidth={2.5} /> : <Menu size={16} strokeWidth={2.5} />}
           </button>
 
           {locationTag ? (
-            <span className="pointer-events-auto ml-3 max-w-[55vw] shrink truncate whitespace-nowrap rounded-full bg-accent px-3 py-2 font-display text-xs font-semibold uppercase tracking-[0.1em] text-ink sm:ml-0 sm:max-w-none sm:px-4 sm:text-sm sm:tracking-[0.14em]">
+            <span className="pointer-events-auto ml-3 hidden min-h-[44px] max-w-[55vw] shrink items-center truncate whitespace-nowrap rounded-full bg-accent px-4 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.1em] text-ink shadow-md sm:flex sm:ml-0 sm:max-w-none sm:text-sm sm:tracking-[0.14em]">
               /{locationTag}
             </span>
           ) : (
@@ -121,6 +146,7 @@ export function SiteNav({
         {open && (
           <motion.div
             ref={overlayRef}
+            id="site-menu-dialog"
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
@@ -132,6 +158,7 @@ export function SiteNav({
             transition={{ duration: 0.55, ease: EASE_SWIFT }}
           >
             <motion.nav
+              aria-label="Modal site navigation"
               className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-4"
               initial="hidden"
               animate="show"
@@ -147,7 +174,7 @@ export function SiteNav({
                 >
                   <Link
                     href={link.href}
-                    onClick={() => setOpen(false)}
+                    onClick={() => handleLinkClick(link.href)}
                     className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl"
                   >
                     {link.label}
@@ -187,6 +214,7 @@ export function SiteNav({
                         className="font-body text-xs font-medium uppercase tracking-[0.12em] text-paper/70 transition-colors hover:text-accent"
                       >
                         {s.platform}
+                        <span className="sr-only"> (opens in a new tab)</span>
                       </a>
                     </li>
                   ))}

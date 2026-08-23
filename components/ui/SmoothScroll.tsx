@@ -11,10 +11,11 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         duration: 1.15,
         easing: (t: number) => Math.min(1, 1 - Math.pow(2, -10 * t)),
         smoothWheel: true,
-        touchMultiplier: 1.6,
         wheelMultiplier: 1,
+        touchMultiplier: 1,
+        smoothTouch: false,
         anchors: true,
-      }}
+      } as any}
     >
       {children}
     </ReactLenis>

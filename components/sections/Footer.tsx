@@ -35,7 +35,7 @@ export function Footer({
             <Magnetic>
               <a
                 href={`mailto:${email}`}
-                className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 font-display text-sm font-semibold uppercase tracking-[0.08em] text-ink"
+                className="group inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accent px-7 py-3.5 font-display text-sm font-semibold uppercase tracking-[0.08em] text-ink shadow-lg transition-transform hover:scale-[1.03] active:scale-[0.98]"
               >
                 {ctaLabel || 'TALK WITH ME'}
                 <ArrowUpRight
@@ -56,7 +56,7 @@ export function Footer({
                 <li>
                   <a
                     href={`mailto:${email}`}
-                    className="font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent"
+                    className="inline-flex min-h-[44px] items-center font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent focus-visible:underline"
                   >
                     EMAIL
                   </a>
@@ -68,9 +68,10 @@ export function Footer({
                     href={s.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent"
+                    className="inline-flex min-h-[44px] items-center font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent focus-visible:underline"
                   >
                     {s.platform}
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 </li>
               ))}
@@ -81,7 +82,7 @@ export function Footer({
               <li>
                 <Link
                   href="/terms-and-conditions"
-                  className="font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent"
+                  className="inline-flex min-h-[44px] items-center font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent focus-visible:underline"
                 >
                   TERMS &amp; CONDITIONS
                 </Link>
@@ -89,7 +90,7 @@ export function Footer({
               <li>
                 <Link
                   href="/privacy-policy"
-                  className="font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent"
+                  className="inline-flex min-h-[44px] items-center font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent focus-visible:underline"
                 >
                   PRIVACY POLICY
                 </Link>
@@ -109,7 +110,7 @@ export function Footer({
         </div>
 
         {/* 4. Copyright (Subtle, centered text block at absolute bottom under giant name) */}
-        <p className="mt-8 text-center font-body text-[11px] font-medium tracking-wide text-[var(--on-surface-faint)]/60 sm:mt-12">
+        <p className="mt-8 text-center font-body text-xs font-medium tracking-wide text-[var(--on-surface-soft)] sm:mt-12">
           &copy; {currentYear} {displayName}. All rights reserved.
         </p>
       </div>

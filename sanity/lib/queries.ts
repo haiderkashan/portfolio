@@ -96,6 +96,13 @@ export const PROJECT_SLUGS_QUERY = defineQuery(`
   *[_type == "project" && defined(slug.current)]{ "slug": slug.current }
 `)
 
+export const SITEMAP_PROJECTS_QUERY = defineQuery(`
+  *[_type == "project" && defined(slug.current)]{
+    "slug": slug.current,
+    "_updatedAt": _updatedAt
+  }
+`)
+
 export const PROJECT_QUERY = defineQuery(`
   *[_type == "project" && slug.current == $slug][0]{
     _id, title, "slug": slug.current, period, category, tagline, excerpt,

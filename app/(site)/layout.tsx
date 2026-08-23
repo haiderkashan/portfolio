@@ -3,7 +3,9 @@ import { SiteNav } from '@/components/ui/SiteNav'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { PreviewBanner } from '@/components/PreviewBanner'
+import { Footer } from '@/components/sections/Footer'
 import { sanityFetch } from '@/sanity/lib/fetch'
+import { urlForImage } from '@/sanity/lib/image'
 import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
 
 async function getSettings() {
@@ -12,13 +14,17 @@ async function getSettings() {
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSettings()
+  const name = settings?.name || 'Your Name'
+  const handle = settings?.handle || 'yourname'
+  const email = settings?.email || 'you@example.com'
+  const footerImageUrl = urlForImage(settings?.footerImage)?.width(320).height(240).url()
 
   return (
     <SmoothScroll>
       <PreviewBanner />
       <a
         href="#main-content"
-        className="fixed left-4 top-4 z-[60] -translate-y-24 rounded-full bg-accent px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-transform focus:translate-y-0"
+        className="fixed left-4 top-4 z-[60] -translate-y-24 rounded-full bg-accent px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink shadow-lg transition-transform focus:translate-y-0"
       >
         Skip to content
       </a>
@@ -27,9 +33,18 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         email={settings?.email}
         socialLinks={settings?.socialLinks}
       />
-      <main id="main-content" className="font-body">
+      <main id="main-content" tabIndex={-1} className="font-body outline-none">
         <PageTransition>{children}</PageTransition>
       </main>
+      <Footer
+        headline={settings?.footerHeadline}
+        email={email}
+        ctaLabel={settings?.ctaLabel}
+        footerImageUrl={footerImageUrl}
+        handle={handle}
+        name={name}
+        socialLinks={settings?.socialLinks}
+      />
       <ScrollToTop />
     </SmoothScroll>
   )

@@ -9,7 +9,23 @@ export const metadata: Metadata = {
     default: 'Portfolio',
     template: '%s · Portfolio',
   },
-  description: 'Portfolio, powered by Sanity.',
+  description: 'Portfolio, powered by Next.js and Sanity.',
+  alternates: {
+    canonical: './',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: siteUrl,
+    siteName: 'Portfolio',
+    title: 'Portfolio',
+    description: 'Portfolio, powered by Next.js and Sanity.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Portfolio',
+    description: 'Portfolio, powered by Next.js and Sanity.',
+  },
 }
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {

@@ -41,17 +41,17 @@ export function ContactForm() {
     }
   }
 
-  function handleDragOver(e: DragEvent<HTMLDivElement>) {
+  function handleDragOver(e: DragEvent<HTMLElement>) {
     e.preventDefault()
     setIsDragging(true)
   }
 
-  function handleDragLeave(e: DragEvent<HTMLDivElement>) {
+  function handleDragLeave(e: DragEvent<HTMLElement>) {
     e.preventDefault()
     setIsDragging(false)
   }
 
-  function handleDrop(e: DragEvent<HTMLDivElement>) {
+  function handleDrop(e: DragEvent<HTMLElement>) {
     e.preventDefault()
     setIsDragging(false)
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
@@ -136,7 +136,7 @@ export function ContactForm() {
           <button
             type="button"
             onClick={() => setStatus('idle')}
-            className="mt-5 inline-flex items-center gap-1.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink underline decoration-accent decoration-2 underline-offset-4 hover:text-accent"
+            className="mt-5 inline-flex items-center gap-1.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink underline decoration-ink decoration-2 underline-offset-4 hover:text-moss hover:decoration-moss transition-colors"
           >
             Send another message
           </button>
@@ -157,7 +157,7 @@ export function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClass}>
-            Name <span className="text-accent">*</span>
+            Name <span className="text-ink font-bold ml-0.5" aria-hidden="true">*</span>
           </label>
           <input
             id="name"
@@ -165,6 +165,8 @@ export function ContactForm() {
             type="text"
             required
             maxLength={200}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? 'contact-form-error' : undefined}
             className={fieldInputClass}
             placeholder="Jordan Lee"
           />
@@ -172,7 +174,7 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="email" className={labelClass}>
-            Email Address <span className="text-accent">*</span>
+            Email Address <span className="text-ink font-bold ml-0.5" aria-hidden="true">*</span>
           </label>
           <input
             id="email"
@@ -180,6 +182,8 @@ export function ContactForm() {
             type="email"
             required
             maxLength={200}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? 'contact-form-error' : undefined}
             className={fieldInputClass}
             placeholder="jordan@example.com"
           />
@@ -190,7 +194,7 @@ export function ContactForm() {
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="topic" className={labelClass}>
-            Topic / Inquiry <span className="text-accent">*</span>
+            Topic / Inquiry <span className="text-ink font-bold ml-0.5" aria-hidden="true">*</span>
           </label>
           <select
             id="topic"
@@ -198,6 +202,8 @@ export function ContactForm() {
             required
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? 'contact-form-error' : undefined}
             className={`${fieldInputClass} cursor-pointer`}
           >
             {TOPIC_OPTIONS.map((opt) => (
@@ -217,6 +223,8 @@ export function ContactForm() {
             name="company"
             type="text"
             maxLength={200}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? 'contact-form-error' : undefined}
             className={fieldInputClass}
             placeholder="Acme Studio Inc."
           />
@@ -234,13 +242,15 @@ export function ContactForm() {
             name="phone"
             type="tel"
             maxLength={50}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? 'contact-form-error' : undefined}
             className={fieldInputClass}
             placeholder="+1 (555) 000-0000"
           />
         </div>
 
         <div>
-          <label className={labelClass}>
+          <label htmlFor="file-upload" className={labelClass}>
             File Attachment
           </label>
 
@@ -251,23 +261,30 @@ export function ContactForm() {
             id="file-upload"
             accept=".pdf,.png,.jpg,.jpeg,.webp"
             onChange={handleFileChange}
-            className="hidden"
+            className="sr-only"
           />
 
           {!selectedFile ? (
-            <div
+            <label
+              htmlFor="file-upload"
+              tabIndex={0}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              onClick={() => fileInputRef.current?.click()}
-              className={`group flex cursor-pointer items-center justify-between rounded-xl border py-2.5 px-3.5 transition-all duration-200 shadow-sm ${
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  fileInputRef.current?.click()
+                }
+              }}
+              className={`group flex min-h-[44px] cursor-pointer items-center justify-between rounded-xl border py-2.5 px-3.5 transition-all duration-200 shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 ${
                 isDragging
-                  ? 'border-accent bg-accent/15 text-ink ring-2 ring-accent/30'
-                  : 'border-[var(--line)] bg-[var(--surface-raised)]/70 hover:border-accent hover:bg-accent/10 text-ink'
+                  ? 'border-accent bg-accent/20 text-ink ring-2 ring-accent'
+                  : 'border-[var(--line)] bg-[var(--surface-raised)]/70 hover:border-ink hover:bg-black/5 text-ink'
               }`}
             >
               <div className="flex items-center gap-2.5 min-w-0">
-                <UploadCloud size={17} className="shrink-0 text-accent transition-transform duration-200 group-hover:scale-110" />
+                <UploadCloud size={17} className="shrink-0 text-ink transition-transform duration-200 group-hover:scale-110" />
                 <span className="truncate font-body text-xs font-medium text-ink">
                   Attach file or drop here
                 </span>
@@ -275,11 +292,11 @@ export function ContactForm() {
               <span className="shrink-0 text-[10px] font-medium text-[var(--on-surface-faint)]">
                 PDF/IMG &le;10MB
               </span>
-            </div>
+            </label>
           ) : (
-            <div className="flex items-center justify-between rounded-xl border-2 border-accent/40 bg-[var(--surface-raised)] px-3.5 py-2 shadow-sm">
+            <div className="flex min-h-[44px] items-center justify-between rounded-xl border-2 border-accent bg-[var(--surface-raised)] px-3.5 py-2 shadow-sm">
               <div className="flex items-center gap-2 min-w-0">
-                <FileText size={16} className="shrink-0 text-accent" />
+                <FileText size={16} className="shrink-0 text-ink" />
                 <span className="truncate font-body text-xs font-medium text-ink" title={selectedFile.name}>
                   {selectedFile.name}
                 </span>
@@ -290,10 +307,11 @@ export function ContactForm() {
               <button
                 type="button"
                 onClick={removeFile}
-                className="ml-2 shrink-0 rounded-full p-1 text-[var(--on-surface-soft)] hover:bg-black/10 hover:text-ink transition-colors"
+                className="ml-2 -m-2 flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--on-surface-soft)] hover:bg-black/10 hover:text-ink transition-colors"
                 title="Remove file"
+                aria-label="Remove uploaded file"
               >
-                <X size={14} />
+                <X size={15} />
               </button>
             </div>
           )}
@@ -303,7 +321,7 @@ export function ContactForm() {
       {/* Message Textarea */}
       <div>
         <label htmlFor="message" className={labelClass}>
-          Message <span className="text-accent">*</span>
+          Message <span className="text-ink font-bold ml-0.5" aria-hidden="true">*</span>
         </label>
         <textarea
           id="message"
@@ -311,6 +329,8 @@ export function ContactForm() {
           required
           maxLength={5000}
           rows={3}
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? 'contact-form-error' : undefined}
           className={fieldInputClass}
           placeholder="Tell me about your project, timeline, and goals..."
         />
@@ -320,11 +340,13 @@ export function ContactForm() {
       <AnimatePresence>
         {status === 'error' && (
           <motion.div
+            id="contact-form-error"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="flex items-center gap-2 rounded-lg bg-red-500/10 px-4 py-2.5 text-xs font-medium text-red-600"
+            className="flex items-center gap-2 rounded-lg bg-red-500/10 px-4 py-2.5 text-xs font-medium text-red-700"
             role="alert"
+            aria-live="polite"
           >
             <AlertCircle size={15} className="shrink-0" />
             <span>{error}</span>
@@ -338,7 +360,7 @@ export function ContactForm() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="group inline-flex cursor-pointer items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink disabled:opacity-60"
+            className="group inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink shadow-md transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
           >
             {status === 'loading' ? (
               <>

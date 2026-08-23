@@ -7,7 +7,7 @@ import { urlForImage } from '@/sanity/lib/image'
 import type { ProjectCard } from '@/sanity/lib/queries'
 
 const pillClass =
-  'inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-4 py-2 font-body text-xs font-medium text-[var(--on-surface)] transition-colors hover:border-accent hover:text-accent'
+  'inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--line)] px-4 py-2 font-body text-xs font-medium text-[var(--on-surface)] transition-all hover:bg-accent hover:border-accent hover:text-ink focus-visible:bg-accent focus-visible:text-ink'
 
 export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
   if (!projects.length) return null
@@ -18,7 +18,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
         <SplitHeading
           text="Projects"
           as="h2"
-          className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent sm:text-7xl md:text-8xl"
+          className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent-stroke sm:text-7xl md:text-8xl"
         />
 
         <div className="mt-16 sm:mt-20">
@@ -42,7 +42,12 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                       </p>
                     )}
                     <h3 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">
-                      {project.title}
+                      <Link
+                        href={`/work/${project.slug}`}
+                        className="group/title inline-block transition-colors hover:text-moss hover:underline decoration-2 underline-offset-4 focus-visible:underline"
+                      >
+                        {project.title}
+                      </Link>
                     </h3>
                   </div>
 
@@ -55,7 +60,9 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                     <div className="flex flex-wrap gap-2.5">
                       {project.liveUrl && (
                         <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={pillClass}>
-                          Website <ArrowUpRight size={13} />
+                          Website
+                          <span className="sr-only"> (opens in a new tab)</span>
+                          <ArrowUpRight size={13} />
                         </a>
                       )}
                       {project.secondaryLinkUrl && project.secondaryLinkLabel?.toLowerCase().trim() !== 'case study' && (
@@ -65,7 +72,9 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                           rel="noopener noreferrer"
                           className={pillClass}
                         >
-                          {project.secondaryLinkLabel || 'Link'} <ArrowUpRight size={13} />
+                          {project.secondaryLinkLabel || 'Link'}
+                          <span className="sr-only"> (opens in a new tab)</span>
+                          <ArrowUpRight size={13} />
                         </a>
                       )}
                       <Link href={`/work/${project.slug}`} className={pillClass}>
@@ -77,7 +86,8 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
 
                 <Link
                   href={`/work/${project.slug}`}
-                  className="group/card relative block overflow-hidden rounded-2xl bg-[var(--surface-raised)]"
+                  aria-label={`${project.title} — ${project.tagline}`}
+                  className="group/card relative block overflow-hidden rounded-2xl bg-[var(--surface-raised)] transition-all hover:ring-2 hover:ring-accent"
                 >
                   <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/11]">
                     {coverUrl && (
@@ -91,9 +101,9 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                     )}
                   </div>
                   <div className="p-6">
-                    <h4 className="font-display text-xl font-semibold tracking-tight sm:text-2xl">
+                    <p className="font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl">
                       {project.tagline}
-                    </h4>
+                    </p>
                     {project.excerpt && (
                       <p className="mt-2 line-clamp-2 font-body text-sm text-[var(--on-surface-soft)]">
                         {project.excerpt}
@@ -109,7 +119,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
         <Reveal className="mt-12 flex justify-center sm:mt-16">
           <Link
             href="/work"
-            className="group inline-flex items-center gap-2 rounded-full border border-[var(--line)] px-6 py-3 font-display text-xs font-semibold uppercase tracking-[0.08em] transition-colors hover:border-accent hover:text-accent"
+            className="group inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[var(--line)] px-6 py-3 font-display text-xs font-semibold uppercase tracking-[0.08em] transition-all hover:bg-accent hover:border-accent hover:text-ink focus-visible:bg-accent focus-visible:text-ink"
           >
             View all work
             <ArrowUpRight

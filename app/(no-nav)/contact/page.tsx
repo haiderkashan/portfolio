@@ -6,9 +6,25 @@ import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
 import { Reveal } from '@/components/ui/Reveal'
 import { SplitHeading } from '@/components/ui/SplitHeading'
 import { ContactForm } from '@/components/ContactForm'
+import { siteUrl } from '@/lib/utils'
 
 export const metadata: Metadata = {
   title: 'Contact',
+  description: 'Get in touch for project collaborations, freelance inquiries, or recruitment.',
+  alternates: {
+    canonical: '/contact',
+  },
+  openGraph: {
+    title: 'Contact · Portfolio',
+    description: 'Get in touch for project collaborations, freelance inquiries, or recruitment.',
+    type: 'website',
+    url: `${siteUrl}/contact`,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact · Portfolio',
+    description: 'Get in touch for project collaborations, freelance inquiries, or recruitment.',
+  },
 }
 
 export default async function ContactPage() {
@@ -23,7 +39,7 @@ export default async function ContactPage() {
         <Reveal>
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-accent"
+            className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline"
           >
             <ArrowLeft size={16} /> Back to main
           </Link>
@@ -44,7 +60,7 @@ export default async function ContactPage() {
               Have a project in mind, a question, or an opportunity? Fill out the form or reach out directly at{' '}
               <a
                 href={`mailto:${email}`}
-                className="font-medium text-ink underline decoration-accent decoration-2 underline-offset-2 transition-colors hover:text-accent"
+                className="font-medium text-ink underline decoration-accent decoration-2 underline-offset-2 transition-colors hover:bg-accent/40"
               >
                 {email}
               </a>
@@ -58,9 +74,10 @@ export default async function ContactPage() {
                 href={resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--line)] px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] transition-colors hover:border-accent hover:text-accent"
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[var(--line)] px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] transition-all hover:bg-accent hover:border-accent hover:text-ink focus-visible:bg-accent focus-visible:text-ink"
               >
                 <Download size={14} /> Download resume
+                <span className="sr-only"> (opens in a new tab)</span>
               </a>
             </Reveal>
           )}

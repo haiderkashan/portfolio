@@ -45,9 +45,10 @@ const components: PortableTextComponents = {
         href={value?.href}
         target="_blank"
         rel="noopener noreferrer"
-        className="underline decoration-accent decoration-2 underline-offset-2 transition-colors hover:text-accent"
+        className="font-medium text-ink underline decoration-accent decoration-2 underline-offset-2 transition-colors hover:bg-accent/40"
       >
         {children}
+        <span className="sr-only"> (opens in a new tab)</span>
       </a>
     ),
   },
@@ -62,6 +63,7 @@ const components: PortableTextComponents = {
             alt={value?.alt || ''}
             width={1400}
             height={900}
+            sizes="(min-width: 1024px) 800px, (min-width: 640px) 90vw, 100vw"
             className="h-auto w-full object-cover"
           />
         </span>
