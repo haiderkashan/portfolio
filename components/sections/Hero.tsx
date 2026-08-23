@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
@@ -21,18 +21,8 @@ export function Hero({
   heroImageUrl?: string
 }) {
   const prefersReducedMotion = useReducedMotion()
-  const [isMobile, setIsMobile] = useState(false)
   const [first, last] = splitBrandName(name.toUpperCase())
   const sectionRef = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    function checkMobile() {
-      setIsMobile(window.innerWidth < 768)
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
 
   // Tracks scroll progress as the hero section exits the viewport.
   // Drives the 7-column slice split, angled skew, and alternating vertical shift.
@@ -69,7 +59,6 @@ export function Hero({
 
   const NUM_SLICES = 7
   const slices = Array.from({ length: NUM_SLICES })
-  const disableSlices = prefersReducedMotion || isMobile
 
   return (
     <section
@@ -90,115 +79,115 @@ export function Hero({
         aria-hidden="true"
       >
         <div className="relative h-full w-full overflow-hidden bg-paper">
-          {disableSlices ? (
-            <motion.div
-              style={{
-                opacity: exitOpacity,
-              }}
-              className="relative h-full w-full overflow-hidden"
-            >
-              {heroImageUrl ? (
-                <Image
-                  src={heroImageUrl}
-                  alt=""
-                  fill
-                  priority
-                  sizes="100vw"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
+          {/* Mobile Single Image Container: Rendered purely via CSS to avoid hydration layout shift */}
+          <motion.div
+            style={{
+              opacity: exitOpacity,
+            }}
+            className="relative h-full w-full overflow-hidden md:hidden"
+          >
+            {heroImageUrl ? (
+              <Image
+                src={heroImageUrl}
+                alt={name}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
 
-              {/* Wordmark overlay */}
-              <div className="absolute inset-x-0 bottom-6 flex items-end justify-between gap-4 px-5 sm:bottom-10 sm:px-8 md:px-12">
+            {/* Wordmark overlay */}
+            <div className="absolute inset-x-0 bottom-6 flex items-end justify-between gap-4 px-5 sm:bottom-10 sm:px-8">
+              <span
+                className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+                style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
+              >
+                /{first || last}
+              </span>
+              {first && (
                 <span
-                  className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+                  className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
                   style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
                 >
-                  /{first || last}
+                  {last}/
                 </span>
-                {first && (
-                  <span
-                    className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
-                    style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
-                  >
-                    {last}/
-                  </span>
-                )}
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              style={{
-                skewY: exitSkewY,
-                opacity: exitOpacity,
-                transformOrigin: 'center center',
-              }}
-              className="flex h-full w-full overflow-hidden"
-            >
-              {slices.map((_, i) => {
-                const isOdd = i % 2 === 0
-                const sliceY = isOdd ? exitYOdd : exitYEven
-                // Only the center slice carries priority preload to avoid 7 concurrent preload warnings
-                const isPriority = i === 3
+              )}
+            </div>
+          </motion.div>
 
-                return (
-                  <motion.div
-                    key={i}
+          {/* Desktop Slices: Rendered on md+ */}
+          <motion.div
+            style={{
+              skewY: exitSkewY,
+              opacity: exitOpacity,
+              transformOrigin: 'center center',
+            }}
+            className="hidden md:flex h-full w-full overflow-hidden"
+          >
+            {slices.map((_, i) => {
+              const isOdd = i % 2 === 0
+              const sliceY = isOdd ? exitYOdd : exitYEven
+              // Center slice carries priority on desktop
+              const isPriority = i === 3
+
+              return (
+                <motion.div
+                  key={i}
+                  style={{
+                    y: sliceY,
+                    width: `${100 / NUM_SLICES}%`,
+                    willChange: 'transform',
+                  }}
+                  className="relative h-full overflow-hidden"
+                >
+                  {/* Inner container shifted left to reconstruct 100% of the unified hero image at rest */}
+                  <div
                     style={{
-                      y: sliceY,
-                      width: `${100 / NUM_SLICES}%`,
-                      willChange: 'transform',
+                      width: `${NUM_SLICES * 100}%`,
+                      left: `-${i * 100}%`,
                     }}
-                    className="relative h-full overflow-hidden"
+                    className="absolute inset-y-0"
                   >
-                    {/* Inner container shifted left to reconstruct 100% of the unified hero image at rest */}
-                    <div
-                      style={{
-                        width: `${NUM_SLICES * 100}%`,
-                        left: `-${i * 100}%`,
-                      }}
-                      className="absolute inset-y-0"
-                    >
-                      {heroImageUrl ? (
-                        <Image
-                          src={heroImageUrl}
-                          alt=""
-                          fill
-                          priority={isPriority}
-                          sizes="100vw"
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
+                    {heroImageUrl ? (
+                      <Image
+                        src={heroImageUrl}
+                        alt=""
+                        fill
+                        priority={isPriority}
+                        sizes="100vw"
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
 
-                      {/* Wordmark overlay */}
-                      <div className="absolute inset-x-0 bottom-6 flex items-end justify-between gap-4 px-5 sm:bottom-10 sm:px-8 md:px-12">
+                    {/* Wordmark overlay */}
+                    <div className="absolute inset-x-0 bottom-6 flex items-end justify-between gap-4 px-5 sm:bottom-10 sm:px-8 md:px-12">
+                      <span
+                        className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+                        style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
+                      >
+                        /{first || last}
+                      </span>
+                      {first && (
                         <span
-                          className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+                          className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
                           style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
                         >
-                          /{first || last}
+                          {last}/
                         </span>
-                        {first && (
-                          <span
-                            className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
-                            style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
-                          >
-                            {last}/
-                          </span>
-                        )}
-                      </div>
+                      )}
                     </div>
-                  </motion.div>
-                )
-              })}
-            </motion.div>
-          )}
+                  </div>
+                </motion.div>
+              )
+            })}
+          </motion.div>
         </div>
       </div>
 

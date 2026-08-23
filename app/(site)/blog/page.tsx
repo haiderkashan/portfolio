@@ -12,23 +12,34 @@ import { siteUrl } from '@/lib/utils'
 
 const PAGE_SIZE = 9
 
-export const metadata: Metadata = {
-  title: 'Writing',
-  description: 'Articles, architectural breakdowns, and engineering notes.',
-  alternates: {
-    canonical: '/blog',
-  },
-  openGraph: {
-    title: 'Writing · Portfolio',
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>
+}): Promise<Metadata> {
+  const { page: pageParam } = await searchParams
+  const page = Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
+  const canonicalUrl = page > 1 ? `/blog?page=${page}` : '/blog'
+  const title = page > 1 ? `Writing (Page ${page})` : 'Writing'
+
+  return {
+    title,
     description: 'Articles, architectural breakdowns, and engineering notes.',
-    type: 'website',
-    url: `${siteUrl}/blog`,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Writing · Portfolio',
-    description: 'Articles, architectural breakdowns, and engineering notes.',
-  },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${title} · Portfolio`,
+      description: 'Articles, architectural breakdowns, and engineering notes.',
+      type: 'website',
+      url: `${siteUrl}${canonicalUrl}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} · Portfolio`,
+      description: 'Articles, architectural breakdowns, and engineering notes.',
+    },
+  }
 }
 
 export default async function BlogPage({

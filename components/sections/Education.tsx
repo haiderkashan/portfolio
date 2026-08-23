@@ -35,7 +35,7 @@ export function Education({ education }: { education: EducationEntry[] }) {
                   <div className="flex items-center gap-3">
                     {imageUrl && (
                       <div className="relative h-10 w-14 shrink-0 overflow-hidden rounded-lg border border-[var(--line)] md:hidden">
-                        <Image src={imageUrl} alt="" fill sizes="56px" className="object-cover" />
+                        <Image src={imageUrl} alt={`${entry.institution} campus`} fill sizes="56px" className="object-cover" />
                       </div>
                     )}
                     <h3 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">

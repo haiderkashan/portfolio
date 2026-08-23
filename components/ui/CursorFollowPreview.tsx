@@ -19,6 +19,8 @@ export function CursorFollowPreview({
   const springY = useSpring(y, { stiffness: 320, damping: 32, mass: 0.4 })
 
   useEffect(() => {
+    if (!visible) return
+
     function handleMove(e: PointerEvent) {
       x.set(e.clientX)
       // If cursor is too close to top edge, offset image below cursor instead of above it
@@ -28,9 +30,11 @@ export function CursorFollowPreview({
         y.set(e.clientY)
       }
     }
-    window.addEventListener('pointermove', handleMove)
+    window.addEventListener('pointermove', handleMove, { passive: true })
     return () => window.removeEventListener('pointermove', handleMove)
-  }, [x, y])
+  }, [visible, x, y])
+
+  if (!src) return null
 
   return (
     <motion.div
@@ -39,14 +43,12 @@ export function CursorFollowPreview({
       style={{ x: springX, y: springY, marginLeft: -112, marginTop: -180 }}
       initial={false}
       animate={{
-        opacity: visible && src ? 1 : 0,
-        scale: visible && src ? 1 : 0.86,
+        opacity: visible ? 1 : 0,
+        scale: visible ? 1 : 0.86,
       }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
     >
-      {src ? (
-        <Image src={src} alt={alt} fill sizes="224px" className="object-cover" />
-      ) : null}
+      <Image src={src} alt={alt} fill sizes="224px" className="object-cover" />
     </motion.div>
   )
 }

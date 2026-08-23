@@ -12,23 +12,34 @@ import { siteUrl } from '@/lib/utils'
 
 const PAGE_SIZE = 9
 
-export const metadata: Metadata = {
-  title: 'Work',
-  description: 'Featured case studies, engineering projects, and design systems.',
-  alternates: {
-    canonical: '/work',
-  },
-  openGraph: {
-    title: 'Work · Portfolio',
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>
+}): Promise<Metadata> {
+  const { page: pageParam } = await searchParams
+  const page = Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
+  const canonicalUrl = page > 1 ? `/work?page=${page}` : '/work'
+  const title = page > 1 ? `Work (Page ${page})` : 'Work'
+
+  return {
+    title,
     description: 'Featured case studies, engineering projects, and design systems.',
-    type: 'website',
-    url: `${siteUrl}/work`,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Work · Portfolio',
-    description: 'Featured case studies, engineering projects, and design systems.',
-  },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${title} · Portfolio`,
+      description: 'Featured case studies, engineering projects, and design systems.',
+      type: 'website',
+      url: `${siteUrl}${canonicalUrl}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} · Portfolio`,
+      description: 'Featured case studies, engineering projects, and design systems.',
+    },
+  }
 }
 
 export default async function WorkPage({

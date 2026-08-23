@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { draftMode } from 'next/headers'
 import { client, getPreviewClient } from './client'
 
@@ -13,10 +14,11 @@ import { client, getPreviewClient } from './client'
  * published-only behavior as before - this only branches when Draft Mode's
  * cookie is actually present on the request.
  */
-export async function sanityFetch<T>(
+async function sanityFetchRaw<T>(
   query: string,
   params: Record<string, unknown> = {},
   fallback: T,
+  tags: string[] = [],
   revalidateSeconds = process.env.NODE_ENV === 'development' ? 0 : 60
 ): Promise<T> {
   try {
@@ -29,7 +31,12 @@ export async function sanityFetch<T>(
           params,
           revalidateSeconds === 0
             ? { cache: 'no-store' }
-            : { next: { revalidate: revalidateSeconds } }
+            : {
+                next: {
+                  revalidate: revalidateSeconds,
+                  tags: [...tags, 'sanity'],
+                },
+              }
         )
 
     return result ?? fallback
@@ -43,3 +50,6 @@ export async function sanityFetch<T>(
     return fallback
   }
 }
+
+export const sanityFetch = cache(sanityFetchRaw)
+

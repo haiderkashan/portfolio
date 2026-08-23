@@ -54,7 +54,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                   <div className="flex flex-wrap items-center gap-4">
                     {thumbUrl && (
                       <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border border-[var(--line)]">
-                        <Image src={thumbUrl} alt="" fill sizes="96px" className="object-cover" />
+                        <Image src={thumbUrl} alt={`${project.title} thumbnail`} fill sizes="96px" className="object-cover" />
                       </div>
                     )}
                     <div className="flex flex-wrap gap-2.5">
@@ -93,7 +93,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                     {coverUrl && (
                       <Image
                         src={coverUrl}
-                        alt=""
+                        alt={project.tagline || project.title}
                         fill
                         sizes="(min-width: 768px) 46vw, 92vw"
                         className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"

@@ -3,6 +3,19 @@ import type { PortableTextBlock } from '@portabletext/react'
 import Image from 'next/image'
 import { urlForImage } from '@/sanity/lib/image'
 
+function getImageDimensions(value: any): { width: number; height: number } {
+  const ref = value?.asset?._ref || value?.asset?._id || ''
+  const match = /-(\d+)x(\d+)-/.exec(ref)
+  if (match) {
+    const width = parseInt(match[1], 10)
+    const height = parseInt(match[2], 10)
+    if (!isNaN(width) && !isNaN(height) && width > 0 && height > 0) {
+      return { width, height }
+    }
+  }
+  return { width: 1400, height: 900 }
+}
+
 const components: PortableTextComponents = {
   block: {
     h2: ({ children }) => (
@@ -56,15 +69,16 @@ const components: PortableTextComponents = {
     image: ({ value }) => {
       const url = urlForImage(value)?.width(1400).url()
       if (!url) return null
+      const { width, height } = getImageDimensions(value)
       return (
-        <span className="my-8 block overflow-hidden rounded-xl">
+        <span className="my-8 block overflow-hidden rounded-xl bg-[var(--surface-raised)]">
           <Image
             src={url}
-            alt={value?.alt || ''}
-            width={1400}
-            height={900}
+            alt={value?.alt || 'Project visual'}
+            width={width}
+            height={height}
             sizes="(min-width: 1024px) 800px, (min-width: 640px) 90vw, 100vw"
-            className="h-auto w-full object-cover"
+            className="h-auto w-full object-contain"
           />
         </span>
       )

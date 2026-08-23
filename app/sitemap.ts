@@ -1,14 +1,26 @@
 import type { MetadataRoute } from 'next'
 import { sanityFetch } from '@/sanity/lib/fetch'
-import { SITEMAP_PROJECTS_QUERY } from '@/sanity/lib/queries'
+import { defineQuery } from 'next-sanity'
 import { siteUrl } from '@/lib/utils'
 
+const SITEMAP_CONTENT_QUERY = defineQuery(`
+  {
+    "projects": *[_type == "project" && defined(slug.current)]{
+      "slug": slug.current,
+      "_updatedAt": _updatedAt
+    },
+    "posts": *[_type == "post" && defined(slug.current)]{
+      "slug": slug.current,
+      "_updatedAt": _updatedAt
+    }
+  }
+`)
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const projects = await sanityFetch<{ slug: string; _updatedAt?: string }[]>(
-    SITEMAP_PROJECTS_QUERY,
-    {},
-    []
-  )
+  const data = await sanityFetch<{
+    projects: { slug: string; _updatedAt?: string }[]
+    posts: { slug: string; _updatedAt?: string }[]
+  }>(SITEMAP_CONTENT_QUERY, {}, { projects: [], posts: [] }, ['sitemap'])
 
   const buildDate = new Date()
 
@@ -34,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${siteUrl}/contact`,
       lastModified: buildDate,
-      changeFrequency: 'yearly',
+      changeFrequency: 'monthly',
       priority: 0.6,
     },
     {
@@ -51,13 +63,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  const projectRoutes: MetadataRoute.Sitemap = projects.map(({ slug, _updatedAt }) => ({
+  const projectRoutes: MetadataRoute.Sitemap = data.projects.map(({ slug, _updatedAt }) => ({
     url: `${siteUrl}/work/${slug}`,
     lastModified: _updatedAt ? new Date(_updatedAt) : buildDate,
     changeFrequency: 'monthly',
     priority: 0.8,
   }))
 
-  return [...staticRoutes, ...projectRoutes]
+  const postRoutes: MetadataRoute.Sitemap = data.posts.map(({ slug, _updatedAt }) => ({
+    url: `${siteUrl}/blog/${slug}`,
+    lastModified: _updatedAt ? new Date(_updatedAt) : buildDate,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }))
+
+  return [...staticRoutes, ...projectRoutes, ...postRoutes]
 }
 
