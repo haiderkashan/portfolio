@@ -25,13 +25,9 @@ export function Hero({
   const [first, last] = splitBrandName(name.toUpperCase())
   const sectionRef = useRef<HTMLElement>(null)
 
-  const boxTransition = prefersReducedMotion
-    ? { duration: 0.2 }
-    : { duration: 1.3, ease: EASE_SWIFT }
-
   useEffect(() => {
-    // Short beat on the collapsed rounded card before expanding into full-screen hero.
-    const t = setTimeout(() => setStarted(true), prefersReducedMotion ? 0 : 450)
+    // Guaranteed beat on the collapsed rounded card before expanding into full-screen hero.
+    const t = setTimeout(() => setStarted(true), prefersReducedMotion ? 0 : 350)
     return () => clearTimeout(t)
   }, [prefersReducedMotion])
 
@@ -90,16 +86,20 @@ export function Hero({
         aria-hidden="true"
       >
         <motion.div
-          layout
-          transition={boxTransition}
-          className={cn(
-            'relative overflow-hidden bg-paper transition-all',
+          initial={{ width: 'min(88vw, 720px)', height: 'min(55vw, 450px)', borderRadius: '28px' }}
+          animate={
             started
-              ? 'h-full w-full rounded-none'
-              : 'aspect-[16/10] w-[min(88vw,720px)] rounded-[28px]'
-          )}
+              ? { width: '100%', height: '100%', borderRadius: '0px' }
+              : { width: 'min(88vw, 720px)', height: 'min(55vw, 450px)', borderRadius: '28px' }
+          }
+          transition={
+            prefersReducedMotion
+              ? { duration: 0.2 }
+              : { duration: 1.5, ease: [0.22, 1, 0.36, 1] }
+          }
+          className="relative overflow-hidden bg-paper"
         >
-          {/* Sliced container for 7 vertical columns during scroll exit on ALL devices (mobile & desktop) */}
+          {/* Sliced container for 7 vertical columns during scroll exit on ALL devices */}
           <motion.div
             style={{
               skewY: exitSkewY,
@@ -155,8 +155,6 @@ export function Hero({
                       )}
                     >
                       <motion.span
-                        layout="position"
-                        transition={boxTransition}
                         className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
                         style={{
                           fontSize: started
@@ -168,8 +166,6 @@ export function Hero({
                       </motion.span>
                       {first && (
                         <motion.span
-                          layout="position"
-                          transition={boxTransition}
                           className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
                           style={{
                             fontSize: started

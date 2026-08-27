@@ -98,11 +98,11 @@ export function Footer({
           </div>
         </Reveal>
 
-        {/* 3. Giant Typography (100% visible, fully centered, no overflow clipping) */}
-        <div className="mt-12 sm:mt-16">
+        {/* 3. Giant Typography (100% visible, fully centered, constrained to viewport) */}
+        <div className="mt-12 w-full max-w-full overflow-hidden sm:mt-16">
           <Link
             href="/#top"
-            className="block text-center font-display text-[12vw] font-bold uppercase leading-none tracking-tight text-paper transition-colors hover:text-accent sm:text-[10vw]"
+            className="block w-full max-w-full truncate text-center font-display text-[8.5vw] font-bold uppercase leading-none tracking-tight text-paper transition-colors hover:text-accent sm:text-[10vw]"
           >
             /{displayHandle}/
           </Link>

@@ -106,15 +106,15 @@ export function IntroStatement({
           {bio && (
             <motion.div
               style={{ opacity: bodyOpacity, y: bodyY }}
-              className="max-w-sm text-center md:text-left"
+              className="flex max-w-md flex-col items-center text-center"
             >
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)] sm:text-lg">
                 {bio}
               </p>
-              <Magnetic className="mt-6 inline-block">
+              <Magnetic className="mt-6">
                 <Link
                   href="/#about"
-                  className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink"
+                  className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-transform hover:scale-[1.03] active:scale-[0.98]"
                 >
                   About me
                   <ArrowUpRight
