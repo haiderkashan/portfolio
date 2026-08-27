@@ -38,6 +38,7 @@ export function SiteNav({
   const shouldRestoreFocusRef = useRef(true)
 
   useEffect(() => {
+    window.dispatchEvent(new CustomEvent('menuToggle', { detail: { open } }))
     if (open) {
       document.documentElement.style.overflow = 'hidden'
       lenis?.stop()
@@ -53,20 +54,23 @@ export function SiteNav({
   }, [open, lenis])
 
   function handleLinkClick(href: string) {
+    setOpen(false)
     if (href.startsWith('/#') || href.startsWith('#')) {
       shouldRestoreFocusRef.current = false
       const selector = href.replace(/^\//, '')
-      setTimeout(() => {
-        const target = document.querySelector<HTMLElement>(selector)
-        if (target) {
-          if (!target.hasAttribute('tabindex')) {
-            target.setAttribute('tabindex', '-1')
+      if (pathname === '/') {
+        setTimeout(() => {
+          const target = document.querySelector<HTMLElement>(selector)
+          if (target) {
+            lenis?.scrollTo(target, { immediate: false })
+            if (!target.hasAttribute('tabindex')) {
+              target.setAttribute('tabindex', '-1')
+            }
+            target.focus()
           }
-          target.focus()
-        }
-      }, 350)
+        }, 150)
+      }
     }
-    setOpen(false)
   }
 
   // Focus management: move focus into the overlay when it opens, trap Tab
@@ -116,10 +120,6 @@ export function SiteNav({
       shouldRestoreFocusRef.current = true
     }
   }, [open])
-
-  if (pathname !== '/') {
-    return null
-  }
 
   return (
     <>

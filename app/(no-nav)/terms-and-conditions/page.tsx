@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { Reveal } from '@/components/ui/Reveal'
+import { BackButton } from '@/components/ui/BackButton'
 import { siteUrl } from '@/lib/utils'
 
 export const metadata: Metadata = {
@@ -32,12 +33,7 @@ export default function TermsAndConditionsPage() {
         {/* Back Button */}
         <header className="mb-10">
           <Reveal>
-            <Link
-              href="/"
-              className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline"
-            >
-              <ArrowLeft size={15} /> Back to main
-            </Link>
+            <BackButton fallbackHref="/" label="Back to main" />
           </Reveal>
         </header>
 

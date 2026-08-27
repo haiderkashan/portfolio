@@ -5,6 +5,7 @@ import { sanityFetch } from '@/sanity/lib/fetch'
 import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
 import { Reveal } from '@/components/ui/Reveal'
 import { SplitHeading } from '@/components/ui/SplitHeading'
+import { BackButton } from '@/components/ui/BackButton'
 import { ContactForm } from '@/components/ContactForm'
 import { siteUrl } from '@/lib/utils'
 
@@ -37,12 +38,7 @@ export default async function ContactPage() {
       {/* Top Header Bar / Back Navigation */}
       <header className="container-page pt-6 sm:pt-8 pb-3 shrink-0">
         <Reveal>
-          <Link
-            href="/"
-            className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline"
-          >
-            <ArrowLeft size={16} /> Back to main
-          </Link>
+          <BackButton fallbackHref="/" label="Back to main" />
         </Reveal>
       </header>
 

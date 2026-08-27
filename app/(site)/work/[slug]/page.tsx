@@ -8,6 +8,7 @@ import { PROJECT_QUERY, PROJECT_SLUGS_QUERY, ALL_PROJECTS_QUERY, type ProjectFul
 import { urlForImage } from '@/sanity/lib/image'
 import { Reveal } from '@/components/ui/Reveal'
 import { SplitHeading } from '@/components/ui/SplitHeading'
+import { BackButton } from '@/components/ui/BackButton'
 import { PortableTextRenderer } from '@/components/PortableTextRenderer'
 
 import { JsonLd } from '@/components/JsonLd'
@@ -102,12 +103,7 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
       <header className="pt-16 sm:pt-20">
         <div className="container-page">
           <Reveal>
-            <Link
-              href="/#work"
-              className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline"
-            >
-              <ArrowLeft size={15} /> Back to work
-            </Link>
+            <BackButton fallbackHref="/#work" label="Back to work" />
           </Reveal>
 
           {(project.category || project.period) && (
