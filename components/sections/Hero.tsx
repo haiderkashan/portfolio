@@ -1,13 +1,13 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import { EASE_SWIFT } from '@/components/ui/Reveal'
 import { Magnetic } from '@/components/ui/Magnetic'
-import { splitBrandName } from '@/lib/utils'
+import { cn, splitBrandName } from '@/lib/utils'
 
 export function Hero({
   name,
@@ -21,8 +21,19 @@ export function Hero({
   heroImageUrl?: string
 }) {
   const prefersReducedMotion = useReducedMotion()
+  const [started, setStarted] = useState(false)
   const [first, last] = splitBrandName(name.toUpperCase())
   const sectionRef = useRef<HTMLElement>(null)
+
+  const boxTransition = prefersReducedMotion
+    ? { duration: 0.2 }
+    : { duration: 1.3, ease: EASE_SWIFT }
+
+  useEffect(() => {
+    // Short beat on the collapsed rounded card before expanding into full-screen hero.
+    const t = setTimeout(() => setStarted(true), prefersReducedMotion ? 0 : 450)
+    return () => clearTimeout(t)
+  }, [prefersReducedMotion])
 
   // Tracks scroll progress as the hero section exits the viewport.
   // Drives the 7-column slice split, angled skew, and alternating vertical shift.
@@ -72,66 +83,34 @@ export function Hero({
         {role && <p>{role}</p>}
       </div>
 
-      {/* Centered container driving 3D scroll exit without artificial CLS delay */}
+      {/* Centered container driving initial card expansion + 3D scroll exit */}
       <div
         className="absolute inset-0 flex items-center justify-center"
         style={{ perspective: 1400 }}
         aria-hidden="true"
       >
-        <div className="relative h-full w-full overflow-hidden bg-paper">
-          {/* Mobile Single Image Container: Rendered purely via CSS to avoid hydration layout shift */}
-          <motion.div
-            style={{
-              opacity: exitOpacity,
-            }}
-            className="relative h-full w-full overflow-hidden md:hidden"
-          >
-            {heroImageUrl ? (
-              <Image
-                src={heroImageUrl}
-                alt={name}
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover"
-              />
-            ) : (
-              <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
-
-            {/* Wordmark overlay */}
-            <div className="absolute inset-x-0 bottom-6 flex items-end justify-between gap-4 px-5 sm:bottom-10 sm:px-8">
-              <span
-                className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
-                style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
-              >
-                /{first || last}
-              </span>
-              {first && (
-                <span
-                  className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
-                  style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
-                >
-                  {last}/
-                </span>
-              )}
-            </div>
-          </motion.div>
-
-          {/* Desktop Slices: Rendered on md+ */}
+        <motion.div
+          layout
+          transition={boxTransition}
+          className={cn(
+            'relative overflow-hidden bg-paper transition-all',
+            started
+              ? 'h-full w-full rounded-none'
+              : 'aspect-[16/10] w-[min(88vw,720px)] rounded-[28px]'
+          )}
+        >
+          {/* Sliced container for 7 vertical columns during scroll exit on ALL devices (mobile & desktop) */}
           <motion.div
             style={{
               skewY: exitSkewY,
               opacity: exitOpacity,
               transformOrigin: 'center center',
             }}
-            className="hidden md:flex h-full w-full overflow-hidden"
+            className="flex h-full w-full overflow-hidden"
           >
             {slices.map((_, i) => {
               const isOdd = i % 2 === 0
               const sliceY = isOdd ? exitYOdd : exitYEven
-              // Center slice carries priority on desktop
               const isPriority = i === 3
 
               return (
@@ -167,20 +146,39 @@ export function Hero({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
 
                     {/* Wordmark overlay */}
-                    <div className="absolute inset-x-0 bottom-6 flex items-end justify-between gap-4 px-5 sm:bottom-10 sm:px-8 md:px-12">
-                      <span
+                    <div
+                      className={cn(
+                        'absolute px-5 sm:px-8 md:px-12',
+                        started
+                          ? 'inset-x-0 bottom-6 flex items-end justify-between gap-4 sm:bottom-10'
+                          : 'inset-0 flex flex-col items-center justify-center gap-0.5'
+                      )}
+                    >
+                      <motion.span
+                        layout="position"
+                        transition={boxTransition}
                         className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
-                        style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
+                        style={{
+                          fontSize: started
+                            ? 'clamp(2.75rem,9.5vw,7.25rem)'
+                            : 'clamp(1.4rem,5.2vw,2.4rem)',
+                        }}
                       >
                         /{first || last}
-                      </span>
+                      </motion.span>
                       {first && (
-                        <span
+                        <motion.span
+                          layout="position"
+                          transition={boxTransition}
                           className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
-                          style={{ fontSize: 'clamp(2.75rem,9.5vw,7.25rem)' }}
+                          style={{
+                            fontSize: started
+                              ? 'clamp(2.75rem,9.5vw,7.25rem)'
+                              : 'clamp(1.4rem,5.2vw,2.4rem)',
+                          }}
                         >
                           {last}/
-                        </span>
+                        </motion.span>
                       )}
                     </div>
                   </div>
@@ -188,7 +186,7 @@ export function Hero({
               )
             })}
           </motion.div>
-        </div>
+        </motion.div>
       </div>
 
       <motion.div
@@ -197,8 +195,8 @@ export function Hero({
       >
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4, ease: EASE_SWIFT }}
+          animate={{ opacity: started ? 1 : 0, y: started ? 0 : 16 }}
+          transition={{ duration: 0.7, delay: 1.05, ease: EASE_SWIFT }}
           className="absolute inset-x-0 px-5 sm:px-8 md:px-12"
           style={{ bottom: 'clamp(7rem, 17vw, 10.5rem)' }}
         >
@@ -229,8 +227,8 @@ export function Hero({
 
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
+          animate={{ opacity: started ? 1 : 0 }}
+          transition={{ duration: 0.7, delay: 1.3 }}
           className="pointer-events-auto absolute inset-x-0 bottom-5 flex flex-col items-center gap-1.5 sm:bottom-7"
         >
           <a
@@ -253,9 +251,3 @@ export function Hero({
     </section>
   )
 }
-
-
-
-
-
-
