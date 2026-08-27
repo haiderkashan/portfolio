@@ -22,6 +22,7 @@ export function Hero({
 }) {
   const prefersReducedMotion = useReducedMotion()
   const [started, setStarted] = useState(false)
+  const [numSlices, setNumSlices] = useState(7)
   const [first, last] = splitBrandName(name.toUpperCase())
   const sectionRef = useRef<HTMLElement>(null)
 
@@ -31,8 +32,18 @@ export function Hero({
     return () => clearTimeout(t)
   }, [prefersReducedMotion])
 
+  // Optimize slice count: 5 columns on phone screens (< 768px) and 7 on desktop
+  useEffect(() => {
+    function handleResize() {
+      setNumSlices(window.innerWidth < 768 ? 5 : 7)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   // Tracks scroll progress as the hero section exits the viewport.
-  // Drives the 7-column slice split, angled skew, and alternating vertical shift.
+  // Drives the slice split, angled skew, and alternating vertical shift.
   const { scrollYProgress: exitProgress } = useScroll({
     target: sectionRef,
     offset: ['end end', 'end start'],
@@ -64,8 +75,7 @@ export function Hero({
     prefersReducedMotion ? [1, 1] : [1, 0]
   )
 
-  const NUM_SLICES = 7
-  const slices = Array.from({ length: NUM_SLICES })
+  const slices = Array.from({ length: numSlices })
 
   return (
     <section
@@ -99,7 +109,7 @@ export function Hero({
           }
           className="relative overflow-hidden bg-paper"
         >
-          {/* Sliced container for 7 vertical columns during scroll exit on ALL devices */}
+          {/* Sliced container for vertical columns during scroll exit */}
           <motion.div
             style={{
               skewY: exitSkewY,
@@ -111,22 +121,24 @@ export function Hero({
             {slices.map((_, i) => {
               const isOdd = i % 2 === 0
               const sliceY = isOdd ? exitYOdd : exitYEven
-              const isPriority = i === 3
+              const isPriority = i === Math.floor(numSlices / 2)
 
               return (
                 <motion.div
                   key={i}
                   style={{
                     y: sliceY,
-                    width: `${100 / NUM_SLICES}%`,
+                    width: `calc(${100 / numSlices}% + 1px)`,
                     willChange: 'transform',
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
                   }}
                   className="relative h-full overflow-hidden"
                 >
                   {/* Inner container shifted left to reconstruct 100% of the unified hero image at rest */}
                   <div
                     style={{
-                      width: `${NUM_SLICES * 100}%`,
+                      width: `calc(${numSlices * 100}% + ${numSlices}px)`,
                       left: `-${i * 100}%`,
                     }}
                     className="absolute inset-y-0"
