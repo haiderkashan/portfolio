@@ -49,6 +49,14 @@ export function Hero({
     offset: ['end end', 'end start'],
   })
 
+  // Single unified image overlay: 100% visible at rest (zero seams during initial card expansion),
+  // smoothly fades out as scroll exit begins so the sliced columns take over.
+  const singleImageOpacity = useTransform(
+    exitProgress,
+    [0, 0.06],
+    [1, 0]
+  )
+
   const exitSkewY = useTransform(
     exitProgress,
     [0, 1],
@@ -128,7 +136,7 @@ export function Hero({
                   key={i}
                   style={{
                     y: sliceY,
-                    width: `calc(${100 / numSlices}% + 1px)`,
+                    width: `calc(${100 / numSlices}% + 1.5px)`,
                     willChange: 'transform',
                     transform: 'translateZ(0)',
                     backfaceVisibility: 'hidden',
@@ -138,7 +146,7 @@ export function Hero({
                   {/* Inner container shifted left to reconstruct 100% of the unified hero image at rest */}
                   <div
                     style={{
-                      width: `calc(${numSlices * 100}% + ${numSlices}px)`,
+                      width: `calc(${numSlices * 100}% + ${numSlices * 1.5}px)`,
                       left: `-${i * 100}%`,
                     }}
                     className="absolute inset-y-0"
@@ -193,6 +201,59 @@ export function Hero({
                 </motion.div>
               )
             })}
+          </motion.div>
+
+          {/* Unified single image layer at rest — guarantees 100% seam-free initial box expansion */}
+          <motion.div
+            style={{ opacity: singleImageOpacity }}
+            className="pointer-events-none absolute inset-0 z-[5] overflow-hidden"
+          >
+            {heroImageUrl ? (
+              <Image
+                src={heroImageUrl}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
+
+            {/* Wordmark overlay for seamless entrance match */}
+            <div
+              className={cn(
+                'absolute px-5 sm:px-8 md:px-12',
+                started
+                  ? 'inset-x-0 bottom-6 flex items-end justify-between gap-4 sm:bottom-10'
+                  : 'inset-0 flex flex-col items-center justify-center gap-0.5'
+              )}
+            >
+              <motion.span
+                className="font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+                style={{
+                  fontSize: started
+                    ? 'clamp(2.75rem,9.5vw,7.25rem)'
+                    : 'clamp(1.4rem,5.2vw,2.4rem)',
+                }}
+              >
+                /{first || last}
+              </motion.span>
+              {first && (
+                <motion.span
+                  className="text-right font-display font-bold uppercase leading-[0.86] tracking-tight text-accent drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+                  style={{
+                    fontSize: started
+                      ? 'clamp(2.75rem,9.5vw,7.25rem)'
+                      : 'clamp(1.4rem,5.2vw,2.4rem)',
+                  }}
+                >
+                  {last}/
+                </motion.span>
+              )}
+            </div>
           </motion.div>
         </motion.div>
       </div>
