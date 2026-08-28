@@ -11,7 +11,7 @@ const HIDDEN_TYPES = new Set([
   'education',
   'service',
   'award',
-  'post',
+  'curatedPost',
   'contactSubmission',
 ])
 
@@ -60,12 +60,12 @@ export const structure: StructureResolver = (S, context) =>
       S.divider(),
 
       S.listItem()
-        .title('Blog Posts')
+        .title('Curated Posts')
         .icon(EditIcon)
         .child(
-          S.documentTypeList('post')
-            .title('Blog Posts')
-            .defaultOrdering([{ field: 'publishedAt', direction: 'desc' }])
+          S.documentTypeList('curatedPost')
+            .title('Curated Posts (Medium)')
+            .defaultOrdering([{ field: 'displayOrder', direction: 'asc' }])
         ),
       S.listItem()
         .title('Contact Submissions')

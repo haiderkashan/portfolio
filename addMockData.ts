@@ -23,7 +23,7 @@ async function run() {
   client = getWriteClient()
 
   console.log("Cleaning up old documents...")
-  const oldDocs = (await client.fetch('*[_type in ["siteSettings", "project", "experience", "education", "service", "post", "curatedPost", "award"]]')) as Array<{ _id: string }>
+  const oldDocs = (await client.fetch('*[_type in ["siteSettings", "project", "experience", "education", "service", "curatedPost", "award"]]')) as Array<{ _id: string }>
   for (const doc of oldDocs) {
     if (doc._id) {
       await client.delete(doc._id).catch(() => {})
