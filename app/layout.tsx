@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description,
     alternates: {
-      canonical: './',
+      canonical: '/',
     },
     openGraph: {
       type: 'website',
