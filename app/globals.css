@@ -8,7 +8,6 @@
 @theme {
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
-  --font-script: var(--font-caveat), cursive;
 
   --color-ink: #0a0a08;
   --color-paper: #faf8f2;
@@ -92,11 +91,10 @@ p.text-left {
   box-shadow: 0 0 0 4px var(--color-accent);
 }
 
-/* High-contrast aesthetic stroke for yellow display headings on light paper */
-.text-accent-stroke {
-  color: var(--color-accent);
-  -webkit-text-stroke: max(1.5px, 0.025em) var(--color-ink);
-  text-shadow: 0 2px 12px rgba(10, 10, 8, 0.08);
+/* Hard, non-blurred yellow drop shadow for high-contrast brutalist headings (WCAG AA compliant) */
+.text-brutalist-shadow {
+  color: var(--color-ink);
+  text-shadow: 0.04em 0.04em 0px var(--color-accent);
 }
 
 /* Utility: page container used by every section */

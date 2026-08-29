@@ -18,7 +18,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
         <SplitHeading
           text="Projects"
           as="h2"
-          className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent-stroke sm:text-7xl md:text-8xl"
+          className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-brutalist-shadow sm:text-7xl md:text-8xl"
         />
 
         <div className="mt-12 sm:mt-16">

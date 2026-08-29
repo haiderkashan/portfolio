@@ -40,7 +40,7 @@ export function Quote({
         />
         {signature && (
           <Reveal delay={0.3} className="mt-8 text-center">
-            <span className="font-script text-3xl font-semibold text-ink sm:text-4xl">
+            <span className="font-display text-xs font-semibold uppercase tracking-[0.14em] text-ink sm:text-sm">
               — {signature} —
             </span>
           </Reveal>

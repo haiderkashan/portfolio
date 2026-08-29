@@ -146,7 +146,7 @@ export default async function WorkPage({
           text="All Work"
           as="h1"
           className="font-display text-6xl font-bold uppercase leading-[0.92] tracking-tight sm:text-8xl"
-          wordClassName="[&:last-child]:text-accent-stroke"
+          wordClassName="[&:last-child]:text-brutalist-shadow"
         />
 
         {projects.length === 0 ? (

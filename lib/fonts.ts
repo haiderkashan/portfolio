@@ -1,4 +1,4 @@
-import { Archivo, Inter_Tight, Caveat } from 'next/font/google'
+import { Archivo, Inter_Tight } from 'next/font/google'
 
 export const archivo = Archivo({
   subsets: ['latin'],
@@ -16,14 +16,5 @@ export const interTight = Inter_Tight({
   preload: true,
 })
 
-export const caveat = Caveat({
-  subsets: ['latin'],
-  weight: ['500', '600'],
-  variable: '--font-caveat',
-  display: 'swap',
-  adjustFontFallback: true,
-  preload: true,
-})
-
-export const fontVariables = `${archivo.variable} ${interTight.variable} ${caveat.variable}`
+export const fontVariables = `${archivo.variable} ${interTight.variable}`
 

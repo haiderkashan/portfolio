@@ -4,6 +4,7 @@ import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { PreviewBanner } from '@/components/PreviewBanner'
 import { Footer } from '@/components/sections/Footer'
+import { GlobalCursorPreview } from '@/components/ui/GlobalCursorPreview'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
 
@@ -42,6 +43,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         name={name}
         socialLinks={settings?.socialLinks}
       />
+      <GlobalCursorPreview />
       <ScrollToTop />
     </SmoothScroll>
   )
