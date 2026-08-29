@@ -29,7 +29,7 @@ export function ArticleCard({
             placeholder={post.coverImage?.lqip ? 'blur' : 'empty'}
             blurDataURL={post.coverImage?.lqip}
             sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 92vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover-desktop-scale-105"
           />
         )}
       </div>
@@ -37,11 +37,11 @@ export function ArticleCard({
         <p className="font-body text-xs font-medium uppercase tracking-[0.12em] text-[var(--on-surface-faint)]">
           {formatDate(post.publishedDate)}
         </p>
-        <span className="inline-flex items-center gap-1 rounded-full border border-[var(--line)] px-2.5 py-0.5 font-body text-[11px] font-medium text-[var(--on-surface-soft)] transition-colors group-hover:border-ink group-hover:text-ink">
+        <span className="inline-flex items-center gap-1 rounded-full border border-[var(--line)] px-2.5 py-0.5 font-body text-[11px] font-medium text-[var(--on-surface-soft)] transition-colors group-hover-desktop-border-ink">
           Medium <ArrowUpRight size={12} />
         </span>
       </div>
-      <Heading className="mt-2 font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl transition-colors group-hover:text-moss">
+      <Heading className="mt-2 font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl transition-colors group-hover-desktop-text-moss">
         <span>{post.title}</span>
         <span className="sr-only"> (opens in a new tab on Medium)</span>
       </Heading>

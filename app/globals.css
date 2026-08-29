@@ -149,3 +149,33 @@ p.text-left {
     scroll-behavior: auto !important;
   }
 }
+
+/* Guarded hover styles to prevent sticky states on mobile touch screens */
+@media (hover: hover) and (pointer: fine) {
+  .hover-desktop-bg-accent:hover {
+    background-color: var(--color-accent) !important;
+    border-color: var(--color-accent) !important;
+    color: var(--color-ink) !important;
+  }
+  
+  .group\/img:hover .group-hover-desktop-img-scale-105 {
+    transform: scale(1.05) !important;
+  }
+
+  .group:hover .group-hover-desktop-scale-105 {
+    transform: scale(1.05) !important;
+  }
+
+  .group:hover .group-hover-desktop-arrow {
+    transform: translate(0.125rem, -0.125rem) !important;
+  }
+
+  .group:hover .group-hover-desktop-border-ink {
+    border-color: var(--color-ink) !important;
+    color: var(--color-ink) !important;
+  }
+
+  .group:hover .group-hover-desktop-text-moss {
+    color: var(--color-moss) !important;
+  }
+}

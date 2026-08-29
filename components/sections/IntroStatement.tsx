@@ -73,7 +73,7 @@ export function IntroStatement({
   return (
     <section className="theme-light bg-paper pt-8 pb-24 sm:pt-12 sm:pb-32">
       <div ref={ref} className="container-page">
-        <h2 className="text-balance mx-auto max-w-5xl text-center font-display text-[10.5vw] font-bold uppercase leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl">
+        <h2 className="text-balance mx-auto max-w-5xl text-center font-display text-[clamp(2.5rem,7vw,5.5rem)] font-bold uppercase leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl">
           <span className="sr-only">{headline}</span>
           <span aria-hidden="true">
             {words.flatMap((word, i) => {

@@ -21,7 +21,7 @@ export function Stats({
         <SplitHeading
           text="About"
           as="h2"
-          className="mb-10 text-center font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-brutalist-shadow sm:mb-14 sm:text-7xl md:text-8xl"
+          className="mb-10 text-center font-display text-[clamp(2.5rem,7vw,5.5rem)] font-bold uppercase leading-[0.95] tracking-tight text-brutalist-shadow sm:mb-14 sm:text-7xl md:text-8xl"
         />
 
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-12">
