@@ -24,7 +24,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
         <div className="mt-12 sm:mt-16">
           {projects.map((project, i) => {
             const thumbUrl = urlForImage(project.thumbnail)?.width(240).height(160).url()
-            const coverUrl = urlForImage(project.coverImage)?.width(1000).height(650).url()
+            const coverUrl = urlForImage(project.coverImage)?.url()
             const isOdd = i % 2 === 0 // 1st, 3rd, etc. -> Image Left (md:order-1), Text Right (md:order-2)
 
             return (
@@ -46,23 +46,17 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                     aria-label={`${project.title} — ${project.tagline}`}
                     className="group/img relative block w-full max-w-lg focus-visible:outline-none"
                   >
-                    <div className="relative aspect-[16/10] w-full max-h-[260px] sm:max-h-[300px] overflow-hidden">
-                      {coverUrl ? (
-                        <Image
-                          src={coverUrl}
-                          alt={project.coverImage?.alt || `${project.title} project image`}
-                          fill
-                          placeholder={project.coverImage?.lqip ? 'blur' : 'empty'}
-                          blurDataURL={project.coverImage?.lqip}
-                          sizes="(min-width: 768px) 45vw, 92vw"
-                          className="object-contain drop-shadow-xl transition-transform duration-500 ease-out group-hover/img:scale-105"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center rounded-2xl bg-[var(--surface-raised)]/50 text-xs font-medium text-[var(--on-surface-faint)]">
-                          No preview image available
-                        </div>
-                      )}
-                    </div>
+                    {coverUrl ? (
+                      <img
+                        src={coverUrl}
+                        alt={project.coverImage?.alt || `${project.title} project image`}
+                        className="w-full h-auto object-contain transition-transform duration-500 ease-out group-hover/img:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-40 w-full items-center justify-center bg-transparent text-xs font-medium text-[var(--on-surface-faint)]">
+                        No preview image available
+                      </div>
+                    )}
                   </Link>
                 </div>
 
