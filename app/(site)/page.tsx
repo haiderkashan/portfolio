@@ -75,9 +75,16 @@ async function getHomeData() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const { settings } = await getHomeData()
-  const title = settings?.name ? `${settings.name} — ${settings.role || 'Portfolio'}` : 'Portfolio'
-  const description = settings?.seoDescription || settings?.bio
-  const ogImageUrl = urlForImage(settings?.ogImage)?.width(1200).height(630).url()
+  const title = settings?.siteTitle || (settings?.name ? `${settings.name} — ${settings.role || 'Portfolio'}` : 'Portfolio')
+  const description = settings?.seoDescription || settings?.bio || 'Portfolio, powered by Next.js and Sanity.'
+  const fallbackOgUrl = `${siteUrl}/og-fallback.png`
+  const ogImageUrl = urlForImage(settings?.ogImage)?.width(1200).height(630).url() || fallbackOgUrl
+  const ogImageAlt = settings?.ogImage?.alt || title
+  const twitterHandle = settings?.twitterHandle
+    ? (settings.twitterHandle.startsWith('@') ? settings.twitterHandle : `@${settings.twitterHandle}`)
+    : settings?.handle
+      ? `@${settings.handle.replace(/^@/, '')}`
+      : undefined
 
   return {
     title: { absolute: title },
@@ -89,15 +96,24 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
       type: 'website',
-      url: siteUrl,
+      url: `${siteUrl}/`,
       siteName: settings?.name || 'Portfolio',
-      images: ogImageUrl ? [{ url: ogImageUrl, width: 1200, height: 630, alt: title }] : undefined,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: ogImageAlt,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: ogImageUrl ? [ogImageUrl] : undefined,
+      images: [ogImageUrl],
+      creator: twitterHandle,
+      site: twitterHandle,
     },
   }
 }
@@ -109,6 +125,7 @@ export default async function HomePage() {
   const name = settings?.name || 'Your Name'
   const handle = settings?.handle || 'yourname'
   const email = settings?.email || 'you@example.com'
+  const description = settings?.seoDescription || settings?.bio || 'Portfolio, powered by Next.js and Sanity.'
 
   const heroImageUrl = urlForImage(settings?.heroImage)?.width(1920).height(1200).url()
   const introImageUrl = urlForImage(settings?.introImage)?.width(480).height(320).url()
@@ -119,21 +136,53 @@ export default async function HomePage() {
     .map((p) => urlForImage(p.coverImage)?.width(500).height(500).url())
     .filter((url): url is string => Boolean(url))
 
-  const personJsonLd = {
+  const validSocialUrls = (settings?.socialLinks ?? [])
+    .map((s) => s.url)
+    .filter((url) => /^https?:\/\//i.test(url))
+
+  const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'Person',
-    name,
-    jobTitle: settings?.role,
-    url: siteUrl,
-    ...(heroImageUrl ? { image: heroImageUrl } : {}),
-    email: settings?.email,
-    description: settings?.seoDescription || settings?.bio,
-    sameAs: (settings?.socialLinks ?? []).map((s) => s.url),
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${siteUrl}/#website`,
+        url: `${siteUrl}/`,
+        name: settings?.siteTitle || `${name} — Portfolio`,
+        description,
+        publisher: { '@id': `${siteUrl}/#person` },
+        inLanguage: 'en-US',
+      },
+      {
+        '@type': 'ProfilePage',
+        '@id': `${siteUrl}/#profilepage`,
+        url: `${siteUrl}/`,
+        name: `${name} — Portfolio`,
+        isPartOf: { '@id': `${siteUrl}/#website` },
+        mainEntity: { '@id': `${siteUrl}/#person` },
+      },
+      {
+        '@type': 'Person',
+        '@id': `${siteUrl}/#person`,
+        name,
+        jobTitle: settings?.role,
+        url: `${siteUrl}/`,
+        ...(heroImageUrl ? { image: heroImageUrl } : {}),
+        email: settings?.email,
+        description,
+        sameAs: validSocialUrls,
+        ...(settings?.knowsAbout && settings.knowsAbout.length > 0
+          ? { knowsAbout: settings.knowsAbout }
+          : services.length > 0
+            ? { knowsAbout: services.map((s) => s.title) }
+            : {}),
+        ...(settings?.alumniOf ? { alumniOf: { '@type': 'EducationalOrganization', name: settings.alumniOf } } : {}),
+      },
+    ],
   }
 
   return (
     <>
-      <JsonLd data={personJsonLd} />
+      <JsonLd data={structuredData} />
 
       <Hero name={name} role={settings?.role} ctaLabel={settings?.ctaLabel} heroImageUrl={heroImageUrl} />
 
@@ -141,6 +190,7 @@ export default async function HomePage() {
         headline={settings?.introHeadline || `A designer who loves the craft`}
         bio={settings?.bio}
         introImageUrl={introImageUrl}
+        introImageAlt={settings?.introImage?.alt || `${name} portrait`}
       />
 
       <Stats bio={settings?.aboutBio || settings?.bio} stats={settings?.stats || []} collageImages={projectImageUrls} />
@@ -157,6 +207,7 @@ export default async function HomePage() {
         steps={settings?.processSteps || []}
         intro={settings?.processIntro}
         portraitUrl={processImageUrl}
+        portraitAlt={settings?.processImage?.alt || `${name} design process`}
       />
 
       <Quote

@@ -5,26 +5,58 @@ import { Reveal } from '@/components/ui/Reveal'
 import { BackButton } from '@/components/ui/BackButton'
 import { siteUrl } from '@/lib/utils'
 
-export const metadata: Metadata = {
-  title: 'Privacy Policy',
-  description: 'Privacy Policy and data protection details.',
-  alternates: {
-    canonical: '/privacy-policy',
-  },
-  openGraph: {
-    title: 'Privacy Policy · Portfolio',
-    description: 'Privacy Policy and data protection details.',
-    type: 'website',
-    url: `${siteUrl}/privacy-policy`,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Privacy Policy · Portfolio',
-    description: 'Privacy Policy and data protection details.',
-  },
+import { sanityFetch } from '@/sanity/lib/fetch'
+import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
+import { urlForImage } from '@/sanity/lib/image'
+
+export const revalidate = 60
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null)
+  const title = 'Privacy Policy'
+  const description = 'Privacy Policy and data protection details.'
+  const fallbackOgUrl = `${siteUrl}/og-fallback.png`
+  const ogImageUrl = urlForImage(settings?.ogImage)?.width(1200).height(630).url() || fallbackOgUrl
+  const twitterHandle = settings?.twitterHandle
+    ? (settings.twitterHandle.startsWith('@') ? settings.twitterHandle : `@${settings.twitterHandle}`)
+    : settings?.handle
+      ? `@${settings.handle.replace(/^@/, '')}`
+      : undefined
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: '/privacy-policy',
+    },
+    openGraph: {
+      title: `${title} · ${settings?.name || 'Portfolio'}`,
+      description,
+      type: 'website',
+      url: `${siteUrl}/privacy-policy`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${title} preview`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} · ${settings?.name || 'Portfolio'}`,
+      description,
+      images: [ogImageUrl],
+      creator: twitterHandle,
+      site: twitterHandle,
+    },
+  }
 }
 
-export default function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage() {
+  const settings = await sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null)
+  const authorName = settings?.name || 'Kashan Haider'
   const currentYear = new Date().getFullYear()
 
   return (
@@ -56,7 +88,7 @@ export default function PrivacyPolicyPage() {
                 <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">1</span> Introduction
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
-                Welcome to the portfolio website of Kashan Haider. I respect your privacy and am committed to protecting your personal data. This Privacy Policy explains how I collect, use, and safeguard your information when you visit my website and use my contact form.
+                Welcome to the portfolio website of {authorName}. I respect your privacy and am committed to protecting your personal data. This Privacy Policy explains how I collect, use, and safeguard your information when you visit my website and use my contact form.
               </p>
             </section>
 
@@ -155,7 +187,7 @@ export default function PrivacyPolicyPage() {
 
         {/* Footer copyright */}
         <footer className="mt-20 border-t border-[var(--line)]/50 pt-8 text-center text-xs text-[var(--on-surface-faint)]/60">
-          &copy; {currentYear} Kashan Haider. All rights reserved.
+          &copy; {currentYear} {authorName}. All rights reserved.
         </footer>
       </div>
     </div>

@@ -27,9 +27,9 @@ export function Footer({
       <div className="container-page">
         {/* 1. Top Section: Centered Heading & Centered CTA Button */}
         <Reveal className="flex flex-col items-center justify-center text-center">
-          <h2 className="max-w-3xl text-balance font-display text-4xl font-bold leading-[1.05] tracking-tight text-paper sm:text-5xl md:text-6xl">
+          <h3 className="max-w-3xl text-balance font-display text-4xl font-bold leading-[1.05] tracking-tight text-paper sm:text-5xl md:text-6xl">
             {headline || "Let's build something great!"}
-          </h2>
+          </h3>
           <div className="mt-8 sm:mt-10">
             <Magnetic>
               <a
@@ -102,6 +102,7 @@ export function Footer({
         <div className="mt-12 w-full max-w-full overflow-hidden sm:mt-16">
           <Link
             href="/#top"
+            aria-label="Back to top of page"
             className="block w-full max-w-full truncate text-center font-display text-[8.5vw] font-bold uppercase leading-none tracking-tight text-paper transition-colors hover:text-accent sm:text-[10vw]"
           >
             /{displayHandle}/

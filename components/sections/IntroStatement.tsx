@@ -37,10 +37,12 @@ export function IntroStatement({
   headline,
   bio,
   introImageUrl,
+  introImageAlt = '',
 }: {
   headline: string
   bio?: string
   introImageUrl?: string
+  introImageAlt?: string
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
@@ -99,7 +101,7 @@ export function IntroStatement({
               style={{ scale: imageScale, y: imageY, opacity: imageOpacity }}
               className="relative aspect-[4/5] w-40 shrink-0 overflow-hidden rounded-2xl shadow-2xl sm:w-48 md:w-56"
             >
-              <Image src={introImageUrl} alt="" fill sizes="240px" className="object-cover" />
+              <Image src={introImageUrl} alt={introImageAlt} fill sizes="240px" className="object-cover" />
             </motion.div>
           )}
 

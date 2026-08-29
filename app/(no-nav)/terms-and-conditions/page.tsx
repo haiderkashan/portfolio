@@ -5,26 +5,58 @@ import { Reveal } from '@/components/ui/Reveal'
 import { BackButton } from '@/components/ui/BackButton'
 import { siteUrl } from '@/lib/utils'
 
-export const metadata: Metadata = {
-  title: 'Terms & Conditions',
-  description: 'Terms and Conditions for website usage and intellectual property.',
-  alternates: {
-    canonical: '/terms-and-conditions',
-  },
-  openGraph: {
-    title: 'Terms & Conditions · Portfolio',
-    description: 'Terms and Conditions for website usage and intellectual property.',
-    type: 'website',
-    url: `${siteUrl}/terms-and-conditions`,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Terms & Conditions · Portfolio',
-    description: 'Terms and Conditions for website usage and intellectual property.',
-  },
+import { sanityFetch } from '@/sanity/lib/fetch'
+import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
+import { urlForImage } from '@/sanity/lib/image'
+
+export const revalidate = 60
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null)
+  const title = 'Terms & Conditions'
+  const description = 'Terms and Conditions for website usage and intellectual property.'
+  const fallbackOgUrl = `${siteUrl}/og-fallback.png`
+  const ogImageUrl = urlForImage(settings?.ogImage)?.width(1200).height(630).url() || fallbackOgUrl
+  const twitterHandle = settings?.twitterHandle
+    ? (settings.twitterHandle.startsWith('@') ? settings.twitterHandle : `@${settings.twitterHandle}`)
+    : settings?.handle
+      ? `@${settings.handle.replace(/^@/, '')}`
+      : undefined
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: '/terms-and-conditions',
+    },
+    openGraph: {
+      title: `${title} · ${settings?.name || 'Portfolio'}`,
+      description,
+      type: 'website',
+      url: `${siteUrl}/terms-and-conditions`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${title} preview`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} · ${settings?.name || 'Portfolio'}`,
+      description,
+      images: [ogImageUrl],
+      creator: twitterHandle,
+      site: twitterHandle,
+    },
+  }
 }
 
-export default function TermsAndConditionsPage() {
+export default async function TermsAndConditionsPage() {
+  const settings = await sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null)
+  const authorName = settings?.name || 'Kashan Haider'
   const currentYear = new Date().getFullYear()
 
   return (
@@ -65,7 +97,7 @@ export default function TermsAndConditionsPage() {
                 <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-ink mr-2.5 shrink-0">2</span> Intellectual Property
               </h2>
               <p className="font-body text-base leading-relaxed text-[var(--on-surface-soft)]">
-                All content, designs, code, graphics, and text on this website are the intellectual property of Kashan Haider, unless otherwise stated or attributed to specific clients/projects. You may not reproduce, distribute, or create derivative works from this website's content without explicit, written permission.
+                All content, designs, code, graphics, and text on this website are the intellectual property of {authorName}, unless otherwise stated or attributed to specific clients/projects. You may not reproduce, distribute, or create derivative works from this website's content without explicit, written permission.
               </p>
             </section>
 
@@ -144,7 +176,7 @@ export default function TermsAndConditionsPage() {
 
         {/* Footer copyright */}
         <footer className="mt-20 border-t border-[var(--line)]/50 pt-8 text-center text-xs text-[var(--on-surface-faint)]/60">
-          &copy; {currentYear} Kashan Haider. All rights reserved.
+          &copy; {currentYear} {authorName}. All rights reserved.
         </footer>
       </div>
     </div>

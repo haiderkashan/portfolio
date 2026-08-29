@@ -46,7 +46,15 @@ export function Services({ services }: { services: ServiceEntry[] }) {
                 </div>
                 {previewUrl && (
                   <div className="relative col-span-2 h-40 w-full overflow-hidden rounded-xl sm:col-span-1 sm:h-28 sm:w-40">
-                    <Image src={previewUrl} alt={`${service.title} preview`} fill sizes="160px" className="object-cover" />
+                    <Image
+                      src={previewUrl}
+                      alt={service.previewImage?.alt || `${service.title} service preview`}
+                      fill
+                      placeholder={service.previewImage?.lqip ? 'blur' : 'empty'}
+                      blurDataURL={service.previewImage?.lqip}
+                      sizes="160px"
+                      className="object-cover"
+                    />
                   </div>
                 )}
               </Reveal>

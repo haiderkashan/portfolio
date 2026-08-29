@@ -7,34 +7,102 @@ import { Reveal } from '@/components/ui/Reveal'
 import { SplitHeading } from '@/components/ui/SplitHeading'
 import { BackButton } from '@/components/ui/BackButton'
 import { ContactForm } from '@/components/ContactForm'
+import { JsonLd } from '@/components/JsonLd'
 import { siteUrl } from '@/lib/utils'
+import { urlForImage } from '@/sanity/lib/image'
 
-export const metadata: Metadata = {
-  title: 'Contact',
-  description: 'Get in touch for project collaborations, freelance inquiries, or recruitment.',
-  alternates: {
-    canonical: '/contact',
-  },
-  openGraph: {
-    title: 'Contact · Portfolio',
-    description: 'Get in touch for project collaborations, freelance inquiries, or recruitment.',
-    type: 'website',
-    url: `${siteUrl}/contact`,
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Contact · Portfolio',
-    description: 'Get in touch for project collaborations, freelance inquiries, or recruitment.',
-  },
+export const revalidate = 60
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null)
+  const title = 'Contact'
+  const description = settings?.contactSeoDescription || settings?.seoDescription || 'Get in touch for project collaborations, freelance inquiries, or recruitment.'
+  const fallbackOgUrl = `${siteUrl}/og-fallback.png`
+  const ogImageUrl = urlForImage(settings?.ogImage)?.width(1200).height(630).url() || fallbackOgUrl
+  const twitterHandle = settings?.twitterHandle
+    ? (settings.twitterHandle.startsWith('@') ? settings.twitterHandle : `@${settings.twitterHandle}`)
+    : settings?.handle
+      ? `@${settings.handle.replace(/^@/, '')}`
+      : undefined
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: '/contact',
+    },
+    openGraph: {
+      title: `${title} · ${settings?.name || 'Portfolio'}`,
+      description,
+      type: 'website',
+      url: `${siteUrl}/contact`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${title} preview`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} · ${settings?.name || 'Portfolio'}`,
+      description,
+      images: [ogImageUrl],
+      creator: twitterHandle,
+      site: twitterHandle,
+    },
+  }
 }
 
 export default async function ContactPage() {
   const settings = await sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null)
   const email = settings?.email || 'you@example.com'
   const resumeUrl = settings?.resume?.asset?.url
+  const description = settings?.contactSeoDescription || settings?.seoDescription || 'Get in touch for project collaborations, freelance inquiries, or recruitment.'
+
+  const contactJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: `${siteUrl}/`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Contact',
+            item: `${siteUrl}/contact`,
+          },
+        ],
+      },
+      {
+        '@type': 'ContactPage',
+        '@id': `${siteUrl}/contact#webpage`,
+        url: `${siteUrl}/contact`,
+        name: `Contact · ${settings?.name || 'Portfolio'}`,
+        description,
+        mainEntity: {
+          '@type': 'Person',
+          '@id': `${siteUrl}/#person`,
+          name: settings?.name || 'Portfolio',
+          email,
+          url: `${siteUrl}/`,
+          ...(settings?.role ? { jobTitle: settings.role } : {}),
+        },
+      },
+    ],
+  }
 
   return (
     <div className="theme-light min-h-screen bg-paper flex flex-col justify-between">
+      <JsonLd data={contactJsonLd} />
       {/* Top Header Bar / Back Navigation */}
       <header className="container-page pt-6 sm:pt-8 pb-3 shrink-0">
         <Reveal>

@@ -7,8 +7,12 @@ interface SanityImageBlock {
   asset?: {
     _ref?: string
     _id?: string
+    metadata?: {
+      lqip?: string
+    }
   }
   alt?: string
+  lqip?: string
 }
 
 function getImageDimensions(value?: SanityImageBlock): { width: number; height: number } {
@@ -78,6 +82,7 @@ const components: PortableTextComponents = {
       const url = urlForImage(value)?.width(1400).url()
       if (!url) return null
       const { width, height } = getImageDimensions(value)
+      const lqip = (value as SanityImageBlock)?.lqip || (value as { asset?: { metadata?: { lqip?: string } } })?.asset?.metadata?.lqip
       return (
         <span className="my-8 block overflow-hidden rounded-xl bg-[var(--surface-raised)]">
           <Image
@@ -85,6 +90,8 @@ const components: PortableTextComponents = {
             alt={value?.alt || 'Project visual'}
             width={width}
             height={height}
+            placeholder={lqip ? 'blur' : 'empty'}
+            blurDataURL={lqip}
             sizes="(min-width: 1024px) 800px, (min-width: 640px) 90vw, 100vw"
             className="h-auto w-full object-contain"
           />

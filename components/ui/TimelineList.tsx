@@ -10,6 +10,8 @@ export interface TimelineItem {
   date?: string
   description?: string
   imageUrl?: string
+  imageAlt?: string
+  imageLqip?: string
   href?: string
   isUppercaseSubtitle?: boolean
 }
@@ -32,8 +34,10 @@ export function TimelineList({ items }: { items: TimelineItem[] }) {
                 <div className="relative h-10 w-14 shrink-0 overflow-hidden rounded-lg border border-[var(--line)] md:hidden">
                   <Image
                     src={item.imageUrl}
-                    alt={item.title}
+                    alt={item.imageAlt || item.title}
                     fill
+                    placeholder={item.imageLqip ? 'blur' : 'empty'}
+                    blurDataURL={item.imageLqip}
                     sizes="56px"
                     className="object-cover"
                   />
@@ -64,7 +68,7 @@ export function TimelineList({ items }: { items: TimelineItem[] }) {
           <InteractiveRow
             key={item.id}
             imageUrl={item.imageUrl}
-            imageAlt={item.title}
+            imageAlt={item.imageAlt || item.title}
             className={`border-t border-[var(--line)] py-6 transition-colors focus-within:bg-[var(--surface-raised)] sm:py-7 ${
               isLast ? 'border-b' : ''
             }`}

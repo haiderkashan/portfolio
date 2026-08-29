@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { sanityFetch } from '@/sanity/lib/fetch'
-import { PROJECT_QUERY, PROJECT_SLUGS_QUERY, ALL_PROJECTS_QUERY, type ProjectFull, type ProjectCard } from '@/sanity/lib/queries'
+import { PROJECT_QUERY, PROJECT_SLUGS_QUERY, ALL_PROJECTS_QUERY, SITE_SETTINGS_QUERY, type ProjectFull, type ProjectCard, type SiteSettings } from '@/sanity/lib/queries'
 import { urlForImage } from '@/sanity/lib/image'
 import { Reveal } from '@/components/ui/Reveal'
 import { SplitHeading } from '@/components/ui/SplitHeading'
@@ -27,16 +27,29 @@ export async function generateMetadata({
   params,
 }: PageProps<'/work/[slug]'>): Promise<Metadata> {
   const { slug } = await params
-  const project = await getProject(slug)
+  const [project, settings] = await Promise.all([
+    getProject(slug),
+    sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null),
+  ])
   if (!project) return {}
 
-  const title = `${project.title} — Case Study`
-  const description = project.excerpt || project.tagline
-  const ogImageUrl = urlForImage(project.coverImage || project.thumbnail)
-    ?.width(1200)
-    .height(630)
-    .fit('crop')
-    .url()
+  const authorName = settings?.name || 'Portfolio'
+  const title = project.seoTitle || `${project.title} — Case Study`
+  const description = project.seoDescription || project.excerpt || project.tagline
+  const ogImageSource = project.ogImage || project.coverImage || project.thumbnail
+  const fallbackOgUrl = `${siteUrl}/og-fallback.png`
+  const ogImageUrl =
+    urlForImage(ogImageSource)
+      ?.width(1200)
+      .height(630)
+      .fit('crop')
+      .url() || fallbackOgUrl
+  const ogImageAlt = ogImageSource?.alt || project.title
+  const twitterHandle = settings?.twitterHandle
+    ? (settings.twitterHandle.startsWith('@') ? settings.twitterHandle : `@${settings.twitterHandle}`)
+    : settings?.handle
+      ? `@${settings.handle.replace(/^@/, '')}`
+      : undefined
 
   return {
     title,
@@ -45,35 +58,39 @@ export async function generateMetadata({
       canonical: `/work/${slug}`,
     },
     openGraph: {
-      title,
+      title: `${title} · ${authorName}`,
       description,
       type: 'article',
       url: `${siteUrl}/work/${slug}`,
-      images: ogImageUrl
-        ? [
-            {
-              url: ogImageUrl,
-              width: 1200,
-              height: 630,
-              alt: project.title,
-            },
-          ]
-        : undefined,
+      section: project.category || 'Case Study',
+      publishedTime: project._createdAt || project._updatedAt,
+      modifiedTime: project._updatedAt || project._createdAt,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: ogImageAlt,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title,
+      title: `${title} · ${authorName}`,
       description,
-      images: ogImageUrl ? [ogImageUrl] : undefined,
+      images: [ogImageUrl],
+      creator: twitterHandle,
+      site: twitterHandle,
     },
   }
 }
 
 export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>) {
   const { slug } = await params
-  const [project, allProjects] = await Promise.all([
+  const [project, allProjects, settings] = await Promise.all([
     getProject(slug),
     sanityFetch<ProjectCard[]>(ALL_PROJECTS_QUERY, {}, []),
+    sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null),
   ])
 
   if (!project) notFound()
@@ -88,13 +105,52 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
 
   const projectJsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'CreativeWork',
-    name: project.title,
-    headline: project.title,
-    description: project.excerpt || project.tagline,
-    url: `${siteUrl}/work/${project.slug}`,
-    ...(coverUrl ? { image: coverUrl } : {}),
-    ...(project.category ? { genre: project.category } : {}),
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: siteUrl,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Work',
+            item: `${siteUrl}/work`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: project.title,
+            item: `${siteUrl}/work/${project.slug}`,
+          },
+        ],
+      },
+      {
+        '@type': 'CreativeWork',
+        '@id': `${siteUrl}/work/${project.slug}#work`,
+        name: project.title,
+        headline: project.title,
+        description: project.seoDescription || project.excerpt || project.tagline,
+        url: `${siteUrl}/work/${project.slug}`,
+        mainEntityOfPage: `${siteUrl}/work/${project.slug}`,
+        ...(coverUrl ? { image: coverUrl } : {}),
+        ...(project.category ? { genre: project.category } : {}),
+        ...(project._createdAt ? { datePublished: project._createdAt } : {}),
+        ...(project._updatedAt ? { dateModified: project._updatedAt } : {}),
+        author: {
+          '@type': 'Person',
+          '@id': `${siteUrl}/#person`,
+          name: settings?.name || 'Portfolio',
+          url: `${siteUrl}/`,
+          ...(settings?.role ? { jobTitle: settings.role } : {}),
+          ...(settings?.email ? { email: settings.email } : {}),
+        },
+      },
+    ],
   }
 
   return (
@@ -124,11 +180,12 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Visit ${project.title} live website`}
                 className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-accent px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink shadow-md transition-transform hover:scale-[1.03]"
               >
                 Visit live site
                 <span className="sr-only"> (opens in a new tab)</span>
-                <ArrowUpRight size={14} />
+                <ArrowUpRight size={14} aria-hidden="true" />
               </a>
             )}
             {project.secondaryLinkUrl && (
@@ -136,11 +193,12 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
                 href={project.secondaryLinkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`View ${project.title} on ${project.secondaryLinkLabel || 'external platform'}`}
                 className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--line)] px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-colors hover:bg-accent hover:border-accent"
               >
                 {project.secondaryLinkLabel || 'Link'}
                 <span className="sr-only"> (opens in a new tab)</span>
-                <ArrowUpRight size={14} />
+                <ArrowUpRight size={14} aria-hidden="true" />
               </a>
             )}
           </Reveal>
@@ -152,8 +210,10 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
           <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl">
             <Image
               src={coverUrl}
-              alt={project.tagline}
+              alt={project.coverImage?.alt || `${project.title} case study showcase mockup`}
               fill
+              placeholder={project.coverImage?.lqip ? 'blur' : 'empty'}
+              blurDataURL={project.coverImage?.lqip}
               sizes="(min-width: 1440px) 1300px, (min-width: 1024px) 90vw, 100vw"
               priority
               className="object-cover"
@@ -191,9 +251,11 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
                   <Reveal key={i} className="overflow-hidden rounded-2xl">
                     <Image
                       src={url}
-                      alt={image.alt || project.tagline}
+                      alt={image.alt || `${project.title} visual gallery item ${i + 1}`}
                       width={1400}
                       height={1000}
+                      placeholder={image.lqip ? 'blur' : 'empty'}
+                      blurDataURL={image.lqip}
                       sizes="(min-width: 1024px) 800px, 92vw"
                       className="h-auto w-full object-cover"
                     />
@@ -224,11 +286,13 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
             <div className="shrink-0">
               <Link
                 href={`/work/${nextProject.slug}`}
+                aria-label={`View next case study: ${nextProject.title}`}
                 className="group inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accent px-6 py-3 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink shadow-md transition-transform hover:scale-[1.03] active:scale-[0.98] sm:text-sm"
               >
                 View next project
                 <ArrowUpRight
                   size={16}
+                  aria-hidden="true"
                   className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 />
               </Link>

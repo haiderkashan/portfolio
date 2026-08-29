@@ -54,15 +54,29 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                   <div className="flex flex-wrap items-center gap-4">
                     {thumbUrl && (
                       <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border border-[var(--line)]">
-                        <Image src={thumbUrl} alt={`${project.title} thumbnail`} fill sizes="96px" className="object-cover" />
+                        <Image
+                          src={thumbUrl}
+                          alt={project.thumbnail?.alt || `${project.title} preview thumbnail`}
+                          fill
+                          placeholder={project.thumbnail?.lqip ? 'blur' : 'empty'}
+                          blurDataURL={project.thumbnail?.lqip}
+                          sizes="96px"
+                          className="object-cover"
+                        />
                       </div>
                     )}
                     <div className="flex flex-wrap gap-2.5">
                       {project.liveUrl && (
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className={pillClass}>
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Visit ${project.title} website`}
+                          className={pillClass}
+                        >
                           Website
                           <span className="sr-only"> (opens in a new tab)</span>
-                          <ArrowUpRight size={13} />
+                          <ArrowUpRight size={13} aria-hidden="true" />
                         </a>
                       )}
                       {project.secondaryLinkUrl && project.secondaryLinkLabel?.toLowerCase().trim() !== 'case study' && (
@@ -70,15 +84,20 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                           href={project.secondaryLinkUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          aria-label={`View ${project.title} on ${project.secondaryLinkLabel || 'external platform'}`}
                           className={pillClass}
                         >
                           {project.secondaryLinkLabel || 'Link'}
                           <span className="sr-only"> (opens in a new tab)</span>
-                          <ArrowUpRight size={13} />
+                          <ArrowUpRight size={13} aria-hidden="true" />
                         </a>
                       )}
-                      <Link href={`/work/${project.slug}`} className={pillClass}>
-                        Case study <ArrowUpRight size={13} />
+                      <Link
+                        href={`/work/${project.slug}`}
+                        aria-label={`Read ${project.title} case study`}
+                        className={pillClass}
+                      >
+                        Case study <ArrowUpRight size={13} aria-hidden="true" />
                       </Link>
                     </div>
                   </div>
@@ -93,8 +112,10 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                     {coverUrl && (
                       <Image
                         src={coverUrl}
-                        alt={project.tagline || project.title}
+                        alt={project.coverImage?.alt || `${project.title} case study mockup`}
                         fill
+                        placeholder={project.coverImage?.lqip ? 'blur' : 'empty'}
+                        blurDataURL={project.coverImage?.lqip}
                         sizes="(min-width: 768px) 46vw, 92vw"
                         className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
                       />

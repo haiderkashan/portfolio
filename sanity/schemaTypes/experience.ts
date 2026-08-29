@@ -59,6 +59,7 @@ export default defineType({
       type: 'image',
       description: 'Shown in the hover preview — a company logo or workplace photo works well.',
       options: { hotspot: true },
+      fields: [{ name: 'alt', title: 'Alt text', type: 'string' }],
     }),
   ],
   preview: {

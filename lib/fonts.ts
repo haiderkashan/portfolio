@@ -4,12 +4,16 @@ export const archivo = Archivo({
   subsets: ['latin'],
   variable: '--font-archivo',
   display: 'swap',
+  adjustFontFallback: true,
+  preload: true,
 })
 
 export const interTight = Inter_Tight({
   subsets: ['latin'],
   variable: '--font-inter-tight',
   display: 'swap',
+  adjustFontFallback: true,
+  preload: true,
 })
 
 export const caveat = Caveat({
@@ -17,6 +21,8 @@ export const caveat = Caveat({
   weight: ['500', '600'],
   variable: '--font-caveat',
   display: 'swap',
+  adjustFontFallback: true,
+  preload: true,
 })
 
 export const fontVariables = `${archivo.variable} ${interTight.variable} ${caveat.variable}`

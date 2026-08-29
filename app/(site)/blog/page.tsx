@@ -2,13 +2,18 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { sanityFetch } from '@/sanity/lib/fetch'
-import { POSTS_PAGE_QUERY, type Paginated, type PostCard } from '@/sanity/lib/queries'
+import { POSTS_PAGE_QUERY, SITE_SETTINGS_QUERY, type Paginated, type PostCard, type SiteSettings } from '@/sanity/lib/queries'
+import { urlForImage } from '@/sanity/lib/image'
 import { Reveal, Stagger, StaggerItem } from '@/components/ui/Reveal'
 import { SplitHeading } from '@/components/ui/SplitHeading'
 import { Pagination } from '@/components/ui/Pagination'
 import { ArticleCard } from '@/components/ui/ArticleCard'
 
 import { siteUrl } from '@/lib/utils'
+
+import { JsonLd } from '@/components/JsonLd'
+
+export const revalidate = 60
 
 const PAGE_SIZE = 9
 
@@ -17,27 +22,53 @@ export async function generateMetadata({
 }: {
   searchParams: Promise<{ page?: string }>
 }): Promise<Metadata> {
-  const { page: pageParam } = await searchParams
+  const [{ page: pageParam }, settings] = await Promise.all([
+    searchParams,
+    sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null),
+  ])
   const page = Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
-  const canonicalUrl = page > 1 ? `/blog?page=${page}` : '/blog'
   const title = page > 1 ? `Writing (Page ${page})` : 'Writing'
+  const description = settings?.blogSeoDescription || settings?.seoDescription || 'Articles, architectural breakdowns, and engineering notes.'
+  const fallbackOgUrl = `${siteUrl}/og-fallback.png`
+  const ogImageUrl = urlForImage(settings?.ogImage)?.width(1200).height(630).url() || fallbackOgUrl
+  const canonicalUrl = page > 1 ? `/blog?page=${page}` : '/blog'
+  const twitterHandle = settings?.twitterHandle
+    ? (settings.twitterHandle.startsWith('@') ? settings.twitterHandle : `@${settings.twitterHandle}`)
+    : settings?.handle
+      ? `@${settings.handle.replace(/^@/, '')}`
+      : undefined
 
   return {
     title,
-    description: 'Articles, architectural breakdowns, and engineering notes.',
+    description,
     alternates: {
       canonical: canonicalUrl,
     },
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
-      title: `${title} · Portfolio`,
-      description: 'Articles, architectural breakdowns, and engineering notes.',
+      title: `${title} · ${settings?.name || 'Portfolio'}`,
+      description,
       type: 'website',
       url: `${siteUrl}${canonicalUrl}`,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${title} preview`,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} · Portfolio`,
-      description: 'Articles, architectural breakdowns, and engineering notes.',
+      title: `${title} · ${settings?.name || 'Portfolio'}`,
+      description,
+      images: [ogImageUrl],
+      creator: twitterHandle,
+      site: twitterHandle,
     },
   }
 }
@@ -58,8 +89,49 @@ export default async function BlogPage({
   )
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
+  const blogJsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Home',
+            item: `${siteUrl}/`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Writing',
+            item: `${siteUrl}/blog`,
+          },
+        ],
+      },
+      {
+        '@type': 'CollectionPage',
+        '@id': `${siteUrl}/blog#webpage`,
+        url: `${siteUrl}/blog`,
+        name: 'Writing',
+        description: 'Articles, architectural breakdowns, and engineering notes.',
+        mainEntity: {
+          '@type': 'ItemList',
+          numberOfItems: total,
+          itemListElement: posts.map((post, index) => ({
+            '@type': 'ListItem',
+            position: start + index + 1,
+            name: post.title,
+            url: post.mediumUrl,
+          })),
+        },
+      },
+    ],
+  }
+
   return (
     <div className="theme-light min-h-screen bg-paper pb-28 pt-16 sm:pb-36 sm:pt-20">
+      <JsonLd data={blogJsonLd} />
       <div className="container-page">
         <header className="mb-10 sm:mb-12">
           <Reveal>
@@ -90,7 +162,7 @@ export default async function BlogPage({
           <Stagger className="mt-16 grid gap-10 sm:mt-20 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
             {posts.map((post) => (
               <StaggerItem key={post._id}>
-                <ArticleCard post={post} />
+                <ArticleCard post={post} headingAs="h2" />
               </StaggerItem>
             ))}
           </Stagger>

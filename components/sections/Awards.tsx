@@ -18,6 +18,11 @@ export function Awards({ awards }: { awards: AwardEntry[] }) {
       ?.width(420)
       .height(300)
       .url(),
+    imageAlt:
+      award.project?.coverImage?.alt ||
+      award.project?.thumbnail?.alt ||
+      `${award.project?.title || 'Award'} visual`,
+    imageLqip: award.project?.coverImage?.lqip || award.project?.thumbnail?.lqip,
   }))
 
   return (

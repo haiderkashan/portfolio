@@ -2,25 +2,49 @@ import { defineQuery } from 'next-sanity'
 import type { Image } from 'sanity'
 import type { PortableTextBlock } from '@portabletext/react'
 
+export interface ImageWithAlt extends Image {
+  alt?: string
+  lqip?: string
+}
+
 // ── Shared field fragments ─────────────────────────────────────
 const projectCardFields = /* groq */ `
   _id,
+  _createdAt,
+  _updatedAt,
   title,
   "slug": slug.current,
   period,
   category,
   tagline,
   excerpt,
-  thumbnail,
-  coverImage,
+  "thumbnail": thumbnail{
+    ...,
+    "alt": alt,
+    "lqip": asset->metadata.lqip
+  },
+  "coverImage": coverImage{
+    ...,
+    "alt": alt,
+    "lqip": asset->metadata.lqip
+  },
   liveUrl,
   secondaryLinkLabel,
-  secondaryLinkUrl
+  secondaryLinkUrl,
+  seoTitle,
+  seoDescription,
+  "ogImage": ogImage{
+    ...,
+    "alt": alt,
+    "lqip": asset->metadata.lqip
+  }
 `
 
 // ── Queries ─────────────────────────────────────────────────────
 export const SITE_SETTINGS_QUERY = defineQuery(`
   *[_type == "siteSettings"][0]{
+    _createdAt,
+    _updatedAt,
     name,
     handle,
     role,
@@ -28,21 +52,48 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
     email,
     resume,
     socialLinks,
-    heroImage,
+    "heroImage": heroImage{
+      ...,
+      "alt": alt,
+      "lqip": asset->metadata.lqip
+    },
     ctaLabel,
     introHeadline,
-    introImage,
+    "introImage": introImage{
+      ...,
+      "alt": alt,
+      "lqip": asset->metadata.lqip
+    },
     bio,
     aboutBio,
     stats,
-    processImage,
+    "processImage": processImage{
+      ...,
+      "alt": alt,
+      "lqip": asset->metadata.lqip
+    },
     processIntro,
     processSteps,
     statement,
-    footerImage,
+    "footerImage": footerImage{
+      ...,
+      "alt": alt,
+      "lqip": asset->metadata.lqip
+    },
     footerHeadline,
+    siteTitle,
     seoDescription,
-    ogImage,
+    workSeoDescription,
+    blogSeoDescription,
+    contactSeoDescription,
+    knowsAbout,
+    alumniOf,
+    twitterHandle,
+    "ogImage": ogImage{
+      ...,
+      "alt": alt,
+      "lqip": asset->metadata.lqip
+    },
     favicon
   }
 `)
@@ -50,29 +101,49 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
 export const HOME_QUERY = defineQuery(`
   {
     "settings": *[_type == "siteSettings"][0]{
+      _createdAt,
+      _updatedAt,
       name, handle, role, locationTag, email, ctaLabel,
-      heroImage, introHeadline, introImage, bio, aboutBio, stats,
-      processImage, processIntro, processSteps, statement,
-      footerImage, footerHeadline, socialLinks
+      "heroImage": heroImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+      introHeadline,
+      "introImage": introImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+      bio, aboutBio, stats,
+      "processImage": processImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+      processIntro, processSteps, statement,
+      "footerImage": footerImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+      footerHeadline, socialLinks,
+      siteTitle, seoDescription, workSeoDescription, blogSeoDescription, contactSeoDescription,
+      knowsAbout, alumniOf, twitterHandle,
+      "ogImage": ogImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+      favicon
     },
     "projects": *[_type == "project" && featured != false] | order(orderRank asc){
       ${projectCardFields}
     },
     "education": *[_type == "education"] | order(orderRank asc){
-      _id, institution, degree, startYear, endYear, current, description, image
+      _id, institution, degree, startYear, endYear, current, description,
+      "image": image{ ..., "alt": alt, "lqip": asset->metadata.lqip }
     },
     "experience": *[_type == "experience"] | order(orderRank asc){
-      _id, company, role, location, startYear, endYear, current, description, image
+      _id, company, role, location, startYear, endYear, current, description,
+      "image": image{ ..., "alt": alt, "lqip": asset->metadata.lqip }
     },
     "services": *[_type == "service"] | order(orderRank asc){
-      _id, title, items, previewImage
+      _id, title, items,
+      "previewImage": previewImage{ ..., "alt": alt, "lqip": asset->metadata.lqip }
     },
     "awards": *[_type == "award"] | order(orderRank asc){
       _id, awardType, date,
-      "project": project->{title, "slug": slug.current, coverImage, thumbnail}
+      "project": project->{
+        title, "slug": slug.current,
+        "coverImage": coverImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+        "thumbnail": thumbnail{ ..., "alt": alt, "lqip": asset->metadata.lqip }
+      }
     },
     "posts": *[_type == "curatedPost" && isHidden != true] | order(displayOrder asc, publishedDate desc)[0...3]{
-      _id, title, mediumUrl, excerpt, coverImage, publishedDate
+      _id, _updatedAt, title, mediumUrl, excerpt,
+      "coverImage": coverImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+      publishedDate
     }
   }
 `)
@@ -96,33 +167,65 @@ export const PROJECT_SLUGS_QUERY = defineQuery(`
   *[_type == "project" && defined(slug.current)]{ "slug": slug.current }
 `)
 
-export const SITEMAP_PROJECTS_QUERY = defineQuery(`
-  *[_type == "project" && defined(slug.current)]{
-    "slug": slug.current,
-    "_updatedAt": _updatedAt
-  }
-`)
-
 export const PROJECT_QUERY = defineQuery(`
   *[_type == "project" && slug.current == $slug][0]{
-    _id, title, "slug": slug.current, period, category, tagline, excerpt,
-    thumbnail, coverImage, liveUrl, secondaryLinkLabel, secondaryLinkUrl,
-    gallery, body
+    _id,
+    _createdAt,
+    _updatedAt,
+    title,
+    "slug": slug.current,
+    period,
+    category,
+    tagline,
+    excerpt,
+    "thumbnail": thumbnail{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+    "coverImage": coverImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+    liveUrl,
+    secondaryLinkLabel,
+    secondaryLinkUrl,
+    gallery[]{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+    body,
+    seoTitle,
+    seoDescription,
+    "ogImage": ogImage{ ..., "alt": alt, "lqip": asset->metadata.lqip }
   }
 `)
 
 export const POSTS_QUERY = defineQuery(`
   *[_type == "curatedPost" && isHidden != true] | order(displayOrder asc, publishedDate desc){
-    _id, title, mediumUrl, excerpt, coverImage, publishedDate
+    _id, _updatedAt, title, mediumUrl, excerpt,
+    "coverImage": coverImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+    publishedDate
   }
 `)
 
 export const POSTS_PAGE_QUERY = defineQuery(`
   {
     "items": *[_type == "curatedPost" && isHidden != true] | order(displayOrder asc, publishedDate desc) [$start...$end]{
-      _id, title, mediumUrl, excerpt, coverImage, publishedDate
+      _id, _updatedAt, title, mediumUrl, excerpt,
+      "coverImage": coverImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
+      publishedDate
     },
     "total": count(*[_type == "curatedPost" && isHidden != true])
+  }
+`)
+
+export const SITEMAP_DATA_QUERY = defineQuery(`
+  {
+    "settings": *[_type == "siteSettings"][0]{ _updatedAt },
+    "projects": *[_type == "project" && defined(slug.current)]{
+      "slug": slug.current,
+      "_createdAt": _createdAt,
+      "_updatedAt": _updatedAt
+    },
+    "latestPost": *[_type == "curatedPost" && isHidden != true] | order(publishedDate desc)[0]{
+      publishedDate,
+      _updatedAt
+    },
+    "latestProject": *[_type == "project"] | order(_updatedAt desc)[0]{
+      _createdAt,
+      _updatedAt
+    }
   }
 `)
 
@@ -142,6 +245,8 @@ export interface ProcessStep {
 }
 
 export interface SiteSettings {
+  _createdAt?: string
+  _updatedAt?: string
   name: string
   handle: string
   role?: string
@@ -150,39 +255,51 @@ export interface SiteSettings {
   resume?: { asset?: { url?: string } }
   ctaLabel?: string
   socialLinks?: SocialLink[]
-  heroImage?: Image
+  heroImage?: ImageWithAlt
   introHeadline?: string
-  introImage?: Image
+  introImage?: ImageWithAlt
   bio?: string
   aboutBio?: string
   stats?: Stat[]
-  processImage?: Image
+  processImage?: ImageWithAlt
   processIntro?: string
   processSteps?: ProcessStep[]
   statement?: string
-  footerImage?: Image
+  footerImage?: ImageWithAlt
   footerHeadline?: string
+  siteTitle?: string
   seoDescription?: string
-  ogImage?: Image
+  workSeoDescription?: string
+  blogSeoDescription?: string
+  contactSeoDescription?: string
+  knowsAbout?: string[]
+  alumniOf?: string
+  twitterHandle?: string
+  ogImage?: ImageWithAlt
   favicon?: Image
 }
 
 export interface ProjectCard {
   _id: string
+  _createdAt?: string
+  _updatedAt?: string
   title: string
   slug: string
   period?: string
   category?: string
   tagline: string
   excerpt?: string
-  thumbnail?: Image
-  coverImage?: Image
+  thumbnail?: ImageWithAlt
+  coverImage?: ImageWithAlt
   liveUrl?: string
   secondaryLinkLabel?: string
   secondaryLinkUrl?: string
+  seoTitle?: string
+  seoDescription?: string
+  ogImage?: ImageWithAlt
 }
 
-export interface GalleryImage extends Image {
+export interface GalleryImage extends ImageWithAlt {
   alt?: string
 }
 
@@ -199,7 +316,7 @@ export interface EducationEntry {
   endYear?: string
   current?: boolean
   description?: string
-  image?: Image
+  image?: ImageWithAlt
 }
 
 export interface ExperienceEntry {
@@ -211,14 +328,14 @@ export interface ExperienceEntry {
   endYear?: string
   current?: boolean
   description?: string
-  image?: Image
+  image?: ImageWithAlt
 }
 
 export interface ServiceEntry {
   _id: string
   title: string
   items?: string[]
-  previewImage?: Image
+  previewImage?: ImageWithAlt
 }
 
 export interface AwardEntry {
@@ -228,17 +345,18 @@ export interface AwardEntry {
   project: {
     title: string
     slug: string
-    coverImage?: Image
-    thumbnail?: Image
+    coverImage?: ImageWithAlt
+    thumbnail?: ImageWithAlt
   }
 }
 
 export interface PostCard {
   _id: string
+  _updatedAt?: string
   title: string
   mediumUrl: string
   excerpt?: string
-  coverImage?: Image
+  coverImage?: ImageWithAlt
   publishedDate: string
 }
 
@@ -255,4 +373,11 @@ export interface HomeData {
   services: ServiceEntry[]
   awards: AwardEntry[]
   posts: PostCard[]
+}
+
+export interface SitemapData {
+  settings: { _updatedAt?: string } | null
+  projects: { slug: string; _updatedAt?: string }[]
+  latestPost: { publishedDate?: string; _updatedAt?: string } | null
+  latestProject: { _updatedAt?: string } | null
 }

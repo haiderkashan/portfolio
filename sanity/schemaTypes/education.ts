@@ -52,6 +52,7 @@ export default defineType({
       type: 'image',
       description: 'Shown in the hover preview — a campus photo or institution mark works well.',
       options: { hotspot: true },
+      fields: [{ name: 'alt', title: 'Alt text', type: 'string' }],
     }),
   ],
   preview: {

@@ -29,6 +29,7 @@ export default defineType({
       title: 'Preview image',
       type: 'image',
       options: { hotspot: true },
+      fields: [{ name: 'alt', title: 'Alt text', type: 'string' }],
     }),
   ],
   preview: {

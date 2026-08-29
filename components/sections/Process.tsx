@@ -8,10 +8,12 @@ export function Process({
   steps,
   intro,
   portraitUrl,
+  portraitAlt = '',
 }: {
   steps: ProcessStep[]
   intro?: string
   portraitUrl?: string
+  portraitAlt?: string
 }) {
   if (!steps.length) return null
   const titles = steps.map((s) => s.title)
@@ -37,7 +39,7 @@ export function Process({
           <Reveal className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl sm:aspect-[5/4]">
             <Image
               src={portraitUrl}
-              alt=""
+              alt={portraitAlt}
               fill
               sizes="(min-width: 768px) 46vw, 92vw"
               className="object-cover"

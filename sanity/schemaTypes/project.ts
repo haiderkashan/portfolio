@@ -12,6 +12,7 @@ export default defineType({
     { name: 'content', title: 'Content', default: true },
     { name: 'links', title: 'Links' },
     { name: 'caseStudy', title: 'Case study page' },
+    { name: 'seo', title: 'SEO' },
   ],
   fields: [
     orderRankField({ type: 'project' }),
@@ -67,6 +68,14 @@ export default defineType({
       description: 'Small browser-style preview next to the project name.',
       group: 'content',
       options: { hotspot: true },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt text',
+          type: 'string',
+          description: 'Descriptive alt text for screen readers and SEO.',
+        },
+      ],
     }),
     defineField({
       name: 'coverImage',
@@ -75,6 +84,14 @@ export default defineType({
       description: 'The bigger showcase image used on the featured-work card and case study header.',
       group: 'content',
       options: { hotspot: true },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt text',
+          type: 'string',
+          description: 'Describe the visual contents of the image for screen readers and SEO.',
+        },
+      ],
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -138,6 +155,38 @@ export default defineType({
       of: [
         { type: 'block' },
         { type: 'image', options: { hotspot: true } },
+      ],
+    }),
+
+    // ── SEO Group ──────────────────────────────────────────────
+    defineField({
+      name: 'seoTitle',
+      title: 'SEO Title Override',
+      type: 'string',
+      description: 'Optional. Overrides the default "{title} — Case Study" metadata title.',
+      group: 'seo',
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'SEO Description Override',
+      type: 'text',
+      rows: 3,
+      description: 'Optional. Overrides the excerpt / tagline for search snippets and OpenGraph description.',
+      group: 'seo',
+    }),
+    defineField({
+      name: 'ogImage',
+      title: 'Social Share Image Override',
+      type: 'image',
+      description: 'Optional 1200×630 image. Falls back to Cover Image if left blank.',
+      group: 'seo',
+      options: { hotspot: true },
+      fields: [
+        {
+          name: 'alt',
+          title: 'Alt text',
+          type: 'string',
+        },
       ],
     }),
   ],
