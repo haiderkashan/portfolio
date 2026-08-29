@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
@@ -101,7 +100,7 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
       ? allProjects[(currentIndex + 1) % allProjects.length]
       : null
 
-  const coverUrl = urlForImage(project.coverImage)?.width(2000).height(1250).url()
+  const coverUrl = urlForImage(project.coverImage)?.url()
 
   const projectJsonLd = {
     '@context': 'https://schema.org',
@@ -206,19 +205,12 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
       </header>
 
       {coverUrl && (
-        <Reveal delay={0.1} className="container-page mt-14 sm:mt-20">
-          <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl">
-            <Image
-              src={coverUrl}
-              alt={project.coverImage?.alt || `${project.title} case study showcase mockup`}
-              fill
-              placeholder={project.coverImage?.lqip ? 'blur' : 'empty'}
-              blurDataURL={project.coverImage?.lqip}
-              sizes="(min-width: 1440px) 1300px, (min-width: 1024px) 90vw, 100vw"
-              priority
-              className="object-cover"
-            />
-          </div>
+        <Reveal delay={0.1} className="container-page mt-14 sm:mt-20 flex justify-center">
+          <img
+            src={coverUrl}
+            alt={project.coverImage?.alt || `${project.title} case study showcase mockup`}
+            className="w-full h-auto object-contain max-w-5xl"
+          />
         </Reveal>
       )}
 
@@ -245,19 +237,14 @@ export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>)
           {project.gallery && project.gallery.length > 0 && (
             <div className="mt-12 flex flex-col gap-8">
               {project.gallery.map((image, i) => {
-                const url = urlForImage(image)?.width(1400).url()
+                const url = urlForImage(image)?.url()
                 if (!url) return null
                 return (
-                  <Reveal key={i} className="overflow-hidden rounded-2xl">
-                    <Image
+                  <Reveal key={i} className="flex justify-center bg-transparent">
+                    <img
                       src={url}
                       alt={image.alt || `${project.title} visual gallery item ${i + 1}`}
-                      width={1400}
-                      height={1000}
-                      placeholder={image.lqip ? 'blur' : 'empty'}
-                      blurDataURL={image.lqip}
-                      sizes="(min-width: 1024px) 800px, 92vw"
-                      className="h-auto w-full object-cover"
+                      className="h-auto w-full object-contain"
                     />
                   </Reveal>
                 )
