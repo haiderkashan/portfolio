@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useReducedMotion } from 'motion/react'
+import { m, useReducedMotion } from 'motion/react'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import { Magnetic } from '@/components/ui/Magnetic'
 import { splitBrandName } from '@/lib/utils'
@@ -33,7 +33,7 @@ export function Hero({
       className="theme-light relative h-[100svh] min-h-[36rem] w-full overflow-hidden bg-paper"
     >
       {/* Background Image/Gradient Layer */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.35, ease: 'easeOut' }}
@@ -53,11 +53,11 @@ export function Hero({
           <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
-      </motion.div>
+      </m.div>
 
       {/* Semantic H1 & Brand Name Overlay (Positioned at the bottom) */}
       <div className="absolute inset-0 z-10 flex flex-col justify-end px-5 pb-6 sm:px-8 sm:pb-10 md:px-12">
-        <motion.h1
+        <m.h1
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={transitionConfig}
@@ -71,11 +71,11 @@ export function Hero({
               {last}/
             </span>
           )}
-        </motion.h1>
+        </m.h1>
       </div>
 
       {/* Chrome Overlay: Role & CTA (Positioned at the bottom overlay) */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={transitionConfig}
@@ -105,10 +105,10 @@ export function Hero({
             </Magnetic>
           </div>
         </div>
-      </motion.div>
+      </m.div>
 
       {/* Scroll indicator */}
-      <motion.div
+      <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ ...transitionConfig, delay: prefersReducedMotion ? 0 : 0.08 }}
@@ -122,14 +122,14 @@ export function Hero({
           <span className="font-display text-[10px] font-semibold uppercase tracking-[0.2em] text-paper">
             Scroll
           </span>
-          <motion.div
+          <m.div
             animate={prefersReducedMotion ? undefined : { y: [0, 4, 0] }}
             transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
           >
             <ChevronDown size={14} className="text-accent" />
-          </motion.div>
+          </m.div>
         </a>
-      </motion.div>
+      </m.div>
     </section>
   )
 }

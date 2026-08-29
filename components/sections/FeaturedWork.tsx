@@ -44,13 +44,15 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                   <Link
                     href={`/work/${project.slug}`}
                     aria-label={`${project.title} — ${project.tagline}`}
-                    className="group/img relative block w-full max-w-lg focus-visible:outline-none"
+                    className="group/img relative block w-full max-w-lg aspect-[16/10] overflow-hidden rounded-2xl focus-visible:outline-none"
                   >
                     {coverUrl ? (
-                      <img
+                      <Image
                         src={coverUrl}
                         alt={project.coverImage?.alt || `${project.title} project image`}
-                        className="w-full h-auto object-contain transition-transform duration-500 ease-out group-hover/img:scale-105"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        className="object-cover transition-transform duration-500 ease-out group-hover/img:scale-105"
                       />
                     ) : (
                       <div className="flex h-40 w-full items-center justify-center bg-transparent text-xs font-medium text-[var(--on-surface-faint)]">

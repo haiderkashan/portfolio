@@ -58,10 +58,16 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+import { LazyMotion, domAnimation } from 'motion/react'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={fontVariables}>
-      <body>{children}</body>
+      <body>
+        <LazyMotion features={domAnimation}>
+          {children}
+        </LazyMotion>
+      </body>
     </html>
   )
 }

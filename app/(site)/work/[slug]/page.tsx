@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { sanityFetch } from '@/sanity/lib/fetch'
@@ -208,11 +209,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       {coverUrl && (
         <Reveal delay={0.1} className="container-page mt-14 sm:mt-20 flex justify-center">
-          <img
-            src={coverUrl}
-            alt={project.coverImage?.alt || `${project.title} case study showcase mockup`}
-            className="w-full h-auto object-contain max-w-5xl"
-          />
+          <div className="relative w-full aspect-[16/10] max-w-5xl overflow-hidden rounded-2xl">
+            <Image
+              src={coverUrl}
+              alt={project.coverImage?.alt || `${project.title} case study showcase mockup`}
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 1200px"
+              className="object-cover"
+            />
+          </div>
         </Reveal>
       )}
 
@@ -243,11 +249,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 if (!url) return null
                 return (
                   <Reveal key={i} className="flex justify-center bg-transparent">
-                    <img
-                      src={url}
-                      alt={image.alt || `${project.title} visual gallery item ${i + 1}`}
-                      className="h-auto w-full object-contain"
-                    />
+                    <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl">
+                      <Image
+                        src={url}
+                        alt={image.alt || `${project.title} visual gallery item ${i + 1}`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 800px"
+                        className="object-cover"
+                      />
+                    </div>
                   </Reveal>
                 )
               })}
