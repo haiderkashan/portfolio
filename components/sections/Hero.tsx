@@ -84,7 +84,7 @@ export function Hero({
       >
         <div className="flex items-end justify-between gap-4">
           {role ? (
-            <p className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-accent drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] sm:text-base">
+            <p className="font-display text-base font-semibold uppercase tracking-[0.12em] text-accent drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] sm:text-lg md:text-xl">
               {role}
             </p>
           ) : (
