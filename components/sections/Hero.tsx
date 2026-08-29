@@ -55,8 +55,8 @@ export function Hero({
         <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-black/25" />
       </motion.div>
 
-      {/* Brand Name & Direct Value Proposition in the Top 40% of the Viewport */}
-      <div className="absolute inset-x-0 top-[20svh] z-10 flex flex-col px-5 sm:px-8 md:px-12">
+      {/* Semantic H1 & Brand Name Overlay (Positioned at the bottom) */}
+      <div className="absolute inset-0 z-10 flex flex-col justify-end px-5 pb-6 sm:px-8 sm:pb-10 md:px-12">
         <motion.h1
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -72,40 +72,38 @@ export function Hero({
             </span>
           )}
         </motion.h1>
-
-        {role && (
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={transitionConfig}
-            className="mt-6 max-w-3xl font-display text-lg font-semibold uppercase tracking-[0.1em] text-accent drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] sm:text-xl md:text-2xl"
-          >
-            {role}
-          </motion.p>
-        )}
       </div>
 
-      {/* Chrome Overlay: CTA Button */}
+      {/* Chrome Overlay: Role & CTA (Positioned at the bottom overlay) */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ ...transitionConfig, delay: prefersReducedMotion ? 0 : 0.08 }}
-        className="absolute inset-x-0 z-20 px-5 sm:px-8 md:px-12 flex justify-end"
+        transition={transitionConfig}
+        className="absolute inset-x-0 z-20 px-5 sm:px-8 md:px-12"
         style={{ bottom: 'clamp(7rem, 17vw, 10.5rem)' }}
       >
-        <div className="pointer-events-auto">
-          <Magnetic>
-            <Link
-              href="/contact"
-              className="group inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accent px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-transform hover:scale-[1.03] active:scale-[0.98] sm:px-6 sm:py-3 sm:text-sm"
-            >
-              {ctaLabel || 'Talk with me'}
-              <ArrowUpRight
-                size={16}
-                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </Link>
-          </Magnetic>
+        <div className="flex items-end justify-between gap-4">
+          {role ? (
+            <p className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-accent drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] sm:text-base">
+              {role}
+            </p>
+          ) : (
+            <span />
+          )}
+          <div className="pointer-events-auto">
+            <Magnetic>
+              <Link
+                href="/contact"
+                className="group inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accent px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-transform hover:scale-[1.03] active:scale-[0.98] sm:px-6 sm:py-3 sm:text-sm"
+              >
+                {ctaLabel || 'Talk with me'}
+                <ArrowUpRight
+                  size={16}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </Link>
+            </Magnetic>
+          </div>
         </div>
       </motion.div>
 
@@ -113,7 +111,7 @@ export function Hero({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ ...transitionConfig, delay: prefersReducedMotion ? 0 : 0.16 }}
+        transition={{ ...transitionConfig, delay: prefersReducedMotion ? 0 : 0.08 }}
         className="pointer-events-auto absolute inset-x-0 bottom-5 z-20 flex flex-col items-center gap-1.5 sm:bottom-7"
       >
         <a

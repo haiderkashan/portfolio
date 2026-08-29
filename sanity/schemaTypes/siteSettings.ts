@@ -10,7 +10,6 @@ export default defineType({
     { name: 'identity', title: 'Identity', default: true },
     { name: 'hero', title: 'Hero' },
     { name: 'intro', title: 'Intro / Stats' },
-    { name: 'process', title: 'Process' },
     { name: 'statement', title: 'Statement' },
     { name: 'footer', title: 'Footer' },
     { name: 'seo', title: 'SEO & Favicon' },
@@ -173,42 +172,6 @@ export default defineType({
       ],
     }),
 
-    // ── Process ───────────────────────────────────────────────
-    defineField({
-      name: 'processImage',
-      title: 'Process portrait',
-      type: 'image',
-      group: 'process',
-      options: { hotspot: true },
-      fields: [{ name: 'alt', title: 'Alt text', type: 'string' }],
-    }),
-    defineField({
-      name: 'processIntro',
-      title: 'Process intro line',
-      type: 'text',
-      rows: 3,
-      group: 'process',
-      initialValue:
-        'No fluff, just results. Thoughtful design and tools that make your work easier.',
-    }),
-    defineField({
-      name: 'processSteps',
-      title: 'Process steps',
-      type: 'array',
-      group: 'process',
-      description: 'Also powers the scrolling marquee text above this section.',
-      of: [
-        {
-          type: 'object',
-          name: 'processStep',
-          fields: [
-            defineField({ name: 'title', title: 'Title', type: 'string', validation: (Rule) => Rule.required() }),
-          ],
-          preview: { select: { title: 'title' } },
-        },
-      ],
-      validation: (Rule) => Rule.min(2),
-    }),
 
     // ── Statement ─────────────────────────────────────────────
     defineField({

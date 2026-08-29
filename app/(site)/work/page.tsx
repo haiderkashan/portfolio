@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { PROJECTS_PAGE_QUERY, SITE_SETTINGS_QUERY, type Paginated, type ProjectCard, type SiteSettings } from '@/sanity/lib/queries'
 import { urlForImage } from '@/sanity/lib/image'
@@ -10,6 +9,7 @@ import { SplitHeading } from '@/components/ui/SplitHeading'
 import { Pagination } from '@/components/ui/Pagination'
 import { siteUrl } from '@/lib/utils'
 import { JsonLd } from '@/components/JsonLd'
+import { BackButton } from '@/components/ui/BackButton'
 
 export const revalidate = 60
 
@@ -128,17 +128,12 @@ export default async function WorkPage({
   }
 
   return (
-    <div className="theme-light min-h-screen bg-paper pb-28 pt-10 sm:pb-36 sm:pt-14">
+    <div className="theme-light min-h-screen bg-paper pb-28 pt-24 sm:pb-36 sm:pt-28">
       <JsonLd data={workJsonLd} />
       <div className="container-page">
         <header className="mb-10 sm:mb-12">
           <Reveal>
-            <Link
-              href="/"
-              className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline"
-            >
-              <ArrowLeft size={15} /> Back to main
-            </Link>
+            <BackButton fallbackHref="/" label="Back to main" />
           </Reveal>
         </header>
 

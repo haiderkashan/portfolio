@@ -157,7 +157,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   return (
     <article className="theme-light bg-paper">
       <JsonLd data={projectJsonLd} />
-      <header className="pt-16 sm:pt-20">
+      <header className="pt-24 sm:pt-28">
         <div className="container-page">
           <Reveal>
             <BackButton fallbackHref="/#work" label="Back to work" />

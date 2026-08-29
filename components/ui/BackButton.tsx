@@ -7,7 +7,7 @@ import type { ReactNode } from 'react'
 export function BackButton({
   fallbackHref = '/',
   label = 'Back to main',
-  className = 'inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-ink focus-visible:underline',
+  className = 'inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm font-medium text-[var(--on-surface-soft)] transition-colors hover:text-accent-dim focus-visible:underline',
   children,
 }: {
   fallbackHref?: string

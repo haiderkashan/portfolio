@@ -104,7 +104,7 @@ export default async function ContactPage() {
     <div className="theme-light min-h-screen bg-paper flex flex-col justify-between">
       <JsonLd data={contactJsonLd} />
       {/* Top Header Bar / Back Navigation */}
-      <header className="container-page pt-6 sm:pt-8 pb-3 shrink-0">
+      <header className="container-page pt-24 sm:pt-28 pb-3 shrink-0">
         <Reveal>
           <BackButton fallbackHref="/" label="Back to main" />
         </Reveal>
