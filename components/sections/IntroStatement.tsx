@@ -71,7 +71,7 @@ export function IntroStatement({
   const bodyY = useTransform(scrollYProgress, [0.5, 0.9], prefersReducedMotion ? [0, 0] : [50, 0])
 
   return (
-    <section className="theme-light bg-paper py-24 sm:py-32">
+    <section className="theme-light bg-paper pt-8 pb-24 sm:pt-12 sm:pb-32">
       <div ref={ref} className="container-page">
         <h2 className="text-balance mx-auto max-w-5xl text-center font-display text-[10.5vw] font-bold uppercase leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl">
           <span className="sr-only">{headline}</span>

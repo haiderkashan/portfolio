@@ -7,13 +7,13 @@ import { urlForImage } from '@/sanity/lib/image'
 import type { ProjectCard } from '@/sanity/lib/queries'
 
 const pillClass =
-  'inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--line)] px-4 py-2 font-body text-xs font-medium text-[var(--on-surface)] transition-all hover:bg-accent hover:border-accent hover:text-ink focus-visible:bg-accent focus-visible:text-ink'
+  'inline-flex min-h-[40px] items-center gap-1.5 rounded-full border border-[var(--line)] bg-transparent px-4 py-2 font-display text-xs font-semibold uppercase tracking-[0.08em] text-[var(--on-surface)] transition-all hover:bg-accent hover:border-accent hover:text-ink focus-visible:bg-accent focus-visible:text-ink'
 
 export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
   if (!projects.length) return null
 
   return (
-    <section id="work" className="theme-light bg-paper py-24 sm:py-32">
+    <section id="work" className="theme-light bg-paper pt-8 pb-20 sm:pt-12 sm:pb-24">
       <div className="container-page">
         <SplitHeading
           text="Projects"
@@ -21,51 +21,104 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
           className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-accent-stroke sm:text-7xl md:text-8xl"
         />
 
-        <div className="mt-16 sm:mt-20">
+        <div className="mt-12 sm:mt-16">
           {projects.map((project, i) => {
             const thumbUrl = urlForImage(project.thumbnail)?.width(240).height(160).url()
-            const coverUrl = urlForImage(project.coverImage)?.width(1200).height(800).url()
+            const coverUrl = urlForImage(project.coverImage)?.width(1000).height(650).url()
+            const isOdd = i % 2 === 0 // 1st, 3rd, etc. -> Image Left (md:order-1), Text Right (md:order-2)
 
             return (
               <Reveal
                 key={project._id}
                 amount={0.15}
-                className={`grid gap-8 border-t border-[var(--line)] py-12 sm:py-16 md:grid-cols-2 md:gap-10 lg:gap-20 ${
+                className={`grid gap-8 border-t border-[var(--line)] py-8 sm:py-10 md:grid-cols-2 md:items-center md:gap-12 lg:gap-16 ${
                   i === projects.length - 1 ? 'border-b' : ''
                 }`}
               >
-                <div className="flex flex-col justify-between gap-8">
-                  <div>
-                    {(project.category || project.period) && (
-                      <p className="mb-3 font-body text-xs font-medium uppercase tracking-[0.14em] text-[var(--on-surface-faint)]">
-                        {[project.category, project.period].filter(Boolean).join(' · ')}
+                {/* Floating Image Column */}
+                <div
+                  className={`order-1 relative flex items-center justify-center ${
+                    isOdd ? 'md:order-1' : 'md:order-2'
+                  }`}
+                >
+                  <Link
+                    href={`/work/${project.slug}`}
+                    aria-label={`${project.title} — ${project.tagline}`}
+                    className="group/img relative block w-full max-w-lg focus-visible:outline-none"
+                  >
+                    <div className="relative aspect-[16/10] w-full max-h-[260px] sm:max-h-[300px] overflow-hidden">
+                      {coverUrl ? (
+                        <Image
+                          src={coverUrl}
+                          alt={project.coverImage?.alt || `${project.title} project image`}
+                          fill
+                          placeholder={project.coverImage?.lqip ? 'blur' : 'empty'}
+                          blurDataURL={project.coverImage?.lqip}
+                          sizes="(min-width: 768px) 45vw, 92vw"
+                          className="object-contain drop-shadow-xl transition-transform duration-500 ease-out group-hover/img:scale-105"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center rounded-2xl bg-[var(--surface-raised)]/50 text-xs font-medium text-[var(--on-surface-faint)]">
+                          No preview image available
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                </div>
+
+                {/* Content / Text & Links Column */}
+                <div
+                  className={`order-2 flex flex-col justify-center gap-4 ${
+                    isOdd ? 'md:order-2' : 'md:order-1'
+                  }`}
+                >
+                  {/* Category & Period */}
+                  {(project.category || project.period) && (
+                    <p className="font-body text-xs font-semibold uppercase tracking-[0.14em] text-[var(--on-surface-faint)]">
+                      {[project.category, project.period].filter(Boolean).join(' · ')}
+                    </p>
+                  )}
+
+                  {/* Project Heading */}
+                  <h3 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+                    <Link
+                      href={`/work/${project.slug}`}
+                      className="group/title inline-block transition-colors hover:text-moss focus-visible:underline"
+                    >
+                      {project.title}
+                    </Link>
+                  </h3>
+
+                  {/* Tagline & Excerpt Grouping */}
+                  <div className="space-y-1.5">
+                    {project.tagline && (
+                      <p className="font-display text-base font-semibold tracking-tight text-ink sm:text-lg">
+                        {project.tagline}
                       </p>
                     )}
-                    <h3 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">
-                      <Link
-                        href={`/work/${project.slug}`}
-                        className="group/title inline-block transition-colors hover:text-moss hover:underline decoration-2 underline-offset-4 focus-visible:underline"
-                      >
-                        {project.title}
-                      </Link>
-                    </h3>
+                    {project.excerpt && (
+                      <p className="line-clamp-2 font-body text-sm leading-relaxed text-[var(--on-surface-soft)]">
+                        {project.excerpt}
+                      </p>
+                    )}
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-4">
+                  {/* Links Grouping */}
+                  <div className="mt-1 flex flex-wrap items-center gap-3 pt-1">
                     {thumbUrl && (
-                      <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border border-[var(--line)]">
+                      <div className="relative h-10 w-14 shrink-0 overflow-hidden rounded-md border border-[var(--line)]">
                         <Image
                           src={thumbUrl}
-                          alt={project.thumbnail?.alt || `${project.title} preview thumbnail`}
+                          alt={project.thumbnail?.alt || `${project.title} thumbnail`}
                           fill
                           placeholder={project.thumbnail?.lqip ? 'blur' : 'empty'}
                           blurDataURL={project.thumbnail?.lqip}
-                          sizes="96px"
+                          sizes="56px"
                           className="object-cover"
                         />
                       </div>
                     )}
-                    <div className="flex flex-wrap gap-2.5">
+                    <div className="flex flex-wrap gap-2">
                       {project.liveUrl && (
                         <a
                           href={project.liveUrl}
@@ -79,19 +132,22 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                           <ArrowUpRight size={13} aria-hidden="true" />
                         </a>
                       )}
-                      {project.secondaryLinkUrl && project.secondaryLinkLabel?.toLowerCase().trim() !== 'case study' && (
-                        <a
-                          href={project.secondaryLinkUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`View ${project.title} on ${project.secondaryLinkLabel || 'external platform'}`}
-                          className={pillClass}
-                        >
-                          {project.secondaryLinkLabel || 'Link'}
-                          <span className="sr-only"> (opens in a new tab)</span>
-                          <ArrowUpRight size={13} aria-hidden="true" />
-                        </a>
-                      )}
+                      {project.secondaryLinkUrl &&
+                        project.secondaryLinkLabel?.toLowerCase().trim() !== 'case study' && (
+                          <a
+                            href={project.secondaryLinkUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`View ${project.title} on ${
+                              project.secondaryLinkLabel || 'external platform'
+                            }`}
+                            className={pillClass}
+                          >
+                            {project.secondaryLinkLabel || 'Link'}
+                            <span className="sr-only"> (opens in a new tab)</span>
+                            <ArrowUpRight size={13} aria-hidden="true" />
+                          </a>
+                        )}
                       <Link
                         href={`/work/${project.slug}`}
                         aria-label={`Read ${project.title} case study`}
@@ -102,36 +158,6 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                     </div>
                   </div>
                 </div>
-
-                <Link
-                  href={`/work/${project.slug}`}
-                  aria-label={`${project.title} — ${project.tagline}`}
-                  className="group/card relative block overflow-hidden rounded-2xl bg-[var(--surface-raised)] transition-all hover:ring-2 hover:ring-accent"
-                >
-                  <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[16/11]">
-                    {coverUrl && (
-                      <Image
-                        src={coverUrl}
-                        alt={project.coverImage?.alt || `${project.title} case study mockup`}
-                        fill
-                        placeholder={project.coverImage?.lqip ? 'blur' : 'empty'}
-                        blurDataURL={project.coverImage?.lqip}
-                        sizes="(min-width: 768px) 46vw, 92vw"
-                        className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
-                      />
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <p className="font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl">
-                      {project.tagline}
-                    </p>
-                    {project.excerpt && (
-                      <p className="mt-2 line-clamp-2 font-body text-sm text-[var(--on-surface-soft)]">
-                        {project.excerpt}
-                      </p>
-                    )}
-                  </div>
-                </Link>
               </Reveal>
             )
           })}
@@ -153,7 +179,3 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
     </section>
   )
 }
-
-
-
-

@@ -130,7 +130,7 @@ export default async function BlogPage({
   }
 
   return (
-    <div className="theme-light min-h-screen bg-paper pb-28 pt-16 sm:pb-36 sm:pt-20">
+    <div className="theme-light min-h-screen bg-paper pb-28 pt-10 sm:pb-36 sm:pt-14">
       <JsonLd data={blogJsonLd} />
       <div className="container-page">
         <header className="mb-10 sm:mb-12">

@@ -60,7 +60,7 @@ export default async function TermsAndConditionsPage() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <div className="theme-light min-h-screen bg-paper pb-20 pt-24 sm:pb-28 sm:pt-32">
+    <div className="theme-light min-h-screen bg-paper pb-20 pt-8 sm:pb-28 sm:pt-12">
       <div className="container-page max-w-2xl">
         {/* Back Button */}
         <header className="mb-10">

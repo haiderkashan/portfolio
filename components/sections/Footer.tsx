@@ -23,7 +23,7 @@ export function Footer({
   const displayHandle = handle ? handle.toUpperCase() : 'KASHAN HAIDER'
 
   return (
-    <footer id="contact" className="theme-dark bg-ink pb-8 pt-24 sm:pt-32">
+    <footer id="contact" className="theme-dark bg-ink pb-8 pt-8 sm:pt-12">
       <div className="container-page">
         {/* 1. Top Section: Centered Heading & Centered CTA Button */}
         <Reveal className="flex flex-col items-center justify-center text-center">

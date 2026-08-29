@@ -16,7 +16,7 @@ export function Stats({
   const showCollage = collageImages.length > 0 && (!bio || bio.length <= 300)
 
   return (
-    <section id="about" className="theme-light bg-paper py-24 sm:py-32">
+    <section id="about" className="theme-light bg-paper pt-8 pb-24 sm:pt-12 sm:pb-32">
       <div className="container-page">
         <SplitHeading
           text="About"

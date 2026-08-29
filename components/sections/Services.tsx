@@ -8,7 +8,7 @@ export function Services({ services }: { services: ServiceEntry[] }) {
   if (!services.length) return null
 
   return (
-    <section id="services" className="theme-dark bg-ink py-24 sm:py-32">
+    <section id="services" className="theme-dark bg-ink pt-8 pb-24 sm:pt-12 sm:pb-32">
       <div className="container-page">
         <SplitHeading
           text="Services"

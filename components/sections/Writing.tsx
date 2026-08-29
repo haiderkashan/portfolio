@@ -9,7 +9,7 @@ export function Writing({ posts }: { posts: PostCard[] }) {
   if (!posts.length) return null
 
   return (
-    <section className="theme-light bg-paper py-24 sm:py-32">
+    <section className="theme-light bg-paper pt-8 pb-24 sm:pt-12 sm:pb-32">
       <div className="container-page">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <SplitHeading
