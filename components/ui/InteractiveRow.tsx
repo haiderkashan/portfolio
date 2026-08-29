@@ -14,10 +14,10 @@ export function InteractiveRow({
   imageAlt?: string
   className?: string
 }) {
-  const [isHovered, setIsHovered] = useState(false)
+  const [isActive, setIsActive] = useState(false)
 
   function handleShow() {
-    setIsHovered(true)
+    setIsActive(true)
     if (imageUrl) {
       window.dispatchEvent(
         new CustomEvent('cursor-preview:show', {
@@ -28,14 +28,14 @@ export function InteractiveRow({
   }
 
   function handleHide() {
-    setIsHovered(false)
+    setIsActive(false)
     window.dispatchEvent(new CustomEvent('cursor-preview:hide'))
   }
 
   return (
     <StaggerItem
       as="div"
-      className={`${className} ${isHovered ? 'bg-[var(--surface-raised)]' : ''}`}
+      className={`${className} ${isActive ? 'bg-[var(--surface-raised)]' : ''}`}
     >
       <div
         onMouseEnter={handleShow}

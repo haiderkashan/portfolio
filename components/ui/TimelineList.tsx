@@ -78,7 +78,12 @@ export function TimelineList({ items }: { items: TimelineItem[] }) {
                 {innerContent}
               </Link>
             ) : (
-              <div className={gridClass}>{innerContent}</div>
+              <div
+                tabIndex={0}
+                className={`${gridClass} focus:outline-none focus-visible:ring-2 focus-visible:ring-accent`}
+              >
+                {innerContent}
+              </div>
             )}
             {item.description && (
               <p className="mt-2 max-w-2xl px-1 font-body text-sm leading-relaxed text-[var(--on-surface-soft)] sm:px-2">

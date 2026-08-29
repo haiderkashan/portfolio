@@ -7,7 +7,7 @@ import { urlForImage } from '@/sanity/lib/image'
 import type { ProjectCard } from '@/sanity/lib/queries'
 
 const pillClass =
-  'inline-flex min-h-[40px] items-center gap-1.5 rounded-full border border-[var(--line)] bg-transparent px-4 py-2 font-display text-xs font-semibold uppercase tracking-[0.08em] text-[var(--on-surface)] transition-all hover:bg-accent hover:border-accent hover:text-ink focus-visible:bg-accent focus-visible:text-ink'
+  'inline-flex min-h-[44px] items-center gap-1.5 rounded-full border border-[var(--line)] bg-transparent px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-[var(--on-surface)] transition-all hover:bg-accent hover:border-accent hover:text-ink focus-visible:bg-accent focus-visible:text-ink'
 
 export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
   if (!projects.length) return null
