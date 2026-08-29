@@ -24,7 +24,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: PageProps<'/work/[slug]'>): Promise<Metadata> {
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
   const { slug } = await params
   const [project, settings] = await Promise.all([
     getProject(slug),
@@ -84,7 +86,7 @@ export async function generateMetadata({
   }
 }
 
-export default async function ProjectPage({ params }: PageProps<'/work/[slug]'>) {
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const [project, allProjects, settings] = await Promise.all([
     getProject(slug),

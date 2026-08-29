@@ -31,6 +31,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         locationTag={settings?.locationTag}
         email={settings?.email}
         socialLinks={settings?.socialLinks}
+        resumeUrl={settings?.resume?.asset?.url}
       />
       <main id="main-content" tabIndex={-1} className="font-body outline-none">
         <PageTransition>{children}</PageTransition>

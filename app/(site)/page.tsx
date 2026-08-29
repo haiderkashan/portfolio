@@ -201,14 +201,6 @@ export default async function HomePage() {
 
       <Education education={education} />
 
-      <Services services={services} />
-
-      <Process
-        steps={settings?.processSteps || []}
-        intro={settings?.processIntro}
-        portraitUrl={processImageUrl}
-        portraitAlt={settings?.processImage?.alt || `${name} design process`}
-      />
 
       <Quote
         statement={settings?.statement || 'Building high-performance software with clean code and modern architecture.'}
