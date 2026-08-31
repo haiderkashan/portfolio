@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from 'motion/react'
@@ -46,6 +46,19 @@ export function IntroStatement({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)')
+    setIsMobile(media.matches)
+
+    function handleChange(e: MediaQueryListEvent) {
+      setIsMobile(e.matches)
+    }
+
+    media.addEventListener('change', handleChange)
+    return () => media.removeEventListener('change', handleChange)
+  }, [])
 
   // One shared progress value drives the heading, the image, and the body
   // block together, so they read as one coordinated move instead of three
@@ -59,10 +72,12 @@ export function IntroStatement({
   const words = headline.split(' ')
   const staggerStep = Math.min(0.05, 0.5 / words.length)
 
-  // Image: starts small, faded, and shifted up toward the heading — then
+  const disableYShift = prefersReducedMotion || isMobile
+
+  // Image: starts small, faded, and shifted up toward the heading on desktop — then
   // grows and settles down into its resting spot in the column below.
   const imageScale = useTransform(scrollYProgress, [0.05, 0.6], prefersReducedMotion ? [1, 1] : [0.4, 1])
-  const imageY = useTransform(scrollYProgress, [0.05, 0.65], prefersReducedMotion ? ['0%', '0%'] : ['-130%', '0%'])
+  const imageY = useTransform(scrollYProgress, [0.05, 0.65], disableYShift ? ['0%', '0%'] : ['-130%', '0%'])
   const imageOpacity = useTransform(scrollYProgress, [0, 0.25], [0, 1])
 
   // Body copy + button: slide up and fade in after the image and heading
