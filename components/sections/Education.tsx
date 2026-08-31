@@ -20,7 +20,7 @@ export function Education({ education }: { education: EducationEntry[] }) {
   }))
 
   return (
-    <section id="education" className="theme-light bg-paper pt-8 pb-24 sm:pt-12 sm:pb-32">
+    <section id="education" className="theme-light bg-paper min-h-[50vh] flex flex-col justify-center py-12 sm:py-20">
       <div className="container-page">
         <SplitHeading
           text="Education"

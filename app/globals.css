@@ -31,7 +31,7 @@
 .theme-light {
   --surface: var(--color-paper);
   --on-surface: var(--color-ink);
-  --on-surface-soft: color-mix(in srgb, var(--color-ink) 62%, transparent);
+  --on-surface-soft: color-mix(in srgb, var(--color-ink) 80%, transparent);
   --on-surface-faint: color-mix(in srgb, var(--color-ink) 58%, transparent);
   --line: color-mix(in srgb, var(--color-ink) 14%, transparent);
   --surface-raised: color-mix(in srgb, var(--color-ink) 4%, var(--color-paper));

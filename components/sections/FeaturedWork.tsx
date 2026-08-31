@@ -13,7 +13,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
   if (!projects.length) return null
 
   return (
-    <section id="work" className="theme-light bg-paper pt-8 pb-20 sm:pt-12 sm:pb-24">
+    <section id="work" className="theme-light bg-paper min-h-[55vh] flex flex-col justify-center py-12 sm:py-20">
       <div className="container-page">
         <SplitHeading
           text="Projects"

@@ -19,7 +19,7 @@ export function Quote({
   floatingImages: string[]
 }) {
   return (
-    <section className="theme-light relative overflow-hidden bg-paper pt-10 pb-28 sm:pt-14 sm:pb-36">
+    <section className="theme-light relative overflow-hidden bg-paper min-h-[50vh] flex flex-col justify-center py-12 sm:py-24">
       {floatingImages.slice(0, 4).map((src, i) => (
         <Reveal
           key={`${src}-${i}`}

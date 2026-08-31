@@ -35,14 +35,9 @@ export function GlobalCursorPreview() {
     window.addEventListener('cursor-preview:show', handleShow)
     window.addEventListener('cursor-preview:hide', handleHide)
 
-    // Single global pointermove listener for tracking cursor coordinates
     function handleMove(e: PointerEvent) {
       x.set(e.clientX)
-      if (e.clientY < 200) {
-        y.set(e.clientY + 200)
-      } else {
-        y.set(e.clientY)
-      }
+      y.set(e.clientY)
     }
 
     window.addEventListener('pointermove', handleMove, { passive: true })

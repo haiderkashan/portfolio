@@ -19,7 +19,7 @@ export function Process({
   const titles = steps.map((s) => s.title)
 
   return (
-    <section className="theme-dark bg-ink pb-24 sm:pb-32">
+    <section className="theme-dark bg-ink min-h-[50vh] flex flex-col justify-center py-12 sm:py-20">
       <div className="container-page pb-10 pt-4 sm:pt-8">
         <SplitHeading
           text="Process"
