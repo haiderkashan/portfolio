@@ -35,6 +35,15 @@ export function GlobalCursorPreview() {
     window.addEventListener('cursor-preview:show', handleShow)
     window.addEventListener('cursor-preview:hide', handleHide)
 
+    return () => {
+      window.removeEventListener('cursor-preview:show', handleShow)
+      window.removeEventListener('cursor-preview:hide', handleHide)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!preview.visible) return
+
     function handleMove(e: PointerEvent) {
       x.set(e.clientX)
       y.set(e.clientY)
@@ -43,11 +52,9 @@ export function GlobalCursorPreview() {
     window.addEventListener('pointermove', handleMove, { passive: true })
 
     return () => {
-      window.removeEventListener('cursor-preview:show', handleShow)
-      window.removeEventListener('cursor-preview:hide', handleHide)
       window.removeEventListener('pointermove', handleMove)
     }
-  }, [x, y])
+  }, [preview.visible, x, y])
 
   if (!preview.src) return null
 
