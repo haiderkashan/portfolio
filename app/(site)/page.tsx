@@ -9,8 +9,6 @@ import { Hero } from '@/components/sections/Hero'
 import { IntroStatement } from '@/components/sections/IntroStatement'
 import { Stats } from '@/components/sections/Stats'
 import { FeaturedWork } from '@/components/sections/FeaturedWork'
-import { Services } from '@/components/sections/Services'
-import { Process } from '@/components/sections/Process'
 import { Quote } from '@/components/sections/Quote'
 import { Writing } from '@/components/sections/Writing'
 import { Experience } from '@/components/sections/Experience'
@@ -119,7 +117,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const { settings, projects, experience, education, services, awards, posts } = await getHomeData()
+  const { settings, projects, experience, education, awards, posts } = await getHomeData()
 
   const finalExperience = experience.length > 0 ? experience : FALLBACK_EXPERIENCE
   const name = settings?.name || 'Your Name'
@@ -129,7 +127,6 @@ export default async function HomePage() {
 
   const heroImageUrl = urlForImage(settings?.heroImage)?.width(1920).height(1200).url()
   const introImageUrl = urlForImage(settings?.introImage)?.width(480).height(320).url()
-  const processImageUrl = urlForImage(settings?.processImage)?.width(900).height(720).url()
   const footerImageUrl = urlForImage(settings?.footerImage)?.width(320).height(240).url()
 
   const projectImageUrls = projects
@@ -172,9 +169,7 @@ export default async function HomePage() {
         sameAs: validSocialUrls,
         ...(settings?.knowsAbout && settings.knowsAbout.length > 0
           ? { knowsAbout: settings.knowsAbout }
-          : services.length > 0
-            ? { knowsAbout: services.map((s) => s.title) }
-            : {}),
+          : {}),
         ...(settings?.alumniOf ? { alumniOf: { '@type': 'EducationalOrganization', name: settings.alumniOf } } : {}),
       },
     ],

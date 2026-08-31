@@ -50,7 +50,11 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
     role,
     locationTag,
     email,
-    resume,
+    "resume": resume{
+      asset-> {
+        url
+      }
+    },
     socialLinks,
     "heroImage": heroImage{
       ...,
@@ -67,13 +71,6 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
     bio,
     aboutBio,
     stats,
-    "processImage": processImage{
-      ...,
-      "alt": alt,
-      "lqip": asset->metadata.lqip
-    },
-    processIntro,
-    processSteps,
     statement,
     "footerImage": footerImage{
       ...,
@@ -108,8 +105,7 @@ export const HOME_QUERY = defineQuery(`
       introHeadline,
       "introImage": introImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
       bio, aboutBio, stats,
-      "processImage": processImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
-      processIntro, processSteps, statement,
+      statement,
       "footerImage": footerImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
       footerHeadline, socialLinks,
       siteTitle, seoDescription, workSeoDescription, blogSeoDescription, contactSeoDescription,
@@ -128,10 +124,7 @@ export const HOME_QUERY = defineQuery(`
       _id, company, role, location, startYear, endYear, current, description,
       "image": image{ ..., "alt": alt, "lqip": asset->metadata.lqip }
     },
-    "services": *[_type == "service"] | order(orderRank asc){
-      _id, title, items,
-      "previewImage": previewImage{ ..., "alt": alt, "lqip": asset->metadata.lqip }
-    },
+
     "awards": *[_type == "award"] | order(orderRank asc){
       _id, awardType, date,
       "project": project->{

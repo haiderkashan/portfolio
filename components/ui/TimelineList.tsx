@@ -78,10 +78,7 @@ export function TimelineList({ items }: { items: TimelineItem[] }) {
                 {innerContent}
               </Link>
             ) : (
-              <div
-                tabIndex={0}
-                className={`${gridClass} focus:outline-none focus-visible:ring-2 focus-visible:ring-accent`}
-              >
+              <div className={gridClass}>
                 {innerContent}
               </div>
             )}

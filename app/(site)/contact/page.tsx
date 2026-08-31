@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowLeft, Download } from 'lucide-react'
+import { ArrowLeft, FileText } from 'lucide-react'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
 import { Reveal } from '@/components/ui/Reveal'
@@ -134,14 +134,14 @@ export default async function ContactPage() {
           </Reveal>
 
           {resumeUrl && (
-            <Reveal delay={0.25} className="mt-5">
+            <Reveal delay={0.25} className="mt-6">
               <a
                 href={resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-[44px] items-center gap-2 rounded-full border border-[var(--line)] px-5 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.08em] transition-all hover:bg-accent hover:border-accent hover:text-ink focus-visible:bg-accent focus-visible:text-ink"
               >
-                <Download size={14} /> Download resume
+                <FileText size={14} /> View resume
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
             </Reveal>
