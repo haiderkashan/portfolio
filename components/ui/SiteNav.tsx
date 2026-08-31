@@ -188,7 +188,7 @@ export function SiteNav({
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl max-md:landscape:text-2xl max-md:landscape:py-1"
+                      className="group flex items-center gap-4 py-2 font-display text-[12vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-6xl md:text-7xl max-md:landscape:text-2xl max-md:landscape:py-1"
                     >
                       {link.label}
                       <ArrowUpRight
@@ -200,7 +200,7 @@ export function SiteNav({
                     <Link
                       href={link.href}
                       onClick={() => handleLinkClick(link.href)}
-                      className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl max-md:landscape:text-2xl max-md:landscape:py-1"
+                      className="group flex items-center gap-4 py-2 font-display text-[12vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-6xl md:text-7xl max-md:landscape:text-2xl max-md:landscape:py-1"
                     >
                       {link.label}
                       <ArrowUpRight
