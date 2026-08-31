@@ -23,10 +23,10 @@ export function ContactForm() {
   const [topic, setTopic] = useState('')
 
   const fieldInputClass =
-    'w-full border-b-2 border-[var(--line)] bg-transparent py-2 font-body text-base text-ink placeholder:text-[var(--on-surface-faint)]/70 outline-none transition-all duration-150 focus:border-b-4 focus:border-accent focus:pb-[6px]'
+    'w-full border-b-2 border-[var(--line)] bg-transparent py-1 font-body text-sm text-ink placeholder:text-[var(--on-surface-faint)]/70 outline-none transition-all duration-150 focus:border-b-4 focus:border-accent focus:pb-[4px]'
 
   const labelClass =
-    'block font-display text-[11px] sm:text-xs font-bold uppercase tracking-[0.12em] text-ink mb-1.5'
+    'block font-display text-[10px] sm:text-xs font-bold uppercase tracking-[0.12em] text-ink mb-1'
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -102,7 +102,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5 overflow-visible">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-3 overflow-visible">
       {/* Honeypot: 'budget' trap for bots */}
       <div className="absolute -left-[9999px] opacity-0" aria-hidden="true">
         <label htmlFor="budget">Budget</label>
@@ -110,7 +110,7 @@ export function ContactForm() {
       </div>
 
       {/* Row 1: Name & Email */}
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:gap-3 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClass}>
             Name <span className="text-ink font-bold ml-0.5" aria-hidden="true">*</span>
@@ -147,7 +147,7 @@ export function ContactForm() {
       </div>
 
       {/* Row 2: Topic & Company */}
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:gap-3 sm:grid-cols-2">
         <div>
           <label htmlFor="topic" className={labelClass}>
             Topic / Inquiry <span className="text-ink font-bold ml-0.5" aria-hidden="true">*</span>
@@ -188,7 +188,7 @@ export function ContactForm() {
       </div>
 
       {/* Row 3: Phone Number & File Upload */}
-      <div className="grid gap-5 sm:grid-cols-2 sm:items-start">
+      <div className="grid gap-4 sm:gap-3 sm:grid-cols-2 sm:items-start">
         <div>
           <label htmlFor="phone" className={labelClass}>
             Phone Number
@@ -227,7 +227,7 @@ export function ContactForm() {
           name="message"
           required
           maxLength={5000}
-          rows={3}
+          rows={2}
           aria-invalid={Boolean(error)}
           aria-describedby={error ? 'contact-form-error' : undefined}
           className={fieldInputClass}

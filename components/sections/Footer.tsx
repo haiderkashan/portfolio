@@ -1,4 +1,7 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { ArrowUpRight } from 'lucide-react'
 import { Reveal } from '@/components/ui/Reveal'
 import { Magnetic } from '@/components/ui/Magnetic'
@@ -18,6 +21,9 @@ export function Footer({
   name?: string
   socialLinks?: { platform: string; url: string }[]
 }) {
+  const pathname = usePathname()
+  if (pathname === '/contact') return null
+
   const currentYear = new Date().getFullYear()
   const displayName = name || 'Kashan Haider'
   const displayHandle = handle ? handle.toUpperCase() : 'KASHAN HAIDER'

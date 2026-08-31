@@ -101,25 +101,26 @@ export default async function ContactPage() {
   }
 
   return (
-    <div className="theme-light min-h-screen bg-paper flex flex-col justify-between">
+    <div className="theme-light min-h-screen bg-paper flex flex-col pt-24 sm:pt-28 pb-8">
       <JsonLd data={contactJsonLd} />
-      {/* Top Header Bar / Back Navigation */}
-      <header className="container-page pt-24 sm:pt-28 pb-3 shrink-0">
-        <Reveal>
-          <BackButton fallbackHref="/" label="Back to main" />
-        </Reveal>
-      </header>
 
       {/* Main Content Grid */}
-      <div className="container-page flex-1 grid gap-8 py-6 md:grid-cols-12 md:items-center md:gap-12">
+      <div className="container-page flex-1 grid gap-8 py-4 md:grid-cols-12 md:items-start md:gap-12 lg:gap-16">
         {/* Left Column: Heading & Contact Info */}
-        <div className="md:col-span-5 flex flex-col justify-center">
+        <div className="md:col-span-5 flex flex-col justify-start">
+          {/* Decoupled Back Button Navigation inside left flow */}
+          <div className="mb-6 md:mb-8">
+            <Reveal>
+              <BackButton fallbackHref="/" label="Back to main" />
+            </Reveal>
+          </div>
+
           <SplitHeading
             text="Let's talk"
             as="h1"
             className="font-display text-5xl font-bold uppercase leading-[0.92] tracking-tight sm:text-6xl lg:text-7xl"
           />
-          <Reveal delay={0.15} className="mt-5 max-w-md">
+          <Reveal delay={0.15} className="mt-4 max-w-md">
             <p className="font-body text-base sm:text-lg leading-relaxed text-[var(--on-surface-soft)]">
               Have a project in mind, a question, or an opportunity? Fill out the form or reach out directly at{' '}
               <a
@@ -133,7 +134,7 @@ export default async function ContactPage() {
           </Reveal>
 
           {resumeUrl && (
-            <Reveal delay={0.25} className="mt-6">
+            <Reveal delay={0.25} className="mt-5">
               <a
                 href={resumeUrl}
                 target="_blank"
@@ -148,7 +149,7 @@ export default async function ContactPage() {
         </div>
 
         {/* Right Column: Form Container */}
-        <div className="md:col-span-7 py-1">
+        <div className="md:col-span-7 pt-2">
           <Reveal delay={0.1}>
             <ContactForm />
           </Reveal>
