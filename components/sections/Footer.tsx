@@ -32,8 +32,8 @@ export function Footer({
           </h3>
           <div className="mt-8 sm:mt-10">
             <Magnetic>
-              <a
-                href={`mailto:${email}`}
+              <Link
+                href="/contact"
                 className="group inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accent px-7 py-3.5 font-display text-sm font-semibold uppercase tracking-[0.08em] text-ink shadow-lg transition-transform hover:scale-[1.03] active:scale-[0.98]"
               >
                 {ctaLabel || 'TALK WITH ME'}
@@ -41,7 +41,7 @@ export function Footer({
                   size={17}
                   className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 />
-              </a>
+              </Link>
             </Magnetic>
           </div>
         </Reveal>
