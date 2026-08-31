@@ -161,7 +161,7 @@ export function SiteNav({
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
-            className="theme-dark fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-ink px-6 pb-10 pt-28 sm:px-12 landscape:pt-16 landscape:pb-6"
+            className="theme-dark fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-ink px-6 pb-10 pt-28 sm:px-12 max-md:landscape:pt-16 max-md:landscape:pb-6"
             style={{ transformOrigin: 'top' }}
             initial={{ scaleY: 0, opacity: 0.4 }}
             animate={{ scaleY: 1, opacity: 1 }}
@@ -170,7 +170,7 @@ export function SiteNav({
           >
             <motion.nav
               aria-label="Modal site navigation"
-              className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-4 landscape:grid-cols-2 landscape:gap-x-8 landscape:gap-y-2"
+              className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-4 max-md:landscape:grid-cols-2 max-md:landscape:gap-x-8 max-md:landscape:gap-y-2"
               initial="hidden"
               animate="show"
               variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } } }}
@@ -188,7 +188,7 @@ export function SiteNav({
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl landscape:text-2xl landscape:py-1 sm:landscape:text-3xl"
+                      className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl max-md:landscape:text-2xl max-md:landscape:py-1"
                     >
                       {link.label}
                       <ArrowUpRight
@@ -200,7 +200,7 @@ export function SiteNav({
                     <Link
                       href={link.href}
                       onClick={() => handleLinkClick(link.href)}
-                      className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl landscape:text-2xl landscape:py-1 sm:landscape:text-3xl"
+                      className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl max-md:landscape:text-2xl max-md:landscape:py-1"
                     >
                       {link.label}
                       <ArrowUpRight
