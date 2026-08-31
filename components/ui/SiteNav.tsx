@@ -8,15 +8,6 @@ import { useLenis } from 'lenis/react'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { EASE_SWIFT } from './Reveal'
 
-const MOBILE_LINKS = [
-  { label: 'Home', href: '/' },
-  { label: 'Work', href: '/#work' },
-  { label: 'Experience', href: '/#experience' },
-  { label: 'Education', href: '/#education' },
-  { label: 'Writing', href: '/blog' },
-  { label: 'Contact', href: '/contact' },
-]
-
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
@@ -38,6 +29,16 @@ export function SiteNav({
   const overlayRef = useRef<HTMLDivElement>(null)
   const shouldRestoreFocusRef = useRef(true)
 
+  const linksToRender = [
+    { label: 'Home', href: '/' },
+    { label: 'Work', href: '/#work' },
+    { label: 'Experience', href: '/#experience' },
+    { label: 'Education', href: '/#education' },
+    { label: 'Writing', href: '/blog' },
+    ...(resumeUrl ? [{ label: 'Resume', href: resumeUrl, isExternal: true }] : []),
+    { label: 'Contact', href: '/contact' },
+  ]
+
   useEffect(() => {
     window.dispatchEvent(new CustomEvent('menuToggle', { detail: { open } }))
     if (open) {
@@ -54,24 +55,6 @@ export function SiteNav({
     }
   }, [open, lenis])
 
-  // Desktop anchor navigation smooth scroll
-  function handleDesktopLinkClick(href: string) {
-    if (href.startsWith('/#') || href.startsWith('#')) {
-      const selector = href.replace(/^\//, '')
-      if (pathname === '/') {
-        const target = document.querySelector<HTMLElement>(selector)
-        if (target) {
-          lenis?.scrollTo(target, { immediate: false })
-          if (!target.hasAttribute('tabindex')) {
-            target.setAttribute('tabindex', '-1')
-          }
-          target.focus()
-        }
-      }
-    }
-  }
-
-  // Mobile anchor navigation smooth scroll
   function handleLinkClick(href: string) {
     setOpen(false)
     if (href.startsWith('/#') || href.startsWith('#')) {
@@ -92,7 +75,9 @@ export function SiteNav({
     }
   }
 
-  // Focus management for Mobile Menu Overlay
+  // Focus management: move focus into the overlay when it opens, trap Tab
+  // inside it (including the Close toggle button), restore focus on close,
+  // and let Escape close it.
   useEffect(() => {
     if (!open) return
 
@@ -143,7 +128,7 @@ export function SiteNav({
       <div className="pointer-events-none fixed inset-x-0 top-0 z-50">
         <div className="container-page flex items-center justify-between py-6 sm:py-8">
           
-          {/* Mobile hamburger toggle (Hidden on Desktop) */}
+          {/* Hamburger toggle button (restored on both mobile and desktop) */}
           <button
             ref={toggleRef}
             type="button"
@@ -152,59 +137,12 @@ export function SiteNav({
             aria-haspopup="dialog"
             aria-controls="site-menu-dialog"
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="pointer-events-auto flex min-h-[44px] shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-accent px-4 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.1em] text-ink shadow-md transition-transform hover:scale-[1.03] active:scale-[0.98] md:hidden sm:text-sm"
+            className="pointer-events-auto flex min-h-[44px] shrink-0 items-center gap-2 whitespace-nowrap rounded-full bg-accent px-4 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.1em] text-ink shadow-md transition-transform hover:scale-[1.03] active:scale-[0.98] sm:text-sm sm:tracking-[0.14em]"
           >
             {open ? 'Close' : 'Menu'}
             {open ? <X size={16} strokeWidth={2.5} /> : <Menu size={16} strokeWidth={2.5} />}
           </button>
 
-          {/* Desktop Persistent Navbar (Hidden on Mobile) */}
-          <nav className="pointer-events-auto hidden md:flex items-center gap-1 rounded-full bg-accent p-1.5 shadow-md">
-            <Link
-              href="/"
-              className="px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.08em] text-ink rounded-full transition-colors hover:bg-ink/10 focus-visible:bg-ink/15 focus-visible:outline-none"
-            >
-              Home
-            </Link>
-            <Link
-              href="/#work"
-              onClick={() => handleDesktopLinkClick('/#work')}
-              className="px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.08em] text-ink rounded-full transition-colors hover:bg-ink/10 focus-visible:bg-ink/15 focus-visible:outline-none"
-            >
-              Work
-            </Link>
-            <Link
-              href="/#experience"
-              onClick={() => handleDesktopLinkClick('/#experience')}
-              className="px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.08em] text-ink rounded-full transition-colors hover:bg-ink/10 focus-visible:bg-ink/15 focus-visible:outline-none"
-            >
-              Experience
-            </Link>
-            <Link
-              href="/blog"
-              className="px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.08em] text-ink rounded-full transition-colors hover:bg-ink/10 focus-visible:bg-ink/15 focus-visible:outline-none"
-            >
-              Writing
-            </Link>
-            {resumeUrl && (
-              <a
-                href={resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.08em] text-ink rounded-full transition-colors hover:bg-ink/10 focus-visible:bg-ink/15 focus-visible:outline-none"
-              >
-                Resume
-              </a>
-            )}
-            <Link
-              href="/contact"
-              className="px-4 py-2 font-display text-xs font-bold uppercase tracking-[0.08em] text-ink rounded-full transition-colors hover:bg-ink/10 focus-visible:bg-ink/15 focus-visible:outline-none"
-            >
-              Contact
-            </Link>
-          </nav>
-
-          {/* Location Tag */}
           {locationTag ? (
             <span className="pointer-events-auto ml-3 hidden min-h-[44px] max-w-[55vw] shrink items-center truncate whitespace-nowrap rounded-full bg-accent px-4 py-2.5 font-display text-xs font-semibold uppercase tracking-[0.1em] text-ink shadow-md sm:flex sm:ml-0 sm:max-w-none sm:text-sm sm:tracking-[0.14em]">
               /{locationTag}
@@ -215,7 +153,6 @@ export function SiteNav({
         </div>
       </div>
 
-      {/* Mobile navigation overlay (Unchanged on mobile, hidden on desktop) */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -224,7 +161,7 @@ export function SiteNav({
             role="dialog"
             aria-modal="true"
             aria-label="Site menu"
-            className="theme-dark fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-ink px-6 pb-10 pt-28 sm:px-12 md:hidden landscape:pt-16 landscape:pb-6"
+            className="theme-dark fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-ink px-6 pb-10 pt-28 sm:px-12 landscape:pt-16 landscape:pb-6"
             style={{ transformOrigin: 'top' }}
             initial={{ scaleY: 0, opacity: 0.4 }}
             animate={{ scaleY: 1, opacity: 1 }}
@@ -238,7 +175,7 @@ export function SiteNav({
               animate="show"
               variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } } }}
             >
-              {MOBILE_LINKS.map((link) => (
+              {linksToRender.map((link) => (
                 <motion.div
                   key={link.href}
                   variants={{
@@ -246,17 +183,32 @@ export function SiteNav({
                     show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE_SWIFT } },
                   }}
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => handleLinkClick(link.href)}
-                    className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl landscape:text-2xl landscape:py-1 sm:landscape:text-3xl"
-                  >
-                    {link.label}
-                    <ArrowUpRight
-                      className="hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:block"
-                      size={34}
-                    />
-                  </Link>
+                  {link.isExternal ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl landscape:text-2xl landscape:py-1 sm:landscape:text-3xl"
+                    >
+                      {link.label}
+                      <ArrowUpRight
+                        className="hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:block"
+                        size={34}
+                      />
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      onClick={() => handleLinkClick(link.href)}
+                      className="group flex items-center gap-4 py-2 font-display text-[11vw] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-5xl md:text-6xl landscape:text-2xl landscape:py-1 sm:landscape:text-3xl"
+                    >
+                      {link.label}
+                      <ArrowUpRight
+                        className="hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:block"
+                        size={34}
+                      />
+                    </Link>
+                  )}
                 </motion.div>
               ))}
             </motion.nav>
