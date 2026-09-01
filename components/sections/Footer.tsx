@@ -109,7 +109,7 @@ export function Footer({
           <Link
             href="/#top"
             aria-label="Back to top of page"
-            className="block w-full max-w-full truncate text-center font-display text-[8.5vw] font-bold uppercase leading-none tracking-tight text-paper transition-colors hover:text-accent sm:text-[10vw]"
+            className="block w-full max-w-full truncate text-center font-display text-[clamp(2rem,8.5vw,7rem)] font-bold uppercase leading-none tracking-tight text-paper transition-colors hover:text-accent sm:text-[clamp(2.5rem,10vw,9.5rem)]"
           >
             /{displayHandle}/
           </Link>
