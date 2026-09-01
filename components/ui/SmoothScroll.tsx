@@ -1,7 +1,11 @@
 'use client'
 
-import { ReactLenis } from 'lenis/react'
 import { type ReactNode, useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
+
+const ReactLenis = dynamic(() => import('lenis/react').then((mod) => mod.ReactLenis), {
+  ssr: false,
+})
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
   const [enabled, setEnabled] = useState(false)
