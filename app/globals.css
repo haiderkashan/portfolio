@@ -31,8 +31,8 @@
 .theme-light {
   --surface: var(--color-paper);
   --on-surface: var(--color-ink);
-  --on-surface-soft: color-mix(in srgb, var(--color-ink) 80%, transparent);
-  --on-surface-faint: color-mix(in srgb, var(--color-ink) 58%, transparent);
+  --on-surface-soft: color-mix(in srgb, var(--color-ink) 85%, transparent);
+  --on-surface-faint: color-mix(in srgb, var(--color-ink) 75%, transparent);
   --line: color-mix(in srgb, var(--color-ink) 14%, transparent);
   --surface-raised: color-mix(in srgb, var(--color-ink) 4%, var(--color-paper));
 }
@@ -40,8 +40,8 @@
 .theme-dark {
   --surface: var(--color-ink);
   --on-surface: var(--color-paper);
-  --on-surface-soft: color-mix(in srgb, var(--color-paper) 64%, transparent);
-  --on-surface-faint: color-mix(in srgb, var(--color-paper) 68%, transparent);
+  --on-surface-soft: color-mix(in srgb, var(--color-paper) 75%, transparent);
+  --on-surface-faint: color-mix(in srgb, var(--color-paper) 80%, transparent);
   --line: color-mix(in srgb, var(--color-paper) 16%, transparent);
   --surface-raised: color-mix(in srgb, var(--color-paper) 6%, var(--color-ink));
 }

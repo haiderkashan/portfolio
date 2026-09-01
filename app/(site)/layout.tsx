@@ -33,7 +33,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         socialLinks={settings?.socialLinks}
         resumeUrl={settings?.resume?.asset?.url}
       />
-      <main id="main-content" tabIndex={-1} className="font-body outline-none">
+      <main id="main-content" tabIndex={-1} className="font-body focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer
