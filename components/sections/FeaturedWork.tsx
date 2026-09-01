@@ -53,6 +53,9 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                         width={800}
                         height={500}
                         sizes="(max-width: 768px) 100vw, 50vw"
+                        priority={i === 0}
+                        fetchPriority={i === 0 ? 'high' : 'auto'}
+                        loading={i === 0 ? 'eager' : 'lazy'}
                         className="w-full h-auto object-contain transition-transform duration-500 ease-out group-hover-desktop-img-scale-105"
                       />
                     ) : (
