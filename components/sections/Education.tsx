@@ -25,7 +25,7 @@ export function Education({ education }: { education: EducationEntry[] }) {
         <SplitHeading
           text="Education"
           as="h2"
-          className="font-display text-[11vw] font-bold uppercase leading-[0.95] tracking-tight text-brutalist-shadow sm:text-7xl md:text-8xl"
+          className="font-display text-[clamp(2.5rem,8vw,6rem)] font-bold tracking-tight text-brutalist-shadow sm:text-7xl md:text-8xl"
         />
         <TimelineList items={items} />
       </div>
