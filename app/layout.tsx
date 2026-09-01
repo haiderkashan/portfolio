@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null)
   const name = settings?.name || 'Portfolio'
   const title = settings?.siteTitle || (settings?.name ? `${settings.name} — ${settings.role || 'Portfolio'}` : 'Portfolio')
-  const description = settings?.seoDescription || settings?.bio || 'Portfolio, powered by Next.js and Sanity.'
+  const description = settings?.seoDescription || settings?.bio || 'Full-Stack Software Engineer & Technical Architect specializing in high-performance web applications, distributed systems, and modern UI engineering.'
   const fallbackOgUrl = `${siteUrl}/og-fallback.png`
   const ogImageUrl = urlForImage(settings?.ogImage)?.width(1200).height(630).url() || fallbackOgUrl
   const ogImageAlt = settings?.ogImage?.alt || title

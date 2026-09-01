@@ -88,26 +88,23 @@ export function IntroStatement({
   return (
     <section className="theme-light bg-paper min-h-[50vh] flex flex-col justify-center py-12 sm:py-20">
       <div ref={ref} className="container-page">
-        <h2 className="text-balance mx-auto max-w-5xl text-center font-display text-[clamp(2.5rem,7vw,5.5rem)] font-bold uppercase leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl">
-          <span className="sr-only">{headline}</span>
-          <span aria-hidden="true">
-            {words.flatMap((word, i) => {
-              const start = i * staggerStep
-              const end = Math.min(1, start + 0.3)
-              const nodes = [
-                <FadeWord
-                  key={`w-${i}`}
-                  word={word}
-                  start={start}
-                  end={end}
-                  progress={scrollYProgress}
-                  prefersReducedMotion={prefersReducedMotion}
-                />,
-              ]
-              if (i < words.length - 1) nodes.push(<span key={`s-${i}`}> </span>)
-              return nodes
-            })}
-          </span>
+        <h2 className="text-balance mx-auto max-w-5xl text-center font-display text-[clamp(2.5rem,7vw,5.5rem)] font-bold tracking-tight text-ink sm:text-6xl md:text-7xl">
+          {words.flatMap((word, i) => {
+            const start = i * staggerStep
+            const end = Math.min(1, start + 0.3)
+            const nodes = [
+              <FadeWord
+                key={`w-${i}`}
+                word={word}
+                start={start}
+                end={end}
+                progress={scrollYProgress}
+                prefersReducedMotion={prefersReducedMotion}
+              />,
+            ]
+            if (i < words.length - 1) nodes.push(<span key={`s-${i}`}> </span>)
+            return nodes
+          })}
         </h2>
 
         <div className="mt-14 flex flex-col items-center gap-8 sm:mt-20 md:flex-row md:items-center md:justify-center md:gap-12">

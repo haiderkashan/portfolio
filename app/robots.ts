@@ -3,11 +3,18 @@ import { siteUrl } from '@/lib/utils'
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/studio', '/studio/', '/api', '/api/'],
-    },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/studio', '/studio/', '/api', '/api/'],
+      },
+      {
+        userAgent: ['GPTBot', 'ChatGPT-User', 'CCBot', 'ClaudeBot', 'Anthropic-AI'],
+        allow: '/',
+        disallow: ['/studio', '/studio/', '/api', '/api/'],
+      },
+    ],
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,
   }

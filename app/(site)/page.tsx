@@ -123,7 +123,7 @@ export default async function HomePage() {
   const name = settings?.name || 'Your Name'
   const handle = settings?.handle || 'yourname'
   const email = settings?.email || 'you@example.com'
-  const description = settings?.seoDescription || settings?.bio || 'Portfolio, powered by Next.js and Sanity.'
+  const description = settings?.seoDescription || settings?.bio || 'Full-Stack Software Engineer & Technical Architect specializing in high-performance web applications, distributed systems, and modern UI engineering.'
 
   const heroImageUrl = urlForImage(settings?.heroImage)?.width(1920).height(1200).url()
   const introImageUrl = urlForImage(settings?.introImage)?.width(480).height(320).url()
