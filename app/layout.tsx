@@ -63,6 +63,9 @@ import { LazyMotion, domAnimation } from 'motion/react'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={fontVariables}>
+      <head>
+        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
+      </head>
       <body>
         <LazyMotion features={domAnimation}>
           {children}

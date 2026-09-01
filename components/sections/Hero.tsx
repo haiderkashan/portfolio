@@ -32,14 +32,8 @@ export function Hero({
       id="top"
       className="theme-light relative h-[100svh] min-h-[36rem] w-full overflow-hidden bg-paper"
     >
-      {/* Background Image/Gradient Layer */}
-      <m.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
-        className="absolute inset-0 z-0"
-        aria-hidden="true"
-      >
+      {/* Background Image/Gradient Layer (Instant LCP Paint) */}
+      <div className="absolute inset-0 z-0" aria-hidden="true">
         {heroImageUrl ? (
           <Image
             src={heroImageUrl}
@@ -53,7 +47,7 @@ export function Hero({
           <div className="absolute inset-0 bg-gradient-to-br from-moss-light to-moss" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/30" />
-      </m.div>
+      </div>
 
       {/* Hero Content Container (Pure Flexbox Layout without hardcoded bottom offsets) */}
       <div className="relative z-10 flex h-full w-full flex-col justify-end px-5 pb-8 sm:px-8 sm:pb-12 md:px-12">

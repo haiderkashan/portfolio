@@ -1,12 +1,19 @@
+import dynamic from 'next/dynamic'
 import { SmoothScroll } from '@/components/ui/SmoothScroll'
 import { SiteNav } from '@/components/ui/SiteNav'
-import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { PreviewBanner } from '@/components/PreviewBanner'
 import { Footer } from '@/components/sections/Footer'
-import { GlobalCursorPreview } from '@/components/ui/GlobalCursorPreview'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { SITE_SETTINGS_QUERY, type SiteSettings } from '@/sanity/lib/queries'
+
+const GlobalCursorPreview = dynamic(
+  () => import('@/components/ui/GlobalCursorPreview').then((mod) => mod.GlobalCursorPreview)
+)
+
+const ScrollToTop = dynamic(
+  () => import('@/components/ui/ScrollToTop').then((mod) => mod.ScrollToTop)
+)
 
 async function getSettings() {
   return sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null)
