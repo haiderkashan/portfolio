@@ -45,8 +45,29 @@ export function GlobalCursorPreview() {
     if (!preview.visible) return
 
     function handleMove(e: PointerEvent) {
-      x.set(e.clientX)
-      y.set(e.clientY)
+      const width = 224
+      const height = 160
+      const padding = 16
+      const vw = window.innerWidth
+      const vh = window.innerHeight
+
+      // Horizontal target: centered on cursor, clamped within viewport padding
+      let targetX = e.clientX - width / 2
+      targetX = Math.max(padding, Math.min(targetX, vw - width - padding))
+
+      // Vertical target: default 20px above cursor
+      let targetY = e.clientY - height - 20
+
+      // Boundary detection: if image clips top of viewport, flip to 24px below cursor
+      if (targetY < padding) {
+        targetY = e.clientY + 24
+      }
+
+      // Clamp vertical target within viewport bottom padding
+      targetY = Math.max(padding, Math.min(targetY, vh - height - padding))
+
+      x.set(targetX)
+      y.set(targetY)
     }
 
     window.addEventListener('pointermove', handleMove, { passive: true })
@@ -62,7 +83,7 @@ export function GlobalCursorPreview() {
     <motion.div
       aria-hidden="true"
       className="pointer-events-none fixed left-0 top-0 z-50 hidden h-40 w-56 overflow-hidden rounded-2xl bg-ink/10 shadow-2xl md:block"
-      style={{ x: springX, y: springY, marginLeft: -112, marginTop: -180 }}
+      style={{ x: springX, y: springY }}
       initial={false}
       animate={{
         opacity: preview.visible ? 1 : 0,
