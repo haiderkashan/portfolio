@@ -7,9 +7,12 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
-    // Only enable smooth scrolling on devices with a fine pointer (e.g. mouse, trackpad)
-    // Completely bypasses Lenis smooth scroll on mobile/tablet touch screens
-    if (window.matchMedia('(pointer: fine)').matches) {
+    // Enable smooth scrolling only on desktop devices (width >= 768px and fine pointer)
+    // Completely bypasses Lenis smooth scroll on mobile/tablet screens < 768px
+    if (
+      window.matchMedia('(pointer: fine)').matches &&
+      window.matchMedia('(min-width: 768px)').matches
+    ) {
       setEnabled(true)
     }
   }, [])

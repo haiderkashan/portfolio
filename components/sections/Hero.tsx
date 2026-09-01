@@ -39,7 +39,7 @@ export function Hero({
             src={heroImageUrl}
             alt=""
             fill
-            priority
+            priority={true}
             sizes="100vw"
             className="object-cover"
           />
