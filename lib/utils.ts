@@ -32,12 +32,3 @@ export function splitBrandName(name: string): [string, string] {
   return [parts.join(' '), last]
 }
 
-export function initials(name: string) {
-  return name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join('')
-}
-
