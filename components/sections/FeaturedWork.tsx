@@ -47,9 +47,12 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                     className="group/img relative block w-full max-w-lg focus-visible:outline-none"
                   >
                     {coverUrl ? (
-                      <img
+                      <Image
                         src={coverUrl}
                         alt={project.coverImage?.alt || `${project.title} project image`}
+                        width={800}
+                        height={500}
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         className="w-full h-auto object-contain transition-transform duration-500 ease-out group-hover-desktop-img-scale-105"
                       />
                     ) : (
