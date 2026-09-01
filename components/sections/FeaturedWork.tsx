@@ -124,7 +124,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={`Visit ${project.title} website`}
+                          aria-label={`Website - Visit ${project.title} website`}
                           className={pillClass}
                         >
                           Website
@@ -138,9 +138,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                             href={project.secondaryLinkUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`View ${project.title} on ${
-                              project.secondaryLinkLabel || 'external platform'
-                            }`}
+                            aria-label={`${project.secondaryLinkLabel || 'Link'} - View ${project.title} on external platform`}
                             className={pillClass}
                           >
                             {project.secondaryLinkLabel || 'Link'}
@@ -150,7 +148,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                         )}
                       <Link
                         href={`/work/${project.slug}`}
-                        aria-label={`Read ${project.title} case study`}
+                        aria-label={`Case study - Read ${project.title} case study`}
                         className={pillClass}
                       >
                         Case study <ArrowUpRight size={13} aria-hidden="true" />
