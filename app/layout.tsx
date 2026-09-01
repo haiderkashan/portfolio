@@ -66,7 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
       </head>
-      <body>
+      <body className={fontVariables}>
         <LazyMotion features={domAnimation}>
           {children}
         </LazyMotion>
