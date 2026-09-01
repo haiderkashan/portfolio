@@ -61,7 +61,7 @@ export function SiteNav({
       shouldRestoreFocusRef.current = false
       const selector = href.replace(/^\//, '')
       if (pathname === '/') {
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           const target = document.querySelector<HTMLElement>(selector)
           if (target) {
             lenis?.scrollTo(target, { immediate: false })
@@ -70,7 +70,7 @@ export function SiteNav({
             }
             target.focus()
           }
-        }, 150)
+        })
       }
     }
   }
