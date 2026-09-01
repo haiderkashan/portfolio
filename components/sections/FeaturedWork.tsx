@@ -23,7 +23,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
 
         <div className="mt-12 sm:mt-16">
           {projects.map((project, i) => {
-            const thumbUrl = urlForImage(project.thumbnail)?.width(240).height(160).url()
+            const thumbUrl = urlForImage(project.thumbnail)?.width(112).height(80).url()
             const coverUrl = urlForImage(project.coverImage)?.url()
             const isOdd = i % 2 === 0 // 1st, 3rd, etc. -> Image Left (md:order-1), Text Right (md:order-2)
 
@@ -110,11 +110,11 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                         <Image
                           src={thumbUrl}
                           alt={project.thumbnail?.alt || `${project.title} thumbnail`}
-                          fill
+                          width={56}
+                          height={40}
                           placeholder={project.thumbnail?.lqip ? 'blur' : 'empty'}
                           blurDataURL={project.thumbnail?.lqip}
-                          sizes="56px"
-                          className="object-cover"
+                          className="h-full w-full object-cover"
                         />
                       </div>
                     )}
