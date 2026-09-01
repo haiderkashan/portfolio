@@ -54,6 +54,7 @@ export function SplitHeading({
               >
                 {/* Ghost Outline Layer */}
                 <motion.span
+                  aria-hidden="true"
                   className="absolute inset-0 block text-transparent"
                   style={{ WebkitTextStroke: 'max(1px, 0.03em) currentColor', opacity: 0.25 }}
                   initial={{ opacity: 0, y: '10%' }}
