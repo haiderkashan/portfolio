@@ -9,7 +9,6 @@ const HIDDEN_TYPES = new Set([
   'project',
   'experience',
   'education',
-  'service',
   'award',
   'curatedPost',
   'contactSubmission',
@@ -42,12 +41,6 @@ export const structure: StructureResolver = (S, context) =>
       orderableDocumentListDeskItem({
         type: 'education',
         title: 'Education',
-        S,
-        context,
-      }),
-      orderableDocumentListDeskItem({
-        type: 'service',
-        title: 'Services',
         S,
         context,
       }),

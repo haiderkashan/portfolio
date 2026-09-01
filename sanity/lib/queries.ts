@@ -233,10 +233,6 @@ export interface Stat {
   label: string
 }
 
-export interface ProcessStep {
-  title: string
-}
-
 export interface SiteSettings {
   _createdAt?: string
   _updatedAt?: string
@@ -254,9 +250,6 @@ export interface SiteSettings {
   bio?: string
   aboutBio?: string
   stats?: Stat[]
-  processImage?: ImageWithAlt
-  processIntro?: string
-  processSteps?: ProcessStep[]
   statement?: string
   footerImage?: ImageWithAlt
   footerHeadline?: string
@@ -324,13 +317,6 @@ export interface ExperienceEntry {
   image?: ImageWithAlt
 }
 
-export interface ServiceEntry {
-  _id: string
-  title: string
-  items?: string[]
-  previewImage?: ImageWithAlt
-}
-
 export interface AwardEntry {
   _id: string
   awardType: string
@@ -363,7 +349,6 @@ export interface HomeData {
   projects: ProjectCard[]
   experience: ExperienceEntry[]
   education: EducationEntry[]
-  services: ServiceEntry[]
   awards: AwardEntry[]
   posts: PostCard[]
 }

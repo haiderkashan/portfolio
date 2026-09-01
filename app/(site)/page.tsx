@@ -62,7 +62,6 @@ const FALLBACK: HomeData = {
   projects: [],
   experience: FALLBACK_EXPERIENCE,
   education: [],
-  services: [],
   awards: [],
   posts: [],
 }
