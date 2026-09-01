@@ -160,7 +160,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <JsonLd data={projectJsonLd} />
       <header className="pt-24 sm:pt-28">
         <div className="container-page">
-          <Reveal>
+          <Reveal animateOnMount>
             <BackButton fallbackHref="/#work" label="Back to work" />
           </Reveal>
 
@@ -176,7 +176,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             className="mt-3 font-display text-5xl font-bold uppercase leading-[0.95] tracking-tight sm:text-7xl md:text-8xl"
           />
 
-          <Reveal delay={0.15} className="mt-6 flex flex-wrap items-center gap-3">
+          <Reveal delay={0.15} animateOnMount className="mt-6 flex flex-wrap items-center gap-3">
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
@@ -208,7 +208,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </header>
 
       {coverUrl && (
-        <Reveal delay={0.1} className="container-page mt-14 sm:mt-20 flex justify-center">
+        <Reveal delay={0.1} animateOnMount className="container-page mt-14 sm:mt-20 flex justify-center">
           <div className="relative w-full aspect-[16/10] max-w-5xl overflow-hidden rounded-2xl">
             <Image
               src={coverUrl}
@@ -223,14 +223,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       )}
 
       <div className="container-page mt-16 grid gap-10 pb-24 sm:mt-20 sm:pb-32 md:grid-cols-[1fr_2fr] md:gap-16">
-        <Reveal>
+        <Reveal animateOnMount>
           <p className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
             {project.tagline}
           </p>
         </Reveal>
         <div className="max-w-2xl">
           {project.excerpt && (
-            <Reveal>
+            <Reveal animateOnMount>
               <p className="font-body text-lg leading-relaxed text-[var(--on-surface-soft)] sm:text-xl">
                 {project.excerpt}
               </p>

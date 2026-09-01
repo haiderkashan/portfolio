@@ -20,32 +20,40 @@ const MOTION_TAGS = {
   ul: motion.ul,
 } as const
 
-/** Fades + slides a single element up as it enters the viewport. */
+/** Fades + slides a single element up as it enters the viewport or on mount. */
 export function Reveal({
   children,
   delay = 0,
   y = 28,
   className,
   once = true,
-  amount = 0.3,
+  amount = 'some',
+  margin = '100px',
   as = 'div',
+  animateOnMount = false,
 }: {
   children: ReactNode
   delay?: number
   y?: number
   className?: string
   once?: boolean
-  amount?: number
+  amount?: number | 'some' | 'all'
+  margin?: string
   as?: ElementType
+  animateOnMount?: boolean
 }) {
   const Component =
     (typeof as === 'string' && MOTION_TAGS[as as keyof typeof MOTION_TAGS]) || motion.div
+
+  const animationProps = animateOnMount
+    ? { animate: { opacity: 1, y: 0 } }
+    : { whileInView: { opacity: 1, y: 0 }, viewport: { once, amount, margin } }
+
   return (
     <Component
       className={className}
       initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, amount }}
+      {...animationProps}
       transition={{ duration: 0.85, delay, ease: EASE_SWIFT }}
     >
       {children}
@@ -69,20 +77,27 @@ export const staggerItem: Variants = {
 export function Stagger({
   children,
   className,
-  amount = 0.2,
+  amount = 'some',
+  margin = '100px',
   once = true,
+  animateOnMount = false,
 }: {
   children: ReactNode
   className?: string
-  amount?: number
+  amount?: number | 'some' | 'all'
+  margin?: string
   once?: boolean
+  animateOnMount?: boolean
 }) {
+  const animationProps = animateOnMount
+    ? { animate: 'show' }
+    : { whileInView: 'show', viewport: { once, amount, margin } }
+
   return (
     <motion.div
       className={className}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once, amount }}
+      {...animationProps}
       variants={staggerContainer}
     >
       {children}

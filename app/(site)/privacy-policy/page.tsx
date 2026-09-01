@@ -64,13 +64,13 @@ export default async function PrivacyPolicyPage() {
       <div className="container-page max-w-2xl">
         {/* Back Button */}
         <header className="mb-10">
-          <Reveal>
+          <Reveal animateOnMount>
             <BackButton fallbackHref="/" label="Back to main" />
           </Reveal>
         </header>
 
         {/* Title */}
-        <Reveal delay={0.05}>
+        <Reveal delay={0.05} animateOnMount>
           <h1 className="font-display text-4xl font-bold uppercase tracking-tight text-ink sm:text-5xl mb-3">
             Privacy Policy
           </h1>
@@ -81,7 +81,7 @@ export default async function PrivacyPolicyPage() {
         </Reveal>
 
         {/* Content sections */}
-        <Reveal delay={0.1}>
+        <Reveal delay={0.1} animateOnMount>
           <div className="space-y-12">
             <section>
               <h2 className="flex items-center font-display text-base font-bold uppercase tracking-wider text-ink mb-3 sm:text-lg">
