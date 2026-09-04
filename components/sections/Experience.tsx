@@ -14,7 +14,7 @@ export function Experience({ experience }: { experience: ExperienceEntry[] }) {
       ? `${entry.startYear ?? ''} — Present`
       : [entry.startYear, entry.endYear].filter(Boolean).join(' — '),
     description: entry.description,
-    imageUrl: urlForImage(entry.image)?.width(420).height(300).url(),
+    imageUrl: urlForImage(entry.image)?.width(840).height(600).quality(90).url(),
     imageAlt: entry.image?.alt || `${entry.company} logo`,
     imageLqip: entry.image?.lqip,
   }))

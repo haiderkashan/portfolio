@@ -124,12 +124,12 @@ export default async function HomePage() {
   const email = settings?.email || 'you@example.com'
   const description = settings?.seoDescription || settings?.bio || 'Full-Stack Software Engineer & Technical Architect specializing in high-performance web applications, distributed systems, and modern UI engineering.'
 
-  const heroImageUrl = urlForImage(settings?.heroImage)?.width(1920).height(1200).url()
-  const introImageUrl = urlForImage(settings?.introImage)?.width(480).height(320).url()
-  const footerImageUrl = urlForImage(settings?.footerImage)?.width(320).height(240).url()
+  const heroImageUrl = urlForImage(settings?.heroImage)?.width(2560).quality(90).url()
+  const introImageUrl = urlForImage(settings?.introImage)?.width(1000).quality(90).url()
+  const footerImageUrl = urlForImage(settings?.footerImage)?.width(800).quality(90).url()
 
   const projectImageUrls = projects
-    .map((p) => urlForImage(p.coverImage)?.width(500).height(500).url())
+    .map((p) => urlForImage(p.coverImage)?.width(1000).quality(90).url())
     .filter((url): url is string => Boolean(url))
 
   const validSocialUrls = (settings?.socialLinks ?? [])

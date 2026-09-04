@@ -103,7 +103,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       ? allProjects[(currentIndex + 1) % allProjects.length]
       : null
 
-  const coverUrl = urlForImage(project.coverImage)?.url()
+  const coverUrl = urlForImage(project.coverImage)?.width(2000).quality(90).url()
 
   const projectJsonLd = {
     '@context': 'https://schema.org',
@@ -245,7 +245,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           {project.gallery && project.gallery.length > 0 && (
             <div className="mt-12 flex flex-col gap-8">
               {project.gallery.map((image, i) => {
-                const url = urlForImage(image)?.url()
+                const url = urlForImage(image)?.width(1600).quality(90).url()
                 if (!url) return null
                 return (
                   <Reveal key={i} className="flex justify-center bg-transparent">

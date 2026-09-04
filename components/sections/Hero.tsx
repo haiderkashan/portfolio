@@ -40,6 +40,7 @@ export function Hero({
             alt=""
             fill
             priority={true}
+            quality={90}
             sizes="100vw"
             className="object-cover"
           />

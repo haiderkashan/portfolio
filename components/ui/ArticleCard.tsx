@@ -11,7 +11,7 @@ export function ArticleCard({
   post: PostCard
   headingAs?: 'h2' | 'h3'
 }) {
-  const coverUrl = urlForImage(post.coverImage)?.width(700).height(500).url()
+  const coverUrl = urlForImage(post.coverImage)?.width(1200).height(800).quality(90).url()
   return (
     <a
       href={post.mediumUrl}

@@ -23,8 +23,8 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
 
         <div className="mt-12 sm:mt-16">
           {projects.map((project, i) => {
-            const thumbUrl = urlForImage(project.thumbnail)?.width(112).height(80).url()
-            const coverUrl = urlForImage(project.coverImage)?.url()
+            const thumbUrl = urlForImage(project.thumbnail)?.width(240).height(160).quality(90).url()
+            const coverUrl = urlForImage(project.coverImage)?.width(1600).quality(90).url()
             const isOdd = i % 2 === 0 // 1st, 3rd, etc. -> Image Left (md:order-1), Text Right (md:order-2)
 
             return (
@@ -56,6 +56,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                         priority={i === 0}
                         fetchPriority={i === 0 ? 'high' : 'auto'}
                         loading={i === 0 ? 'eager' : 'lazy'}
+                        quality={90}
                         className="w-full h-auto object-contain transition-transform duration-500 ease-out group-hover-desktop-img-scale-105"
                       />
                     ) : (

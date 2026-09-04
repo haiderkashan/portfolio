@@ -155,7 +155,7 @@ export default async function WorkPage({
         ) : (
           <Stagger className="mt-16 grid gap-x-8 gap-y-14 sm:mt-20 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => {
-              const coverUrl = urlForImage(project.coverImage)?.width(700).height(500).url()
+              const coverUrl = urlForImage(project.coverImage)?.width(1200).height(800).quality(90).url()
               return (
                 <StaggerItem key={project._id}>
                   <Link

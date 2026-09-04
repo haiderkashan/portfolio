@@ -6,5 +6,5 @@ const builder = createImageUrlBuilder({ projectId, dataset })
 
 export function urlForImage(source?: Image | null) {
   if (!source?.asset?._ref) return undefined
-  return builder.image(source).auto('format').fit('max')
+  return builder.image(source).auto('format').quality(90).fit('max')
 }

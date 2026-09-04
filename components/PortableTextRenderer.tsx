@@ -79,7 +79,7 @@ const components: PortableTextComponents = {
   },
   types: {
     image: ({ value }) => {
-      const url = urlForImage(value)?.width(1400).url()
+      const url = urlForImage(value)?.width(1600).quality(90).url()
       if (!url) return null
       const { width, height } = getImageDimensions(value)
       const lqip = (value as SanityImageBlock)?.lqip || (value as { asset?: { metadata?: { lqip?: string } } })?.asset?.metadata?.lqip

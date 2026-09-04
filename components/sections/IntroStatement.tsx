@@ -113,7 +113,7 @@ export function IntroStatement({
               style={{ scale: imageScale, y: imageY, opacity: imageOpacity }}
               className="relative aspect-[4/5] w-40 shrink-0 overflow-hidden rounded-2xl shadow-2xl sm:w-48 md:w-56"
             >
-              <Image src={introImageUrl} alt={introImageAlt} fill sizes="240px" className="object-cover" />
+              <Image src={introImageUrl} alt={introImageAlt} fill sizes="(max-width: 768px) 50vw, 300px" quality={90} className="object-cover" />
             </motion.div>
           )}
 
