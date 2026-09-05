@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, type Variants } from 'motion/react'
+import { m, type Variants } from 'motion/react'
 import type { ElementType, ReactNode } from 'react'
 
 export const EASE_SWIFT = [0.16, 1, 0.3, 1] as const
@@ -9,15 +9,15 @@ export const EASE_SWIFT = [0.16, 1, 0.3, 1] as const
 // components are actually used with — looking one up during render just
 // reads this map, it never constructs a new component.
 const MOTION_TAGS = {
-  div: motion.div,
-  span: motion.span,
-  p: motion.p,
-  h1: motion.h1,
-  h2: motion.h2,
-  h3: motion.h3,
-  a: motion.a,
-  li: motion.li,
-  ul: motion.ul,
+  div: m.div,
+  span: m.span,
+  p: m.p,
+  h1: m.h1,
+  h2: m.h2,
+  h3: m.h3,
+  a: m.a,
+  li: m.li,
+  ul: m.ul,
 } as const
 
 /** Fades + slides a single element up as it enters the viewport or on mount. */
@@ -43,7 +43,7 @@ export function Reveal({
   animateOnMount?: boolean
 }) {
   const Component =
-    (typeof as === 'string' && MOTION_TAGS[as as keyof typeof MOTION_TAGS]) || motion.div
+    (typeof as === 'string' && MOTION_TAGS[as as keyof typeof MOTION_TAGS]) || m.div
 
   const animationProps = animateOnMount
     ? { animate: { opacity: 1, y: 0 } }
@@ -94,14 +94,14 @@ export function Stagger({
     : { whileInView: 'show', viewport: { once, amount, margin } }
 
   return (
-    <motion.div
+    <m.div
       className={className}
       initial="hidden"
       {...animationProps}
       variants={staggerContainer}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }
 
@@ -115,7 +115,7 @@ export function StaggerItem({
   as?: ElementType
 }) {
   const Component =
-    (typeof as === 'string' && MOTION_TAGS[as as keyof typeof MOTION_TAGS]) || motion.div
+    (typeof as === 'string' && MOTION_TAGS[as as keyof typeof MOTION_TAGS]) || m.div
   return (
     <Component className={className} variants={staggerItem}>
       {children}

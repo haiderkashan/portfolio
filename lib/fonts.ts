@@ -13,7 +13,7 @@ export const interTight = Inter_Tight({
   variable: '--font-inter-tight',
   display: 'swap',
   adjustFontFallback: true,
-  preload: true,
+  preload: false,
 })
 
 export const fontVariables = `${archivo.variable} ${interTight.variable}`

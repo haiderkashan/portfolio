@@ -1,25 +1,37 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence, useMotionValueEvent, useScroll } from 'motion/react'
-import { useLenis } from 'lenis/react'
+import { useState, useEffect } from 'react'
+import { m, AnimatePresence } from 'motion/react'
 import { ArrowUp } from 'lucide-react'
 
 export function ScrollToTop() {
   const [visible, setVisible] = useState(false)
-  const { scrollY } = useScroll()
-  const lenis = useLenis()
 
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    setVisible(latest > (typeof window !== 'undefined' ? window.innerHeight * 0.8 : 600))
-  })
+  useEffect(() => {
+    let ticking = false
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setVisible(window.scrollY > window.innerHeight * 0.8)
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
     <AnimatePresence>
       {visible && (
-        <motion.button
+        <m.button
           type="button"
-          onClick={() => lenis?.scrollTo(0, { duration: 1.4 })}
+          onClick={() => {
+            if (typeof window !== 'undefined') {
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }
+          }}
           aria-label="Scroll back to top"
           initial={{ opacity: 0, scale: 0.6, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -30,7 +42,7 @@ export function ScrollToTop() {
           className="fixed bottom-4 right-4 z-30 flex h-11 w-11 items-center justify-center rounded-full bg-accent text-ink shadow-lg shadow-black/20 sm:bottom-8 sm:right-8 sm:h-12 sm:w-12"
         >
           <ArrowUp size={20} strokeWidth={2.5} />
-        </motion.button>
+        </m.button>
       )}
     </AnimatePresence>
   )

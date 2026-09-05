@@ -1,6 +1,6 @@
 'use client'
 
-import { motion } from 'motion/react'
+import { m } from 'motion/react'
 import type { ElementType } from 'react'
 import { EASE_SWIFT } from './Reveal'
 
@@ -26,68 +26,100 @@ export function SplitHeading({
   const Tag = as
   const words = text.split(' ')
 
+  const containerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: stagger,
+        delayChildren: delay,
+      },
+    },
+  }
+
+  const ghostVariants = {
+    hidden: { opacity: 0, y: '10%' },
+    visible: {
+      opacity: 0.25,
+      y: '0%',
+      transition: {
+        duration: 0.7,
+        ease: 'easeOut' as const,
+      },
+    },
+  }
+
+  const wordSlideVariants = {
+    hidden: { y: '105%', rotate: 6 },
+    visible: {
+      y: '0%',
+      rotate: 0,
+      transition: {
+        duration: 0.9,
+        ease: EASE_SWIFT,
+      },
+    },
+  }
+
+  const wordFadeVariants = {
+    hidden: { opacity: 0, color: 'rgba(10,10,8,0.2)' },
+    visible: {
+      opacity: 1,
+      color: 'rgba(10,10,8,1)',
+      transition: {
+        duration: 0.7,
+        ease: 'easeOut' as const,
+      },
+    },
+  }
+
   return (
     <Tag className={className}>
       <span className="sr-only">{text}</span>
-      <span aria-hidden="true">
+      <m.span
+        aria-hidden="true"
+        className="block"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once, margin: '50px' }}
+        variants={containerVariants}
+      >
         {words.flatMap((word, i) => {
           const wordNode =
             variant === 'fade' ? (
-              <motion.span
+              <m.span
                 key={`w-${i}`}
                 className={`inline-block ${wordClassName ?? ''}`}
-                initial={{ opacity: 0, color: 'rgba(10,10,8,0.2)' }}
-                whileInView={{ opacity: 1, color: 'rgba(10,10,8,1)' }}
-                viewport={{ once, amount: 0.6 }}
-                transition={{
-                  duration: 0.7,
-                  delay: delay + i * stagger,
-                  ease: 'easeOut',
-                }}
+                variants={wordFadeVariants}
               >
                 {word}
-              </motion.span>
+              </m.span>
             ) : (
               <span
                 key={`w-${i}`}
                 className={`relative inline-block overflow-hidden pb-[0.12em] align-top ${wordClassName ?? ''}`}
               >
                 {/* Ghost Outline Layer */}
-                <motion.span
+                <m.span
                   aria-hidden="true"
                   className="absolute inset-0 block text-transparent"
-                  style={{ WebkitTextStroke: 'max(1px, 0.03em) currentColor', opacity: 0.25 }}
-                  initial={{ opacity: 0, y: '10%' }}
-                  whileInView={{ opacity: 0.25, y: '0%' }}
-                  viewport={{ once }}
-                  transition={{
-                    duration: 0.7,
-                    delay: delay + i * stagger,
-                    ease: 'easeOut',
-                  }}
+                  style={{ WebkitTextStroke: 'max(1px, 0.03em) currentColor' }}
+                  variants={ghostVariants}
                 >
                   {word}
-                </motion.span>
+                </m.span>
 
                 {/* Solid Fill Layer */}
-                <motion.span
+                <m.span
                   className="relative z-10 inline-block origin-bottom-left"
-                  initial={{ y: '105%', rotate: 6 }}
-                  whileInView={{ y: '0%', rotate: 0 }}
-                  viewport={{ once }}
-                  transition={{
-                    duration: 0.9,
-                    delay: delay + i * stagger + 0.12,
-                    ease: EASE_SWIFT,
-                  }}
+                  variants={wordSlideVariants}
                 >
                   {word}
-                </motion.span>
+                </m.span>
               </span>
             )
           return i < words.length - 1 ? [wordNode, <span key={`s-${i}`}> </span>] : [wordNode]
         })}
-      </span>
+      </m.span>
     </Tag>
   )
 }

@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { AnimatePresence, motion } from 'motion/react'
-import { useLenis } from 'lenis/react'
+import { AnimatePresence, m } from 'motion/react'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
 import { EASE_SWIFT } from './Reveal'
 
@@ -24,7 +23,6 @@ export function SiteNav({
 }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
-  const lenis = useLenis()
   const toggleRef = useRef<HTMLButtonElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
   const shouldRestoreFocusRef = useRef(true)
@@ -43,17 +41,14 @@ export function SiteNav({
     window.dispatchEvent(new CustomEvent('menuToggle', { detail: { open } }))
     if (open) {
       document.documentElement.style.overflow = 'hidden'
-      lenis?.stop()
     } else {
       document.documentElement.style.overflow = ''
-      lenis?.start()
     }
 
     return () => {
       document.documentElement.style.overflow = ''
-      lenis?.start()
     }
-  }, [open, lenis])
+  }, [open])
 
   function handleLinkClick(href: string) {
     setOpen(false)
@@ -64,7 +59,7 @@ export function SiteNav({
         requestAnimationFrame(() => {
           const target = document.querySelector<HTMLElement>(selector)
           if (target) {
-            lenis?.scrollTo(target, { immediate: false })
+            target.scrollIntoView({ behavior: 'smooth' })
             if (!target.hasAttribute('tabindex')) {
               target.setAttribute('tabindex', '-1')
             }
@@ -155,7 +150,7 @@ export function SiteNav({
 
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             ref={overlayRef}
             id="site-menu-dialog"
             role="dialog"
@@ -168,7 +163,7 @@ export function SiteNav({
             exit={{ scaleY: 0, opacity: 0 }}
             transition={{ duration: 0.55, ease: EASE_SWIFT }}
           >
-            <motion.nav
+            <m.nav
               aria-label="Modal site navigation"
               className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-x-12 sm:gap-y-4 max-md:landscape:grid-cols-2 max-md:landscape:gap-x-8 max-md:landscape:gap-y-2"
               initial="hidden"
@@ -176,7 +171,7 @@ export function SiteNav({
               variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.15 } } }}
             >
               {linksToRender.map((link) => (
-                <motion.div
+                <m.div
                   key={link.href}
                   variants={{
                     hidden: { opacity: 0, y: 24 },
@@ -199,6 +194,7 @@ export function SiteNav({
                   ) : (
                     <Link
                       href={link.href}
+                      prefetch={false}
                       onClick={() => handleLinkClick(link.href)}
                       className="group flex items-center gap-4 py-2 font-display text-[clamp(1.75rem,7.5vw,3.75rem)] font-semibold uppercase leading-[1.05] tracking-tight text-paper transition-colors hover:text-accent sm:text-6xl md:text-7xl max-md:landscape:text-xl max-md:landscape:py-0.5"
                     >
@@ -209,11 +205,11 @@ export function SiteNav({
                       />
                     </Link>
                   )}
-                </motion.div>
+                </m.div>
               ))}
-            </motion.nav>
+            </m.nav>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { delay: 0.35, duration: 0.6 } }}
               exit={{ opacity: 0 }}
@@ -246,8 +242,8 @@ export function SiteNav({
                   ))}
                 </ul>
               ) : null}
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

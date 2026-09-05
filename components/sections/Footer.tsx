@@ -40,6 +40,7 @@ export function Footer({
             <Magnetic>
               <Link
                 href="/contact"
+                prefetch={false}
                 className="group inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accent px-7 py-3.5 font-display text-sm font-semibold uppercase tracking-[0.08em] text-ink shadow-lg transition-transform hover:scale-[1.03] active:scale-[0.98]"
               >
                 {ctaLabel || 'TALK WITH ME'}
@@ -87,6 +88,7 @@ export function Footer({
               <li>
                 <Link
                   href="/terms-and-conditions"
+                  prefetch={false}
                   className="inline-flex min-h-[44px] items-center font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent focus-visible:underline"
                 >
                   TERMS &amp; CONDITIONS
@@ -95,6 +97,7 @@ export function Footer({
               <li>
                 <Link
                   href="/privacy-policy"
+                  prefetch={false}
                   className="inline-flex min-h-[44px] items-center font-body text-sm font-medium uppercase tracking-[0.1em] text-[var(--on-surface-soft)] transition-colors hover:text-accent focus-visible:underline"
                 >
                   PRIVACY POLICY

@@ -5,16 +5,17 @@ import { urlForImage } from '@/sanity/lib/image'
 import { siteUrl } from '@/lib/utils'
 import { JsonLd } from '@/components/JsonLd'
 
+import dynamic from 'next/dynamic'
 import { Hero } from '@/components/sections/Hero'
-import { IntroStatement } from '@/components/sections/IntroStatement'
-import { Stats } from '@/components/sections/Stats'
-import { FeaturedWork } from '@/components/sections/FeaturedWork'
-import { Quote } from '@/components/sections/Quote'
-import { Writing } from '@/components/sections/Writing'
-import { Experience } from '@/components/sections/Experience'
-import { Education } from '@/components/sections/Education'
-import { Awards } from '@/components/sections/Awards'
-import { Footer } from '@/components/sections/Footer'
+
+const IntroStatement = dynamic(() => import('@/components/sections/IntroStatement').then((m) => m.IntroStatement))
+const Stats = dynamic(() => import('@/components/sections/Stats').then((m) => m.Stats))
+const FeaturedWork = dynamic(() => import('@/components/sections/FeaturedWork').then((m) => m.FeaturedWork))
+const Experience = dynamic(() => import('@/components/sections/Experience').then((m) => m.Experience))
+const Education = dynamic(() => import('@/components/sections/Education').then((m) => m.Education))
+const Quote = dynamic(() => import('@/components/sections/Quote').then((m) => m.Quote))
+const Writing = dynamic(() => import('@/components/sections/Writing').then((m) => m.Writing))
+const Awards = dynamic(() => import('@/components/sections/Awards').then((m) => m.Awards))
 
 const FALLBACK_EXPERIENCE: ExperienceEntry[] = [
   {
@@ -124,12 +125,12 @@ export default async function HomePage() {
   const email = settings?.email || 'you@example.com'
   const description = settings?.seoDescription || settings?.bio || 'Full-Stack Software Engineer & Technical Architect specializing in high-performance web applications, distributed systems, and modern UI engineering.'
 
-  const heroImageUrl = urlForImage(settings?.heroImage)?.width(2560).quality(90).url()
+  const heroImageUrl = urlForImage(settings?.heroImage)?.width(1920).quality(90).url()
   const introImageUrl = urlForImage(settings?.introImage)?.width(1000).quality(90).url()
   const footerImageUrl = urlForImage(settings?.footerImage)?.width(800).quality(90).url()
 
   const projectImageUrls = projects
-    .map((p) => urlForImage(p.coverImage)?.width(1000).quality(90).url())
+    .map((p) => urlForImage(p.thumbnail ?? p.coverImage)?.width(400).height(300).quality(85).url())
     .filter((url): url is string => Boolean(url))
 
   const validSocialUrls = (settings?.socialLinks ?? [])

@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from 'motion/react'
+import { m, useScroll, useTransform, useReducedMotion, type MotionValue } from 'motion/react'
 import { ArrowUpRight } from 'lucide-react'
 import { Magnetic } from '@/components/ui/Magnetic'
 
@@ -27,9 +27,9 @@ function FadeWord({
     prefersReducedMotion ? ['rgba(10,10,8,1)', 'rgba(10,10,8,1)'] : ['rgba(10,10,8,0.16)', 'rgba(10,10,8,1)']
   )
   return (
-    <motion.span style={{ opacity, color }} className="inline-block">
+    <m.span style={{ opacity, color }} className="inline-block">
       {word}
-    </motion.span>
+    </m.span>
   )
 }
 
@@ -46,18 +46,12 @@ export function IntroStatement({
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
-  const [isMobile, setIsMobile] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
 
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 767px)')
-    setIsMobile(media.matches)
-
-    function handleChange(e: MediaQueryListEvent) {
-      setIsMobile(e.matches)
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      setIsDesktop(true)
     }
-
-    media.addEventListener('change', handleChange)
-    return () => media.removeEventListener('change', handleChange)
   }, [])
 
   // One shared progress value drives the heading, the image, and the body
@@ -72,7 +66,7 @@ export function IntroStatement({
   const words = headline.split(' ')
   const staggerStep = Math.min(0.05, 0.5 / words.length)
 
-  const disableYShift = prefersReducedMotion || isMobile
+  const disableYShift = prefersReducedMotion || !isDesktop
 
   // Image: starts small, faded, and shifted up toward the heading on desktop — then
   // grows and settles down into its resting spot in the column below.
@@ -93,14 +87,20 @@ export function IntroStatement({
             const start = i * staggerStep
             const end = Math.min(1, start + 0.3)
             const nodes = [
-              <FadeWord
-                key={`w-${i}`}
-                word={word}
-                start={start}
-                end={end}
-                progress={scrollYProgress}
-                prefersReducedMotion={prefersReducedMotion}
-              />,
+              isDesktop && !prefersReducedMotion ? (
+                <FadeWord
+                  key={`w-${i}`}
+                  word={word}
+                  start={start}
+                  end={end}
+                  progress={scrollYProgress}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              ) : (
+                <span key={`w-${i}`} className="inline-block">
+                  {word}
+                </span>
+              ),
             ]
             if (i < words.length - 1) nodes.push(<span key={`s-${i}`}> </span>)
             return nodes
@@ -109,16 +109,16 @@ export function IntroStatement({
 
         <div className="mt-14 flex flex-col items-center gap-8 sm:mt-20 md:flex-row md:items-center md:justify-center md:gap-12">
           {introImageUrl && (
-            <motion.div
+            <m.div
               style={{ scale: imageScale, y: imageY, opacity: imageOpacity }}
               className="relative aspect-[4/5] w-40 shrink-0 overflow-hidden rounded-2xl shadow-2xl sm:w-48 md:w-56"
             >
               <Image src={introImageUrl} alt={introImageAlt} fill sizes="(max-width: 768px) 50vw, 300px" quality={90} className="object-cover" />
-            </motion.div>
+            </m.div>
           )}
 
           {bio && (
-            <motion.div
+            <m.div
               style={{ opacity: bodyOpacity, y: bodyY }}
               className="flex max-w-md flex-col items-center text-center"
             >
@@ -128,6 +128,7 @@ export function IntroStatement({
               <Magnetic className="mt-6">
                 <Link
                   href="/#about"
+                  prefetch={false}
                   className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-transform hover:scale-[1.03] active:scale-[0.98]"
                 >
                   About me
@@ -137,7 +138,7 @@ export function IntroStatement({
                   />
                 </Link>
               </Magnetic>
-            </motion.div>
+            </m.div>
           )}
         </div>
       </div>

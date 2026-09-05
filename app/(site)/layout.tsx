@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic'
 import { SmoothScroll } from '@/components/ui/SmoothScroll'
 import { SiteNav } from '@/components/ui/SiteNav'
-import { PageTransition } from '@/components/ui/PageTransition'
 import { PreviewBanner } from '@/components/PreviewBanner'
 import { Footer } from '@/components/sections/Footer'
 import { sanityFetch } from '@/sanity/lib/fetch'
@@ -26,7 +25,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   const email = settings?.email || 'you@example.com'
 
   return (
-    <SmoothScroll>
+    <>
       <PreviewBanner />
       <a
         href="#main-content"
@@ -40,8 +39,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         socialLinks={settings?.socialLinks}
         resumeUrl={settings?.resume?.asset?.url}
       />
-      <main id="main-content" tabIndex={-1} className="font-body focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4">
-        <PageTransition>{children}</PageTransition>
+      <main id="main-content" tabIndex={-1} className="focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4">
+        {children}
       </main>
       <Footer
         headline={settings?.footerHeadline}
@@ -53,6 +52,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       />
       <GlobalCursorPreview />
       <ScrollToTop />
-    </SmoothScroll>
+      <SmoothScroll />
+    </>
   )
 }

@@ -1,10 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { motion, useMotionValue, useSpring } from 'motion/react'
+import { m, useMotionValue, useSpring } from 'motion/react'
 import Image from 'next/image'
 
-export function GlobalCursorPreview() {
+function DesktopCursorPreview() {
   const [preview, setPreview] = useState<{ src: string; alt: string; visible: boolean }>({
     src: '',
     alt: '',
@@ -17,7 +17,6 @@ export function GlobalCursorPreview() {
   const springY = useSpring(y, { stiffness: 320, damping: 32, mass: 0.4 })
 
   useEffect(() => {
-    // Show event handler
     function handleShow(e: Event) {
       const customEvent = e as CustomEvent<{ src: string; alt: string }>
       setPreview({
@@ -27,7 +26,6 @@ export function GlobalCursorPreview() {
       })
     }
 
-    // Hide event handler
     function handleHide() {
       setPreview((prev) => ({ ...prev, visible: false }))
     }
@@ -51,19 +49,13 @@ export function GlobalCursorPreview() {
       const vw = window.innerWidth
       const vh = window.innerHeight
 
-      // Horizontal target: centered on cursor, clamped within viewport padding
       let targetX = e.clientX - width / 2
       targetX = Math.max(padding, Math.min(targetX, vw - width - padding))
 
-      // Vertical target: default 20px above cursor
       let targetY = e.clientY - height - 20
-
-      // Boundary detection: if image clips top of viewport, flip to 24px below cursor
       if (targetY < padding) {
         targetY = e.clientY + 24
       }
-
-      // Clamp vertical target within viewport bottom padding
       targetY = Math.max(padding, Math.min(targetY, vh - height - padding))
 
       x.set(targetX)
@@ -80,9 +72,9 @@ export function GlobalCursorPreview() {
   if (!preview.src) return null
 
   return (
-    <motion.div
+    <m.div
       aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-50 hidden h-40 w-56 overflow-hidden rounded-2xl bg-ink/10 shadow-2xl md:block"
+      className="pointer-events-none fixed left-0 top-0 z-50 h-40 w-56 overflow-hidden rounded-2xl bg-ink/10 shadow-2xl"
       style={{ x: springX, y: springY }}
       initial={false}
       animate={{
@@ -92,6 +84,20 @@ export function GlobalCursorPreview() {
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
     >
       <Image src={preview.src} alt={preview.alt} fill sizes="224px" className="object-cover" />
-    </motion.div>
+    </m.div>
   )
+}
+
+export function GlobalCursorPreview() {
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    if (window.matchMedia('(min-width: 768px) and (pointer: fine)').matches) {
+      setIsDesktop(true)
+    }
+  }, [])
+
+  if (!isDesktop) return null
+
+  return <DesktopCursorPreview />
 }

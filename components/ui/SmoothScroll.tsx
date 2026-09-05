@@ -7,7 +7,7 @@ const ReactLenis = dynamic(() => import('lenis/react').then((mod) => mod.ReactLe
   ssr: false,
 })
 
-export function SmoothScroll({ children }: { children: ReactNode }) {
+export function SmoothScroll() {
   const [enabled, setEnabled] = useState(false)
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   }, [])
 
   if (!enabled) {
-    return <>{children}</>
+    return null
   }
 
   return (
@@ -36,8 +36,6 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
         touchMultiplier: 1,
         syncTouch: false,
       }}
-    >
-      {children}
-    </ReactLenis>
+    />
   )
 }

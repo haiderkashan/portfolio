@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { AnimatePresence, m, useReducedMotion } from 'motion/react'
 import { useLenis } from 'lenis/react'
 import { useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
@@ -11,6 +11,11 @@ export function PageTransition({ children }: { children: ReactNode }) {
   const lenis = useLenis()
   const prefersReducedMotion = useReducedMotion()
   const prevPathname = useRef<string | null>(null)
+  const isFirstMount = useRef(true)
+
+  useEffect(() => {
+    isFirstMount.current = false
+  }, [])
 
   // Continuously record window scroll position per pathname in sessionStorage
   useEffect(() => {
@@ -53,15 +58,16 @@ export function PageTransition({ children }: { children: ReactNode }) {
 
   return (
     <AnimatePresence mode="wait" initial={false}>
-      <motion.div
+      <m.div
         key={pathname}
-        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 12 }}
+        initial={isFirstMount.current ? false : { opacity: 0, y: prefersReducedMotion ? 0 : 12 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -12 }}
         transition={{ duration: prefersReducedMotion ? 0.15 : 0.35, ease: [0.16, 1, 0.3, 1] }}
       >
         {children}
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   )
 }
+

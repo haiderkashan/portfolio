@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { m, AnimatePresence } from 'motion/react'
 import { ArrowUpRight, Check, Loader2, AlertCircle } from 'lucide-react'
 import { Magnetic } from '@/components/ui/Magnetic'
 import { FileDropzone } from '@/components/ui/FileDropzone'
@@ -76,7 +76,7 @@ export function ContactForm() {
 
   if (status === 'success') {
     return (
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex items-start gap-4 rounded-2xl border border-[var(--line)] bg-[var(--surface-raised)] p-7"
@@ -97,7 +97,7 @@ export function ContactForm() {
             Send another message
           </button>
         </div>
-      </motion.div>
+      </m.div>
     )
   }
 
@@ -238,7 +238,7 @@ export function ContactForm() {
       {/* Error Alert */}
       <AnimatePresence>
         {status === 'error' && (
-          <motion.div
+          <m.div
             id="contact-form-error"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
@@ -249,7 +249,7 @@ export function ContactForm() {
           >
             <AlertCircle size={15} className="shrink-0" />
             <span>{error}</span>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
 
