@@ -91,7 +91,11 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
       "alt": alt,
       "lqip": asset->metadata.lqip
     },
-    favicon
+    favicon,
+    maintenanceMode,
+    maintenanceTitle,
+    maintenanceSubtitle,
+    maintenanceExpectedReturn
   }
 `)
 
@@ -111,7 +115,11 @@ export const HOME_QUERY = defineQuery(`
       siteTitle, seoDescription, workSeoDescription, blogSeoDescription, contactSeoDescription,
       knowsAbout, alumniOf, twitterHandle,
       "ogImage": ogImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
-      favicon
+      favicon,
+      maintenanceMode,
+      maintenanceTitle,
+      maintenanceSubtitle,
+      maintenanceExpectedReturn
     },
     "projects": *[_type == "project" && featured != false] | order(orderRank asc){
       ${projectCardFields}
@@ -263,6 +271,10 @@ export interface SiteSettings {
   twitterHandle?: string
   ogImage?: ImageWithAlt
   favicon?: Image
+  maintenanceMode?: boolean
+  maintenanceTitle?: string
+  maintenanceSubtitle?: string
+  maintenanceExpectedReturn?: string
 }
 
 export interface ProjectCard {

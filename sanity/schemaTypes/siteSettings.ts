@@ -13,6 +13,7 @@ export default defineType({
     { name: 'statement', title: 'Statement' },
     { name: 'footer', title: 'Footer' },
     { name: 'seo', title: 'SEO & Favicon' },
+    { name: 'maintenance', title: 'Maintenance Mode' },
   ],
   fields: [
     // ── Identity ──────────────────────────────────────────────
@@ -278,6 +279,45 @@ export default defineType({
       type: 'image',
       description: 'Square image, ideally 512×512 PNG or SVG. Used as the browser tab icon.',
       group: 'seo',
+    }),
+
+    // ── Maintenance Mode ──────────────────────────────────────
+    defineField({
+      name: 'maintenanceMode',
+      title: 'Maintenance Mode Active',
+      type: 'boolean',
+      description:
+        'When switched ON, the entire public website displays a dedicated Maintenance Page to all visitors. Sanity Studio (/studio) remains accessible at all times so you can turn it off anytime.',
+      group: 'maintenance',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'maintenanceTitle',
+      title: 'Maintenance Headline',
+      type: 'string',
+      description: 'Primary headline displayed on the maintenance screen.',
+      group: 'maintenance',
+      initialValue: 'Currently Under Maintenance',
+      hidden: ({ parent }) => !parent?.maintenanceMode,
+    }),
+    defineField({
+      name: 'maintenanceSubtitle',
+      title: 'Maintenance Message',
+      type: 'text',
+      rows: 3,
+      description: 'Friendly message explaining the temporary downtime to visitors.',
+      group: 'maintenance',
+      initialValue:
+        'I am currently making improvements to the portfolio. Please check back soon or reach out directly via email.',
+      hidden: ({ parent }) => !parent?.maintenanceMode,
+    }),
+    defineField({
+      name: 'maintenanceExpectedReturn',
+      title: 'Expected Return Time / Note (Optional)',
+      type: 'string',
+      description: 'e.g. "Back online by 6:00 PM EST" or "Returning shortly".',
+      group: 'maintenance',
+      hidden: ({ parent }) => !parent?.maintenanceMode,
     }),
   ],
   preview: {
