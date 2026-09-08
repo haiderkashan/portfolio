@@ -7,9 +7,24 @@ export default defineType({
   title: 'Award',
   type: 'document',
   icon: StarFilledIcon,
-  orderings: [orderRankOrdering],
+  orderings: [
+    orderRankOrdering,
+    {
+      title: 'Priority (Ascending)',
+      name: 'priorityAsc',
+      by: [{ field: 'priority', direction: 'asc' }],
+    },
+  ],
   fields: [
     orderRankField({ type: 'award' }),
+    defineField({
+      name: 'priority',
+      title: 'Priority (Sort Order)',
+      type: 'number',
+      description:
+        'Display priority order: 1 = top/first, 2 = second, etc. Lower numbers appear first. Falls back to manual orderRank if unset.',
+      validation: (Rule) => Rule.positive().integer(),
+    }),
     defineField({
       name: 'project',
       title: 'Project',

@@ -135,8 +135,9 @@ export const HOME_QUERY = defineQuery(`
       "image": image{ ..., "alt": alt, "lqip": asset->metadata.lqip }
     },
 
-    "awards": *[_type == "award"] | order(orderRank asc){
-      _id, awardType, date,
+    // Sort awards in ascending order based on priority (1 at top, 2 second, etc.), fallback to orderRank
+    "awards": *[_type == "award"] | order(coalesce(priority, 9999) asc, orderRank asc){
+      _id, priority, awardType, date,
       "project": project->{
         title, "slug": slug.current,
         "coverImage": coverImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
@@ -334,6 +335,7 @@ export interface ExperienceEntry {
 
 export interface AwardEntry {
   _id: string
+  priority?: number
   awardType: string
   date: string
   project: {
