@@ -14,6 +14,7 @@ const projectCardFields = /* groq */ `
   _updatedAt,
   title,
   "slug": slug.current,
+  priority,
   period,
   category,
   tagline,
@@ -121,7 +122,8 @@ export const HOME_QUERY = defineQuery(`
       maintenanceSubtitle,
       maintenanceExpectedReturn
     },
-    "projects": *[_type == "project" && featured != false] | order(orderRank asc){
+    // Sort projects in ascending order based on priority (1 at top, 2 second, etc.), fallback to orderRank
+    "projects": *[_type == "project" && featured != false] | order(coalesce(priority, 9999) asc, orderRank asc){
       ${projectCardFields}
     },
     "education": *[_type == "education"] | order(orderRank asc){
@@ -150,14 +152,14 @@ export const HOME_QUERY = defineQuery(`
 `)
 
 export const ALL_PROJECTS_QUERY = defineQuery(`
-  *[_type == "project"] | order(orderRank asc){
+  *[_type == "project"] | order(coalesce(priority, 9999) asc, orderRank asc){
     ${projectCardFields}
   }
 `)
 
 export const PROJECTS_PAGE_QUERY = defineQuery(`
   {
-    "items": *[_type == "project"] | order(orderRank asc) [$start...$end]{
+    "items": *[_type == "project"] | order(coalesce(priority, 9999) asc, orderRank asc) [$start...$end]{
       ${projectCardFields}
     },
     "total": count(*[_type == "project"])
@@ -283,6 +285,7 @@ export interface ProjectCard {
   _updatedAt?: string
   title: string
   slug: string
+  priority?: number
   period?: string
   category?: string
   tagline: string

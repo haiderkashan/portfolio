@@ -7,7 +7,14 @@ export default defineType({
   title: 'Project',
   type: 'document',
   icon: CaseIcon,
-  orderings: [orderRankOrdering],
+  orderings: [
+    orderRankOrdering,
+    {
+      title: 'Priority (Ascending)',
+      name: 'priorityAsc',
+      by: [{ field: 'priority', direction: 'asc' }],
+    },
+  ],
   groups: [
     { name: 'content', title: 'Content', default: true },
     { name: 'links', title: 'Links' },
@@ -16,6 +23,15 @@ export default defineType({
   ],
   fields: [
     orderRankField({ type: 'project' }),
+    defineField({
+      name: 'priority',
+      title: 'Priority (Sort Order)',
+      type: 'number',
+      description:
+        'Display priority order: 1 = top/first, 2 = second, etc. Lower numbers appear first. Falls back to manual orderRank if unset.',
+      group: 'content',
+      validation: (Rule) => Rule.positive().integer(),
+    }),
     defineField({
       name: 'title',
       title: 'Project name',
