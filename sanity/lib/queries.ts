@@ -126,12 +126,14 @@ export const HOME_QUERY = defineQuery(`
     "projects": *[_type == "project" && featured != false] | order(coalesce(priority, 9999) asc, orderRank asc){
       ${projectCardFields}
     },
-    "education": *[_type == "education"] | order(orderRank asc){
-      _id, institution, degree, startYear, endYear, current, description,
+    // Sort education chronologically in descending order (newest/current at top, oldest at bottom)
+    "education": *[_type == "education"] | order(current desc, coalesce(endDate, "0000") desc, coalesce(startDate, "0000") desc, coalesce(endYear, "0000") desc, coalesce(startYear, "0000") desc){
+      _id, institution, degree, startDate, endDate, startYear, endYear, current, description,
       "image": image{ ..., "alt": alt, "lqip": asset->metadata.lqip }
     },
-    "experience": *[_type == "experience"] | order(orderRank asc){
-      _id, company, role, location, startYear, endYear, current, description,
+    // Sort experience chronologically in descending order (newest/current at top, oldest at bottom)
+    "experience": *[_type == "experience"] | order(current desc, coalesce(endDate, "0000") desc, coalesce(startDate, "0000") desc, coalesce(endYear, "0000") desc, coalesce(startYear, "0000") desc){
+      _id, company, role, location, startDate, endDate, startYear, endYear, current, description,
       "image": image{ ..., "alt": alt, "lqip": asset->metadata.lqip }
     },
 
@@ -314,6 +316,8 @@ export interface EducationEntry {
   _id: string
   institution: string
   degree: string
+  startDate?: string
+  endDate?: string
   startYear?: string
   endYear?: string
   current?: boolean
@@ -326,6 +330,8 @@ export interface ExperienceEntry {
   company: string
   role: string
   location?: string
+  startDate?: string
+  endDate?: string
   startYear?: string
   endYear?: string
   current?: boolean

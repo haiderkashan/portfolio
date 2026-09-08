@@ -7,7 +7,18 @@ export default defineType({
   title: 'Experience',
   type: 'document',
   icon: PresentationIcon,
-  orderings: [orderRankOrdering],
+  orderings: [
+    {
+      title: 'Chronological (Newest First)',
+      name: 'chronologicalDesc',
+      by: [
+        { field: 'current', direction: 'desc' },
+        { field: 'startDate', direction: 'desc' },
+        { field: 'startYear', direction: 'desc' },
+      ],
+    },
+    orderRankOrdering,
+  ],
   fields: [
     orderRankField({ type: 'experience' }),
     defineField({
@@ -30,15 +41,31 @@ export default defineType({
       description: 'e.g. "San Francisco, CA" or "Remote". Optional.',
     }),
     defineField({
+      name: 'startDate',
+      title: 'Start date',
+      type: 'date',
+      description: 'Date used for chronological sorting (newest first).',
+      options: { dateFormat: 'YYYY-MM' },
+    }),
+    defineField({
+      name: 'endDate',
+      title: 'End date',
+      type: 'date',
+      description: 'End date. Leave blank if this is a current role.',
+      options: { dateFormat: 'YYYY-MM' },
+      hidden: ({ parent }) => parent?.current === true,
+    }),
+    defineField({
       name: 'startYear',
-      title: 'Start year',
+      title: 'Start year / display date',
       type: 'string',
+      description: 'Display label, e.g. "Jan 2024" or "2024".',
     }),
     defineField({
       name: 'endYear',
-      title: 'End year',
+      title: 'End year / display date',
       type: 'string',
-      description: 'Leave blank and check "Current role" if ongoing.',
+      description: 'Display label, e.g. "Aug 2024" or "2024". Leave blank if current role.',
     }),
     defineField({
       name: 'current',
