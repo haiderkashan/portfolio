@@ -57,12 +57,13 @@ export function MaintenancePage({
           </div>
         )}
 
-        {/* ── Buttons ────────────────────────────────────────────── */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
+        {/* ── Action Buttons & Social Links ─────────────────────── */}
+        <div className="mt-8 flex w-full max-w-md flex-col items-center justify-center gap-4">
+          {/* Primary Action: Send an Email */}
           {email && (
             <a
               href={`mailto:${email}`}
-              className="group inline-flex min-h-[46px] items-center gap-2 rounded-full bg-accent px-7 py-3 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink shadow-lg transition-transform hover:scale-[1.03] active:scale-[0.98]"
+              className="group inline-flex min-h-[48px] items-center gap-2 rounded-full bg-accent px-8 py-3.5 font-display text-xs font-semibold uppercase tracking-[0.08em] text-ink shadow-lg transition-transform hover:scale-[1.03] active:scale-[0.98]"
             >
               <Mail size={15} />
               <span>Send an Email</span>
@@ -73,18 +74,22 @@ export function MaintenancePage({
             </a>
           )}
 
+          {/* Secondary Actions: Dynamic Social Media Links */}
           {socialLinks && socialLinks.length > 0 && (
-            <div className="flex flex-wrap items-center justify-center gap-2.5">
+            <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
               {socialLinks.map((s) => (
                 <a
                   key={s.platform}
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[46px] items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--surface)] px-5 py-3 font-body text-xs font-medium uppercase tracking-[0.08em] text-paper-dim transition-colors hover:border-accent/40 hover:text-accent"
+                  className="group inline-flex min-h-[38px] items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 font-body text-xs font-medium uppercase tracking-[0.08em] text-paper-dim transition-all hover:border-accent/40 hover:bg-white/[0.08] hover:text-accent"
                 >
                   <span>{s.platform}</span>
-                  <ArrowUpRight size={13} />
+                  <ArrowUpRight
+                    size={12}
+                    className="opacity-60 transition-transform duration-200 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
                 </a>
               ))}
             </div>
