@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import { useState, useRef, type ReactNode } from 'react'
 import { StaggerItem } from '@/components/ui/Reveal'
 
 export function InteractiveRow({
@@ -15,13 +15,48 @@ export function InteractiveRow({
   className?: string
 }) {
   const [isActive, setIsActive] = useState(false)
+  const rowRef = useRef<HTMLDivElement>(null)
 
-  function handleShow() {
+  function handleShow(e?: React.MouseEvent | React.FocusEvent) {
     setIsActive(true)
     if (imageUrl) {
+      let clientX: number | undefined
+      let clientY: number | undefined
+
+      if (e && 'clientX' in e && (e.clientX !== 0 || e.clientY !== 0)) {
+        clientX = e.clientX
+        clientY = e.clientY
+      } else if (rowRef.current) {
+        const rect = rowRef.current.getBoundingClientRect()
+        clientX = rect.left + rect.width / 2
+        clientY = rect.top + rect.height / 2
+      }
+
       window.dispatchEvent(
         new CustomEvent('cursor-preview:show', {
-          detail: { src: imageUrl, alt: imageAlt || '' },
+          detail: {
+            src: imageUrl,
+            alt: imageAlt || '',
+            clientX,
+            clientY,
+            scrollX: window.scrollX,
+            scrollY: window.scrollY,
+          },
+        })
+      )
+    }
+  }
+
+  function handleMouseMove(e: React.MouseEvent) {
+    if (imageUrl) {
+      window.dispatchEvent(
+        new CustomEvent('cursor-preview:move', {
+          detail: {
+            clientX: e.clientX,
+            clientY: e.clientY,
+            scrollX: window.scrollX,
+            scrollY: window.scrollY,
+          },
         })
       )
     }
@@ -38,7 +73,12 @@ export function InteractiveRow({
       className={`${className} ${isActive ? 'bg-[var(--surface-raised)]' : ''}`}
     >
       <div
+        ref={rowRef}
+        data-interactive-row="true"
+        data-image-url={imageUrl}
+        data-image-alt={imageAlt || ''}
         onMouseEnter={handleShow}
+        onMouseMove={handleMouseMove}
         onMouseLeave={handleHide}
         onFocus={handleShow}
         onBlur={handleHide}
