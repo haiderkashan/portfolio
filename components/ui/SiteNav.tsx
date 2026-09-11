@@ -15,11 +15,15 @@ export function SiteNav({
   email,
   socialLinks,
   resumeUrl,
+  showWritingPage,
+  showAwardsPage,
 }: {
   locationTag?: string
   email?: string
   socialLinks?: { platform: string; url: string }[]
   resumeUrl?: string
+  showWritingPage?: boolean
+  showAwardsPage?: boolean
 }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
@@ -27,12 +31,16 @@ export function SiteNav({
   const overlayRef = useRef<HTMLDivElement>(null)
   const shouldRestoreFocusRef = useRef(true)
 
+  const isWritingVisible = showWritingPage !== false
+  const isAwardsVisible = showAwardsPage !== false
+
   const linksToRender = [
     { label: 'Home', href: '/' },
     { label: 'Work', href: '/#work' },
-    { label: 'Experience', href: '/#experience' },
     { label: 'Education', href: '/#education' },
-    { label: 'Writing', href: '/blog' },
+    { label: 'Experience', href: '/#experience' },
+    ...(isAwardsVisible ? [{ label: 'Awards', href: '/#awards' }] : []),
+    ...(isWritingVisible ? [{ label: 'Writing', href: '/blog' }] : []),
     ...(resumeUrl ? [{ label: 'Resume', href: resumeUrl, isExternal: true }] : []),
     { label: 'Contact', href: '/contact' },
   ]

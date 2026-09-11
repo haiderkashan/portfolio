@@ -42,12 +42,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    {
-      url: `${siteUrl}/blog`,
-      lastModified: postLatestDate,
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
+    ...(data.settings?.showWritingPage !== false
+      ? [
+          {
+            url: `${siteUrl}/blog`,
+            lastModified: postLatestDate,
+            changeFrequency: 'weekly' as const,
+            priority: 0.8,
+          },
+        ]
+      : []),
     {
       url: `${siteUrl}/contact`,
       lastModified: settingsDate,

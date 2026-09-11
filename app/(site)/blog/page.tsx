@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { POSTS_PAGE_QUERY, SITE_SETTINGS_QUERY, type Paginated, type PostCard, type SiteSettings } from '@/sanity/lib/queries'
 import { urlForImage } from '@/sanity/lib/image'
@@ -26,6 +27,12 @@ export async function generateMetadata({
     searchParams,
     sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null),
   ])
+  if (settings?.showWritingPage === false) {
+    return {
+      title: 'Not Found',
+      robots: { index: false, follow: false },
+    }
+  }
   const page = Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
   const title = page > 1 ? `Writing (Page ${page})` : 'Writing'
   const description = settings?.blogSeoDescription || settings?.seoDescription || 'Articles, architectural breakdowns, and engineering notes.'
@@ -78,7 +85,15 @@ export default async function BlogPage({
 }: {
   searchParams: Promise<{ page?: string }>
 }) {
-  const { page: pageParam } = await searchParams
+  const [{ page: pageParam }, settings] = await Promise.all([
+    searchParams,
+    sanityFetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, null),
+  ])
+
+  if (settings?.showWritingPage === false) {
+    notFound()
+  }
+
   const page = Math.max(1, parseInt(pageParam ?? '1', 10) || 1)
   const start = (page - 1) * PAGE_SIZE
 

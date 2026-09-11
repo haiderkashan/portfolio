@@ -192,10 +192,9 @@ export default async function HomePage() {
 
       <FeaturedWork projects={projects} />
 
-      <Experience experience={finalExperience} />
-
       <Education education={education} />
 
+      <Experience experience={finalExperience} />
 
       <Quote
         statement={settings?.statement || 'Building high-performance software with clean code and modern architecture.'}
@@ -203,9 +202,9 @@ export default async function HomePage() {
         floatingImages={[...projectImageUrls].reverse()}
       />
 
-      <Writing posts={posts} />
+      {settings?.showWritingPage !== false && <Writing posts={posts} />}
 
-      <Awards awards={awards} />
+      {settings?.showAwardsPage !== false && <Awards awards={awards} />}
     </>
   )
 }

@@ -13,6 +13,7 @@ export default defineType({
     { name: 'statement', title: 'Statement' },
     { name: 'footer', title: 'Footer' },
     { name: 'seo', title: 'SEO & Favicon' },
+    { name: 'toggles', title: 'Feature Toggles' },
     { name: 'maintenance', title: 'Maintenance Mode' },
   ],
   fields: [
@@ -279,6 +280,24 @@ export default defineType({
       type: 'image',
       description: 'Square image, ideally 512×512 PNG or SVG. Used as the browser tab icon.',
       group: 'seo',
+    }),
+
+    // ── Feature Toggles ───────────────────────────────────────
+    defineField({
+      name: 'showWritingPage',
+      title: 'Show Writing / Blog Page & Section',
+      type: 'boolean',
+      description: 'Toggle the visibility of the Writing/Blogs section on the homepage and the /blog page.',
+      group: ['toggles', 'maintenance'],
+      initialValue: true,
+    }),
+    defineField({
+      name: 'showAwardsPage',
+      title: 'Show Awards Section & Navigation',
+      type: 'boolean',
+      description: 'Toggle the visibility of the Awards section on the homepage and awards navigation.',
+      group: ['toggles', 'maintenance'],
+      initialValue: true,
     }),
 
     // ── Maintenance Mode ──────────────────────────────────────

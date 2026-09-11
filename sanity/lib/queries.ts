@@ -93,6 +93,8 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
       "lqip": asset->metadata.lqip
     },
     favicon,
+    showWritingPage,
+    showAwardsPage,
     maintenanceMode,
     maintenanceTitle,
     maintenanceSubtitle,
@@ -117,6 +119,8 @@ export const HOME_QUERY = defineQuery(`
       knowsAbout, alumniOf, twitterHandle,
       "ogImage": ogImage{ ..., "alt": alt, "lqip": asset->metadata.lqip },
       favicon,
+      showWritingPage,
+      showAwardsPage,
       maintenanceMode,
       maintenanceTitle,
       maintenanceSubtitle,
@@ -218,7 +222,7 @@ export const POSTS_PAGE_QUERY = defineQuery(`
 
 export const SITEMAP_DATA_QUERY = defineQuery(`
   {
-    "settings": *[_type == "siteSettings"][0]{ _updatedAt },
+    "settings": *[_type == "siteSettings"][0]{ _updatedAt, showWritingPage },
     "projects": *[_type == "project" && defined(slug.current)]{
       "slug": slug.current,
       "_createdAt": _createdAt,
@@ -276,6 +280,8 @@ export interface SiteSettings {
   twitterHandle?: string
   ogImage?: ImageWithAlt
   favicon?: Image
+  showWritingPage?: boolean
+  showAwardsPage?: boolean
   maintenanceMode?: boolean
   maintenanceTitle?: string
   maintenanceSubtitle?: string
@@ -377,7 +383,7 @@ export interface HomeData {
 }
 
 export interface SitemapData {
-  settings: { _updatedAt?: string } | null
+  settings: { _updatedAt?: string; showWritingPage?: boolean } | null
   projects: { slug: string; _updatedAt?: string }[]
   latestPost: { publishedDate?: string; _updatedAt?: string } | null
   latestProject: { _updatedAt?: string } | null

@@ -70,6 +70,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         email={settings?.email}
         socialLinks={settings?.socialLinks}
         resumeUrl={settings?.resume?.asset?.url}
+        showWritingPage={settings?.showWritingPage}
+        showAwardsPage={settings?.showAwardsPage}
       />
       <main id="main-content" tabIndex={-1} className="focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-4">
         {children}
