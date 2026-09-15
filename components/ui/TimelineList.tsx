@@ -74,7 +74,13 @@ export function TimelineList({ items }: { items: TimelineItem[] }) {
             }`}
           >
             {item.href ? (
-              <Link href={item.href} className={gridClass}>
+              <Link
+                href={item.href}
+                className={gridClass}
+                {...(item.href.startsWith('http') || item.href.includes('.pdf')
+                  ? { target: '_blank', rel: 'noopener noreferrer' }
+                  : {})}
+              >
                 {innerContent}
               </Link>
             ) : (

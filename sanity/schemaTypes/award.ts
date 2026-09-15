@@ -26,20 +26,17 @@ export default defineType({
       validation: (Rule) => Rule.positive().integer(),
     }),
     defineField({
-      name: 'project',
-      title: 'Project',
-      type: 'reference',
-      to: [{ type: 'project' }],
-      description: 'Which project this award/recognition is for.',
+      name: 'title',
+      title: 'Award Title / Honor',
+      type: 'string',
+      description: 'e.g. "Dean\'s Honor List", "CalHacks 2024", "Awwwards Site of the Day".',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'awardType',
-      title: 'Award / recognition',
+      title: 'Recognition / Subtitle / Organization',
       type: 'string',
-      description: 'e.g. "Site of the Day", "SOTD", "Honorable Mention".',
-      initialValue: 'Site of the Day',
-      validation: (Rule) => Rule.required(),
+      description: 'e.g. "6 Consecutive Semesters", "1st Place Overall Winner", "UC Berkeley".',
     }),
     defineField({
       name: 'date',
@@ -48,8 +45,48 @@ export default defineType({
       options: { dateFormat: 'MMM YYYY' },
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'proofPdf',
+      title: 'Proof / Certificate (PDF)',
+      type: 'file',
+      options: {
+        accept: '.pdf,application/pdf',
+      },
+      description: 'Upload a PDF document as proof or certificate for this award.',
+    }),
+    defineField({
+      name: 'proofUrl',
+      title: 'Proof Link / Verification URL',
+      type: 'url',
+      description: 'Optional web link to certificate or verification page (used if no PDF is uploaded).',
+    }),
+    defineField({
+      name: 'image',
+      title: 'Badge / Image (Optional)',
+      type: 'image',
+      options: { hotspot: true },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text',
+        },
+      ],
+      description: 'Optional badge or preview image shown on desktop cursor hover.',
+    }),
   ],
   preview: {
-    select: { title: 'project.title', subtitle: 'awardType', media: 'project.thumbnail' },
+    select: {
+      title: 'title',
+      subtitle: 'awardType',
+      media: 'image',
+    },
+    prepare({ title, subtitle, media }) {
+      return {
+        title: title || subtitle || 'Award',
+        subtitle,
+        media,
+      }
+    },
   },
 })
