@@ -8,6 +8,8 @@ import { JsonLd } from '@/components/JsonLd'
 import dynamic from 'next/dynamic'
 import { Hero } from '@/components/sections/Hero'
 
+export const revalidate = 60
+
 const IntroStatement = dynamic(() => import('@/components/sections/IntroStatement').then((m) => m.IntroStatement))
 const Stats = dynamic(() => import('@/components/sections/Stats').then((m) => m.Stats))
 const FeaturedWork = dynamic(() => import('@/components/sections/FeaturedWork').then((m) => m.FeaturedWork))
