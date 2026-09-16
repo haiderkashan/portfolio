@@ -181,7 +181,7 @@ export default async function WorkPage({
                         {[project.category, project.period].filter(Boolean).join(' · ')}
                       </p>
                     )}
-                    <h2 className="mt-2 font-display text-xl font-semibold tracking-tight sm:text-2xl">
+                    <h2 className="mt-2 font-display text-xl font-semibold tracking-tight sm:text-2xl transition-colors group-hover:text-[#f4cf00]">
                       {project.title}
                     </h2>
                     {project.tagline && (

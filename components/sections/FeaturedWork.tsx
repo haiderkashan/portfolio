@@ -82,7 +82,7 @@ export function FeaturedWork({ projects }: { projects: ProjectCard[] }) {
                   <h3 className="font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
                     <Link
                       href={`/work/${project.slug}`}
-                      className="group/title inline-block transition-colors hover:text-moss focus-visible:underline"
+                      className="group/title inline-block transition-colors hover:text-[#f4cf00] focus-visible:underline"
                     >
                       {project.title}
                     </Link>
