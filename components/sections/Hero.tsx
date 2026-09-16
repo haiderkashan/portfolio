@@ -2,6 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight, ChevronDown } from 'lucide-react'
 import { splitBrandName } from '@/lib/utils'
+import { Magnetic } from '@/components/ui/Magnetic'
 
 export function Hero({
   name,
@@ -54,17 +55,19 @@ export function Hero({
             <span />
           )}
           <div className="pointer-events-auto">
-            <Link
-              href="/contact"
-              prefetch={false}
-              className="group inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accent px-5 py-2.5 font-display text-xs font-semibold tracking-wide text-ink transition-transform hover:scale-[1.03] active:scale-[0.98] sm:px-6 sm:py-3 sm:text-sm"
-            >
-              {ctaLabel || 'Talk with me'}
-              <ArrowUpRight
-                size={16}
-                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              />
-            </Link>
+            <Magnetic>
+              <Link
+                href="/contact"
+                prefetch={false}
+                className="group inline-flex min-h-[44px] items-center gap-2 rounded-full bg-accent px-5 py-2.5 font-display text-xs font-semibold tracking-wide text-ink transition-transform hover:scale-[1.03] active:scale-[0.98] sm:px-6 sm:py-3 sm:text-sm"
+              >
+                {ctaLabel || 'Talk with me'}
+                <ArrowUpRight
+                  size={16}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </Link>
+            </Magnetic>
           </div>
         </div>
 
