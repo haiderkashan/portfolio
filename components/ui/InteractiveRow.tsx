@@ -19,6 +19,7 @@ export function InteractiveRow({
 
   function handleShow(e?: React.MouseEvent | React.FocusEvent) {
     setIsActive(true)
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return
     if (imageUrl) {
       let clientX: number | undefined
       let clientY: number | undefined
@@ -48,6 +49,7 @@ export function InteractiveRow({
   }
 
   function handleMouseMove(e: React.MouseEvent) {
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return
     if (imageUrl) {
       window.dispatchEvent(
         new CustomEvent('cursor-preview:move', {

@@ -21,6 +21,7 @@ export function Magnetic({
   const springY = useSpring(y, { stiffness: 180, damping: 15, mass: 0.15 })
 
   function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return
     const el = ref.current
     if (!el) return
     const rect = el.getBoundingClientRect()

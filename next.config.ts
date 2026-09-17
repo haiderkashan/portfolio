@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
-    qualities: [75, 85, 90],
+    qualities: [75, 80, 85, 90],
     minimumCacheTTL: 31536000,
     remotePatterns: [
       {
@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
   },
   compress: true,
   experimental: {
-    optimizePackageImports: ['lucide-react', 'motion/react'],
+    optimizePackageImports: ['lucide-react', 'motion/react', '@sanity/icons'],
   },
   allowedDevOrigins: ['10.125.145.55', 'localhost:3000'],
   async headers() {
