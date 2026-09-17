@@ -22,7 +22,7 @@ async function getSettings() {
     {},
     null,
     ['siteSettings'],
-    process.env.NODE_ENV === 'development' ? 0 : 10
+    process.env.NODE_ENV === 'development' ? 0 : 60
   )
 }
 

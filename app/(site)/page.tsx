@@ -5,19 +5,17 @@ import { urlForImage } from '@/sanity/lib/image'
 import { siteUrl } from '@/lib/utils'
 import { JsonLd } from '@/components/JsonLd'
 
-import dynamic from 'next/dynamic'
 import { Hero } from '@/components/sections/Hero'
+import { IntroStatement } from '@/components/sections/IntroStatement'
+import { Stats } from '@/components/sections/Stats'
+import { FeaturedWork } from '@/components/sections/FeaturedWork'
+import { Experience } from '@/components/sections/Experience'
+import { Education } from '@/components/sections/Education'
+import { Quote } from '@/components/sections/Quote'
+import { Writing } from '@/components/sections/Writing'
+import { Awards } from '@/components/sections/Awards'
 
 export const revalidate = 60
-
-const IntroStatement = dynamic(() => import('@/components/sections/IntroStatement').then((m) => m.IntroStatement))
-const Stats = dynamic(() => import('@/components/sections/Stats').then((m) => m.Stats))
-const FeaturedWork = dynamic(() => import('@/components/sections/FeaturedWork').then((m) => m.FeaturedWork))
-const Experience = dynamic(() => import('@/components/sections/Experience').then((m) => m.Experience))
-const Education = dynamic(() => import('@/components/sections/Education').then((m) => m.Education))
-const Quote = dynamic(() => import('@/components/sections/Quote').then((m) => m.Quote))
-const Writing = dynamic(() => import('@/components/sections/Writing').then((m) => m.Writing))
-const Awards = dynamic(() => import('@/components/sections/Awards').then((m) => m.Awards))
 
 const FALLBACK_EXPERIENCE: ExperienceEntry[] = [
   {
